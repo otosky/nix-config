@@ -1,0 +1,125 @@
+{
+  "flux source - Helm Repo HTTP": {
+    "prefix": "flux-src-helm-http",
+    "description": "Flux Source - Helm Repo Http",
+    "body": [
+      "# https://fluxcd.io/flux/components/source/helmrepositories/#helm-https-repository",
+      "apiVersion: source.toolkit.fluxcd.io/v1beta2",
+      "kind: HelmRepository",
+      "metadata:",
+      "  name: ${1:repo-name}",
+      "  namespace: ${2:flux-system}",
+      "spec:",
+      "  interval: 5m0s",
+      "  url: ${3:https://my-charts.com/charts}"
+    ]
+  },
+  "flux source - Helm Repo OCI": {
+    "prefix": "flux-src-helm-oci",
+    "description": "Flux Source - Helm Repo OCI",
+    "body": [
+      "# https://fluxcd.io/flux/components/source/helmrepositories/#helm-oci-repository",
+      "apiVersion: source.toolkit.fluxcd.io/v1beta2",
+      "kind: HelmRepository",
+      "metadata:",
+      "  name: ${1:repo-name}",
+      "  namespace: ${2:flux-system}",
+      "spec:",
+      "  type: oci",
+      "  interval: 5m0s",
+      "  url: ${3:oci://ghcr.io/my-charts/charts}"
+    ]
+  },
+  "flux source - Git Repo": {
+    "prefix": "flux-src-git",
+    "description": "Flux Source - Git Repo",
+    "body": [
+      "# https://fluxcd.io/flux/components/source/gitrepositories/",
+      "apiVersion: source.toolkit.fluxcd.io/v1beta2",
+      "kind: GitRepository",
+      "metadata:",
+      "  name: ${1:repo-name}",
+      "  namespace: ${2:flux-system}",
+      "spec:",
+      "  interval: 5m0s",
+      "  url: ${3:https://github.com/my/repo}",
+      "  ref:",
+      "    branch: master",
+      "    # tag takes precedence over branch",
+      "    tag: 0.1.0",
+      "    # semver range takes precedence over tag & branch",
+      "    semver: >= 1.2 < 3.0.0",
+      "    # commit hashes take precedence over all of the above",
+      "    commit: <some commit sha> ",
+      "  # https://fluxcd.io/flux/components/source/gitrepositories/#ignore-spec",
+      "  ignore: |",
+      "    # exclude all",
+      "    /*",
+      "    # include deploy dir",
+      "    !/deploy"
+    ]
+  },
+  "flux kustomize config": {
+    "prefix": "flux-k-conf",
+    "description": "Kustomize Config",
+    "body": [
+      "apiVersion: kustomize.config.k8s.io/v1beta1",
+      "kind: Kustomization",
+      "resources:",
+      "  - ${1: resource_a}"
+    ]
+  },
+  "flux Helm Release": {
+    "prefix": "flux-helm-release",
+    "description": "Flux Helm Release",
+    "body": [
+      "# https://fluxcd.io/flux/components/helm/helmreleases/",
+      "apiVersion: helm.toolkit.fluxcd.io/v2beta1",
+      "kind: HelmRelease",
+      "metadata:",
+      "  name: ${1:my-helm-release}",
+      "spec:",
+      "  interval: 5m",
+      "  chart:",
+      "    spec:",
+      "      chart: ${2:my-chart-name}",
+      "      sourceRef:",
+      "        kind: HelmRepository",
+      "        name: ${3:helm-repo-name}",
+      "        namespace: ${4:flux-system}",
+      "      interval: 5m",
+      "  values:",
+      "    ${0}"
+    ]
+  },
+  "flux Kustomization": {
+    "prefix": "flux-kustomization",
+    "description": "Flux Kustomization",
+    "body": [
+      "# https://fluxcd.io/flux/components/kustomize/kustomization/",
+      "apiVersion: kustomize.toolkit.fluxcd.io/v1beta2",
+      "kind: Kustomization",
+      "metadata:",
+      "  name: ${1:name}",
+      "  namespace: ${2:default}",
+      "spec:",
+      "  interval: 10m",
+      "  targetNamespace: ${3:default}",
+      "  sourceRef:",
+      "    kind: GitRepository",
+      "    name: ${1:name}",
+      "  path: ${4:./path}",
+      "  prune: true"
+    ]
+  },
+  "k8s namespace": {
+    "prefix": "k-ns",
+    "description": "Kubernetes Namespace",
+    "body": [
+      "apiVersion: v1",
+      "kind: Namespace",
+      "metadata:",
+      "  name: ${1:name}"
+    ]
+  }
+}
