@@ -20,8 +20,14 @@
 
     git
     delta
+    age
 
     bat
+    fzf
+    fd
+    ripgrep
+    tmux
+    lazygit
   ];
 
   imports = [
