@@ -17,7 +17,7 @@
   ];
 
   imports = [
-    ../../apps/nvim
+    ../../apps/neovim
   ];
 
 }

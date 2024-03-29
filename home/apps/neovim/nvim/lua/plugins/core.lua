@@ -6,6 +6,7 @@ return {
     version = false,
     opts = {
       colorscheme = "tokyonight-storm",
+      news = { lazyvim = false, neovim = false },
     },
   },
   { "neovim/nvim-lspconfig", version = false },

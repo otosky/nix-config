@@ -10,7 +10,7 @@ with lib; let
 in {
   options.lazyvim = {
     enable = mkOption {
-      default = false;
+      default = true;
       description = "Enable lazyvim";
       type = types.bool;
     };
