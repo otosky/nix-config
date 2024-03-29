@@ -55,6 +55,7 @@ return {
         ["ruby"] = { "rufo" },
         ["sh"] = { "shfmt" },
         ["elixir"] = { "mix" },
+        ["nix"] = { "alejandra" },
       },
     },
   },

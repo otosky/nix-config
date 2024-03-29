@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.lazyvim;
 in {

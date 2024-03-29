@@ -8,22 +8,25 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
-  outputs = { nixpkgs, home-manager, ... }: {
-      defaultPackage = {
-        x86_64-linux = home-manager.defaultPackage.x86_64-linux;
-        aarch64-darwin = home-manager.defaultPackage.aarch64-darwin;
-      };
+  outputs = {
+    nixpkgs,
+    home-manager,
+    ...
+  }: {
+    defaultPackage = {
+      x86_64-linux = home-manager.defaultPackage.x86_64-linux;
+      aarch64-darwin = home-manager.defaultPackage.aarch64-darwin;
+    };
 
-      homeConfigurations = {
-        "olivertosky@ot-framework" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [ 
-            ./home/users/olivertosky/home.nix 
-          ];
-        };
+    homeConfigurations = {
+      "olivertosky@ot-framework" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./home/users/olivertosky/home.nix
+        ];
       };
+    };
   };
 }
