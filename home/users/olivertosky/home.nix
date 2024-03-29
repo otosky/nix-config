@@ -17,6 +17,7 @@
 
   home.packages = with pkgs; [
     nixpkgs-fmt
+    neovim
 
     git
     delta
@@ -33,6 +34,7 @@
   imports = [
     ../../apps/neovim
   ];
+
 
   programs.git = {
     enable = true;
