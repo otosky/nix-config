@@ -17,9 +17,44 @@
 
   home.packages = with pkgs; [
     nixpkgs-fmt
+
+    git
+    delta
+
+    bat
   ];
 
   imports = [
     ../../apps/neovim
   ];
+
+  programs.git = {
+    enable = true;
+    userName = "Oliver Tosky";
+    userEmail = "olivertosky@gmail.com";
+    extraConfig = let
+      deltaCommand = "${pkgs.delta}/bin/delta";
+    in {
+      core = {
+        pager = "${deltaCommand} --diff-so-fancy";
+      };
+      delta = {
+        navigate = true;
+        light = false;
+        side-by-side = true;
+      };
+      merge = {
+        conflictstyle = "diff3";
+      };
+      diff = {
+        colorMoved = "default";
+      };
+      interactive = {
+        diffFilter = "${deltaCommand} --color-only";
+      };
+      init = {
+        defaultBranch = "main";
+      };
+    };
+  };
 }
