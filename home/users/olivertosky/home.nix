@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -35,6 +36,9 @@
     ../../apps/neovim
   ];
 
+  nixpkgs.overlays = [
+    inputs.neovim-nightly-overlay.overlay
+  ];
 
   programs.git = {
     enable = true;
