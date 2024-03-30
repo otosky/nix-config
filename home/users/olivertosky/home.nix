@@ -35,6 +35,7 @@
 
   imports = [
     ../../apps/neovim
+    ../../apps/fish
   ];
 
   nixpkgs.overlays = [
