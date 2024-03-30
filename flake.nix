@@ -29,6 +29,14 @@
           ./home/users/olivertosky/home.nix
         ];
       };
+
+      "olivertosky@ot-desktop" = home-manager.lib.homeManagerConfiguration {
+        extraSpecialArgs = {inherit inputs;};
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./home/users/olivertosky/home.nix
+        ];
+      };
     };
   };
 }
