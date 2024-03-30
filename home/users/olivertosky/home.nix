@@ -30,6 +30,7 @@
     ripgrep
     tmux
     lazygit
+    zoxide
   ];
 
   imports = [
