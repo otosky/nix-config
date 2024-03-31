@@ -37,7 +37,6 @@
   imports = [
     ../../apps/neovim
     ../../apps/fish
-    ../../apps/wezterm
   ];
 
   nixpkgs.overlays = [
@@ -117,5 +116,11 @@
 
       xnoremap <leader>p "_dP
     '';
+  };
+
+  programs.wezterm = {
+    enable = true;
+    package = pkgs.wezterm;
+    extraConfig = builtins.readFile ../../apps/wezterm/wezterm.lua;
   };
 }
