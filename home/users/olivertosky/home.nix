@@ -4,7 +4,9 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  nixGL = import ../../nixGL.nix {inherit pkgs config;};
+in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -19,7 +21,6 @@
   home.packages = with pkgs; [
     nixpkgs-fmt
     neovim
-    wezterm
 
     git
     delta
@@ -35,6 +36,7 @@
   ];
 
   imports = [
+    ./options.nix
     ../../apps/neovim
     ../../apps/fish
   ];
@@ -120,7 +122,7 @@
 
   programs.wezterm = {
     enable = true;
-    package = pkgs.wezterm;
+    package = nixGL pkgs.wezterm;
     extraConfig = builtins.readFile ../../apps/wezterm/wezterm.lua;
   };
 }
