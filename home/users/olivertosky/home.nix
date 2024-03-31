@@ -19,6 +19,7 @@
   home.packages = with pkgs; [
     nixpkgs-fmt
     neovim
+    wezterm
 
     git
     delta
@@ -36,6 +37,7 @@
   imports = [
     ../../apps/neovim
     ../../apps/fish
+    ../../apps/wezterm
   ];
 
   nixpkgs.overlays = [
