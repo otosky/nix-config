@@ -24,7 +24,6 @@ return {
 		},
 	},
 
-	default_prog = { "fish" },
 	scrollback_lines = 7000,
 	hyperlink_rules = wezterm.default_hyperlink_rules(),
 	hide_tab_bar_if_only_one_tab = true,
