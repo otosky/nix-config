@@ -57,11 +57,11 @@
 
       interactiveShellInit = ''
         fish_add_path $HOME/.local/bin
-        mise activate fish | source
+        #mise activate fish | source
 
         fish_add_path $HOME/bin/
         fish_add_path $HOME/.krew/bin
-        fish_add_path (dirname (mise which cargo))
+        # fish_add_path (dirname (mise which cargo))
         fish_add_path $HOME/.local/share/coursier/bin
         fish_add_path $HOME/.ghcup/bin
         fish_add_path $HOME/.docker/bin # for macOS
@@ -71,7 +71,7 @@
 
         fish_ssh_agent
 
-        zoxide init fish | source
+        # zoxide init fish | source
       '';
     };
   };
