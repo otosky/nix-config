@@ -16,6 +16,8 @@
       };
     };
     packages = with pkgs; [
+      # lazyvim deps
+      gcc
       # telescope dependency
       ripgrep
       # build language servers
