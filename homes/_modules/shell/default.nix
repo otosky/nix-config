@@ -1,5 +1,7 @@
 {...}: {
   imports = [
     ./fish
+    ./mise
+    ./zoxide
   ];
 }
