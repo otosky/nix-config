@@ -52,7 +52,7 @@
         set -gx MISE_ENV_FILE .env
         set -gx devbox_no_prompt true
         set -gx EDITOR nvim
-        tide configure --auto --style=Lean --prompt_colors='True color' --show_time='24-hour format' --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Sparse --icons='Few icons' --transient=Yes
+        #tide configure --auto --style=Lean --prompt_colors='True color' --show_time='24-hour format' --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Sparse --icons='Few icons' --transient=Yes
       '';
 
       interactiveShellInit = ''
