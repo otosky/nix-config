@@ -6,9 +6,17 @@
   config = {
     home = {
       file = {
-        ".config/fish" = {
+        ".config/fish/conf.d" = {
           recursive = true;
-          source = ./fish;
+          source = ./conf.d;
+        };
+        ".config/fish/functions" = {
+          recursive = true;
+          source = ./functions;
+        };
+        ".config/fish/themes" = {
+          recursive = true;
+          source = ./themes;
         };
       };
       packages = with pkgs; [
