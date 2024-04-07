@@ -3,7 +3,10 @@
   pkgs,
   ...
 }: {
-  imports = [../_modules/base];
+  imports = [
+    ../_modules/base
+    ../_modules/terminal
+  ];
   # Disable impermanence
   home.persistence = lib.mkForce {};
   modules = {
