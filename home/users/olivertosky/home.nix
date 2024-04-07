@@ -125,4 +125,8 @@ in {
     package = nixGL pkgs.wezterm;
     extraConfig = builtins.readFile ../../apps/wezterm/wezterm.lua;
   };
+
+  programs.wofi = {
+    enable = true;
+  };
 }
