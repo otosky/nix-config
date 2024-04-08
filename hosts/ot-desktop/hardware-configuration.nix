@@ -14,7 +14,7 @@
         "usbhid"
         "sd_mod"
       ];
-      kernelModules = ["kvm-amd"];
+      kernelModules = ["kvm-intel"];
     };
     loader = {
       systemd-boot = {
