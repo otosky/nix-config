@@ -79,7 +79,47 @@ in {
           "pulseaudio"
           "battery"
           "network"
+          "custom/hostname"
         ];
+
+        clock = {
+          interval = 1;
+          format = "{:%d/%m %H:%M:%S}";
+          format-alt = "{:%Y-%m-%d %H:%M:%S %z}";
+          on-click-left = "mode";
+          tooltip-format = ''
+            <big>{:%Y %B}</big>
+            <tt><small>{calendar}</small></tt>'';
+        };
+
+        cpu = {
+          format = "  {usage}%";
+        };
+        memory = {
+          format = "  {}%";
+          interval = 5;
+        };
+
+        pulseaudio = {
+          format = "{icon}  {volume}%";
+          format-muted = "   0%";
+          format-icons = {
+            headphone = "󰋋";
+            headset = "󰋎";
+            portable = "";
+            default = [
+              ""
+              ""
+              ""
+            ];
+          };
+          on-click = pavucontrol;
+        };
+
+        "custom/hostname" = {
+          exec = "echo $USER@$HOSTNAME";
+          on-click = "${systemctl} --user restart waybar";
+        };
       };
     };
     style = ''
