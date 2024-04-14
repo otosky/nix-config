@@ -17,11 +17,12 @@ in {
     configPackages = [hyprland];
   };
 
-  # home.packages = with pkgs; [
-  #   inputs.hyprwm-contrib.grimblast
-  #   hyprslurp
-  #   hyprpicker
-  # ];
+  home.packages = with pkgs; [
+    inputs.hyprwm-contrib.grimblast
+    # hyprslurp
+    # hyprpicker
+    firefox
+  ];
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -41,6 +42,7 @@ in {
         [
           "$mod, F, exec, firefox"
           ", Print, exec, grimblast copy area"
+          "$mod,Return,exec,wezterm"
         ]
         ++ (
           # workspaces
