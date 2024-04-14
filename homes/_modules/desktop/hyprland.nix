@@ -37,28 +37,55 @@ in {
     };
 
     settings = {
-      "$mod" = "SUPER";
       bind =
         [
-          "$mod, F, exec, firefox"
+          "SUPER, F, exec, firefox"
           ", Print, exec, grimblast copy area"
-          "$mod, return, exec, [float;tile] wezterm start --always-new-process"
+          "SUPER, return, exec, [float;tile] wezterm start --always-new-process"
+          "SUPER, M, exec, wlogout --protocol layer-shell"
+
+          "SUPER, 1, workspace, 1"
+          "SUPER, 2, workspace, 2"
+          "SUPER, 3, workspace, 3"
+          "SUPER, 4, workspace, 4"
+          "SUPER, 5, workspace, 5"
+          "SUPER, 6, workspace, 6"
+          "SUPER, 7, workspace, 7"
+          "SUPER, 8, workspace, 8"
+          "SUPER, 9, workspace, 9"
+
+          "SUPER SHIFT, 1, movetoworkspace, 1"
+          "SUPER SHIFT, 2, movetoworkspace, 2"
+          "SUPER SHIFT, 3, movetoworkspace, 3"
+          "SUPER SHIFT, 4, movetoworkspace, 4"
+          "SUPER SHIFT, 5, movetoworkspace, 5"
+          "SUPER SHIFT, 6, movetoworkspace, 6"
+          "SUPER SHIFT, 7, movetoworkspace, 7"
+          "SUPER SHIFT, 8, movetoworkspace, 8"
+          "SUPER SHIFT, 9, movetoworkspace, 9"
         ]
-        ++ (
-          # workspaces
-          # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
-          builtins.concatLists (builtins.genList (
-              x: let
-                ws = let
-                  c = (x + 1) / 10;
-                in
-                  builtins.toString (x + 1 - (c * 10));
-              in [
-                "$mod, ${ws}, workspace, ${toString (x + 1)}"
-                "$mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
-              ]
-            )
-            10)
+        ++
+        # LAUNCHER
+        (
+          let
+            wofi = lib.getExe config.programs.wofi.package;
+          in
+            lib.optionals config.programs.wofi.enable [
+              "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
+              "SUPER,d,exec,${wofi} -S run"
+            ]
+        )
+        ++
+        # LOCKSCREEN
+        (
+          let
+            swaylock = lib.getExe config.programs.swaylock.package;
+          in
+            lib.optionals config.programs.swaylock.enable [
+              ",XF86Launch5,exec,${swaylock} -S --grace 2"
+              ",XF86Launch4,exec,${swaylock} -S --grace 2"
+              "SUPER SHIFT,L,exec,${swaylock} -S --grace 2"
+            ]
         );
     };
 
