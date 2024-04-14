@@ -4,6 +4,9 @@
   config,
   ...
 }: {
+  imports = [
+    ./font.nix
+  ];
   # Also sets org.freedesktop.appearance color-scheme
   # dconf.settings."org/gnome/desktop/interface".color-scheme =
   #   if config.colorscheme.variant == "dark"
