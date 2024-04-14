@@ -43,6 +43,20 @@ in {
         border_size = 1;
       };
 
+      decoration = {
+        rounding = 10;
+        blur = {
+          enabled = true;
+          size = 2;
+          passes = 2;
+          new_optimizations = true;
+          xray = false;
+        };
+        drop_shadow = true;
+        shadow_range = 4;
+        shadow_render_power = 3;
+      };
+
       bind =
         [
           "SUPER, F, exec, firefox"
