@@ -10,6 +10,7 @@
             ESP = {
               name = "ESP";
               label = "ESP";
+              type = "EF00";
               size = "512M";
               content = {
                 type = "filesystem";
