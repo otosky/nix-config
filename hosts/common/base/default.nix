@@ -10,7 +10,7 @@
       # ./acme.nix
       # ./auto-upgrade.nix
       ./fish.nix
-      # ./locale.nix
+      ./locale.nix
       ./nix.nix
       # ./openssh.nix
       # ./optin-persistence.nix
