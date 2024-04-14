@@ -42,7 +42,7 @@ in {
         [
           "$mod, F, exec, firefox"
           ", Print, exec, grimblast copy area"
-          "$mod,Return,exec,wezterm"
+          "$mod, return, exec, [float;tile] wezterm start --always-new-process"
         ]
         ++ (
           # workspaces
