@@ -63,8 +63,6 @@ in {
         layer = "top";
         position = "top";
         mode = "dock";
-        height = 40;
-        margin = "6";
         modules-left = [
           "hyprland/workspaces"
         ];
