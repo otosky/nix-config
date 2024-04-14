@@ -1,5 +1,5 @@
 {
-  disko.device = {
+  disko.devices = {
     disk = {
       ssd = {
         type = "disk";
