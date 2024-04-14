@@ -6,9 +6,7 @@
 }: {
   nix = {
     # TODO
-    # https://github.com/NixOS/nix/issues/9579
-    # https://github.com/NixOS/nix/pull/9547
-    package = pkgs.nixVersions.nix_2_14;
+    package = pkgs.nixVersions.nix_2_21;
 
     settings = {
       # substituters = lib.mkAfter ["https://cache.m7.rs"];

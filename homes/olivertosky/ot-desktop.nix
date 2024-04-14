@@ -6,6 +6,7 @@
   imports = [
     ../_modules/base
     ../_modules/terminal
+    ../_modules/desktop/hyprland.nix
   ];
   # Disable impermanence
   home.persistence = lib.mkForce {};
@@ -13,7 +14,7 @@
     shell = {
       mise = {
         enable = true;
-        package = pkgs.unstable.mise;
+        package = pkgs.mise;
       };
     };
   };
