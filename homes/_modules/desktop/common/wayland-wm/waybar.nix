@@ -58,5 +58,29 @@ in {
   programs.waybar = {
     enable = true;
     systemd.enable = true;
+    settings = {
+      primary = {
+        layer = "top";
+        position = "top";
+        mode = "dock";
+        height = 40;
+        margin = "6";
+        modules-left = [
+          "hyprland/workspaces"
+        ];
+
+        modules-center = [
+          "clock"
+        ];
+
+        modules-right = [
+          "cpu"
+          "memory"
+          "pulseaudio"
+          "battery"
+          "network"
+        ];
+      };
+    };
   };
 }
