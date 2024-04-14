@@ -7,6 +7,7 @@
 in {
   users.mutableUsers = true;
   users.users.olivertosky = {
+    password = "example";
     isNormalUser = true;
     shell = pkgs.fish;
     extraGroups =
