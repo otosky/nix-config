@@ -12,6 +12,10 @@
     };
 
     hardware.url = "github:nixos/nixos-hardware";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence";
     nix-colors.url = "github:misterio77/nix-colors";
 
@@ -78,6 +82,7 @@
       ot-desktop = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
+          inputs.disko.nixosModules.disko
           ./hosts/ot-desktop
         ];
       };
