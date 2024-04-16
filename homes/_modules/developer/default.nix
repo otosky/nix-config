@@ -3,16 +3,15 @@
   pkgs,
   ...
 }: {
-  config = {
-    home = {
-      packages = with pkgs; [
-        coursier
-        delta
-        age
-        fd
-      ];
-    };
+  home = {
+    packages = with pkgs; [
+      coursier
+      delta
+      age
+      fd
+    ];
   };
+
   programs.opam.enable = true;
   programs.bat = {
     enable = true;
