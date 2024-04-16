@@ -14,7 +14,7 @@
       ./nix.nix
       # ./openssh.nix
       # ./optin-persistence.nix
-      # ./podman.nix
+      ./podman.nix
       # ./sops.nix
       # ./ssh-serve-store.nix
       # ./steam-hardware.nix
