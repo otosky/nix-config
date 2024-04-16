@@ -3,5 +3,6 @@
     ./fish
     ./mise
     ./zoxide
+    ./tmux
   ];
 }
