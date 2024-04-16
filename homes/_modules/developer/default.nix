@@ -7,12 +7,14 @@
     home = {
       packages = with pkgs; [
         coursier
-        opam
-        bat
         delta
         age
         fd
       ];
     };
+  };
+  programs.opam.enable = true;
+  programs.bat = {
+    enable = true;
   };
 }
