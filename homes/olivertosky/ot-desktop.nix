@@ -7,6 +7,8 @@
     ../_modules/base
     ../_modules/terminal
     ../_modules/desktop/hyprland.nix
+    ../_modules/kubernetes
+    ../_modules/developer
   ];
   # Disable impermanence
   home.persistence = lib.mkForce {};
