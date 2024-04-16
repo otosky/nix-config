@@ -34,16 +34,15 @@ in {
 
   programs.regreet = {
     enable = true;
-    # settings = {
-    #   GTK = {
-    #     icon_theme_name = "Papirus";
-    #     theme_name = gtkTheme.name;
-    #   };
-    #   background = {
-    #     path = wallpaper;
-    #     fit = "Cover";
-    #   };
-    # };
+    settings = {
+      GTK = {
+        # Whether to use the dark theme
+        application_prefer_dark_theme = true;
+        icon_theme_name = "Papirus";
+        font_name = "JetBrainsMono 16";
+        theme_name = "Juno";
+      };
+    };
   };
   services.greetd = {
     enable = true;
