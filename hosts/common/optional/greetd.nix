@@ -7,7 +7,6 @@
   homeCfgs = config.home-manager.users;
   homeSharePaths = lib.mapAttrsToList (_: v: "${v.home.path}/share") homeCfgs;
   vars = ''XDG_DATA_DIRS="$XDG_DATA_DIRS:${lib.concatStringsSep ":" homeSharePaths}" GTK_USE_PORTAL=0'';
-  wallpaper = "/home/olivertosky/.wallpapers/milad-fakurian-nY14Fs8pxT8-unsplash.jpg";
 
   sway-kiosk = command: "${lib.getExe pkgs.sway} --unsupported-gpu --config ${pkgs.writeText "kiosk.config" ''
     output * bg #000000 solid_color
@@ -36,14 +35,18 @@ in {
         application_prefer_dark_theme = true;
         icon_theme_name = "Papirus";
         font_name = "JetBrainsMono 16";
-        # theme_name = "Juno";
       };
       background = {
-        path = wallpaper;
+        path = "/etc/_wallpapers/milad-fakurian-nY14Fs8pxT8-unsplash.jpg";
         fit = "Cover";
       };
     };
   };
+
+  environment.etc = {
+    _wallpapers.source = ../../../homes/_modules/desktop/common/wallpapers;
+  };
+
   services.greetd = {
     enable = true;
     settings.default_session.command = sway-kiosk (lib.getExe config.programs.regreet.package);
