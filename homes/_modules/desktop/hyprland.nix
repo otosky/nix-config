@@ -6,6 +6,7 @@
 }: let
   hyprland = pkgs.inputs.hyprland.hyprland.override {wrapRuntimeDeps = false;};
   xdph = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland.override {inherit hyprland;};
+  wallpaper = "$HOME/.wallpapers/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
 in {
   imports = [
     ./common
@@ -42,6 +43,7 @@ in {
         gaps_out = 10;
         border_size = 1;
       };
+      exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
 
       decoration = {
         rounding = 10;
