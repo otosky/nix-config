@@ -7,11 +7,7 @@
   homeCfgs = config.home-manager.users;
   homeSharePaths = lib.mapAttrsToList (_: v: "${v.home.path}/share") homeCfgs;
   vars = ''XDG_DATA_DIRS="$XDG_DATA_DIRS:${lib.concatStringsSep ":" homeSharePaths}" GTK_USE_PORTAL=0'';
-
-  # misterioCfg = homeCfgs.misterio;
-  # gtkTheme = misterioCfg.gtk.theme;
-  # iconTheme = misterioCfg.gtk.iconTheme;
-  # wallpaper = misterioCfg.wallpaper;
+  wallpaper = "/home/olivertosky/.wallpapers/milad-fakurian-nY14Fs8pxT8-unsplash.jpg";
 
   sway-kiosk = command: "${lib.getExe pkgs.sway} --unsupported-gpu --config ${pkgs.writeText "kiosk.config" ''
     output * bg #000000 solid_color
@@ -40,7 +36,11 @@ in {
         application_prefer_dark_theme = true;
         icon_theme_name = "Papirus";
         font_name = "JetBrainsMono 16";
-        theme_name = "Juno";
+        # theme_name = "Juno";
+      };
+      background = {
+        path = wallpaper;
+        fit = "Cover";
       };
     };
   };
