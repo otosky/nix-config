@@ -7,6 +7,14 @@
   imports = [
     ./font.nix
   ];
+  home = {
+    file = {
+      ".wallpapers/" = {
+        recursive = true;
+        source = ./wallpapers;
+      };
+    };
+  };
   # Also sets org.freedesktop.appearance color-scheme
   # dconf.settings."org/gnome/desktop/interface".color-scheme =
   #   if config.colorscheme.variant == "dark"
