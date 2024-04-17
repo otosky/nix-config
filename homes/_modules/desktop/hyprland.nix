@@ -6,10 +6,6 @@
 }: let
   hyprland = pkgs.inputs.hyprland.hyprland.override {wrapRuntimeDeps = false;};
   xdph = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland.override {inherit hyprland;};
-  wallpaper = pkgs.fetchurl {
-    url = "https://github.com/otosky/dotfiles/blob/main/dot_config/sway/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
-    hash = "sha256-D6L8ZzBdaknUq7lGbT5OUZC88JHmQg8eojaXpeI1n5E=";
-  };
 in {
   imports = [
     ./common
@@ -89,7 +85,6 @@ in {
           "layersOut,1,3,easeinback,slide"
         ];
       };
-      exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
 
       bind =
         [
