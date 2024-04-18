@@ -25,6 +25,10 @@
         in
           lib.filter pred allPlugins;
       })
+
+      calibre
+      logseq
+      sonixd
     ];
   };
   services = {
