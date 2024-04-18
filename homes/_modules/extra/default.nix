@@ -13,5 +13,10 @@
       libreoffice
       zoom-us
     ];
+    services = {
+      syncthing = {
+        enable = true;
+      };
+    };
   };
 }
