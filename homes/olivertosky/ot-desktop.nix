@@ -9,6 +9,7 @@
     ../_modules/desktop/hyprland.nix
     ../_modules/kubernetes
     ../_modules/developer
+    ../_modules/extra/onepass.nix
   ];
   # Disable impermanence
   home.persistence = lib.mkForce {};
