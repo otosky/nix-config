@@ -4,10 +4,8 @@
   lib,
   ...
 }: {
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    # todo: make name dynamic
-    polkitPolicyOwners = ["olivertosky"];
-  };
+  home.packages = [
+    pkgs._1password
+    pkgs._1password-gui
+  ];
 }
