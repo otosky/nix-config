@@ -18,3 +18,4 @@ sudo nixos-rebuild switch --flake .#ot-desktop
 home-manager switch --flake .#olivertosky@ot-desktop
 ```
 
+
