@@ -5,9 +5,8 @@
 }: let
   ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in {
-  users.mutableUsers = true;
+  users.mutableUsers = false;
   users.users.olivertosky = {
-    password = "example";
     isNormalUser = true;
     shell = pkgs.fish;
     extraGroups =
@@ -26,14 +25,14 @@ in {
       ];
 
     # openssh.authorizedKeys.keys = [(builtins.readFile ../../../../home/misterio/ssh.pub)];
-    # hashedPasswordFile = config.sops.secrets.misterio-password.path;
+    hashedPasswordFile = config.sops.secrets.olivertosky-password.path;
     packages = [pkgs.home-manager];
   };
 
-  # sops.secrets.misterio-password = {
-  #   sopsFile = ../../secrets.yaml;
-  #   neededForUsers = true;
-  # };
+  sops.secrets.olivertosky-password = {
+    sopsFile = ../../secrets.yaml;
+    neededForUsers = true;
+  };
 
   home-manager.users.olivertosky = import ../../../../homes/olivertosky/${config.networking.hostName}.nix;
 
