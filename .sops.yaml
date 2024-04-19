@@ -1,8 +1,11 @@
 keys:
   - &user_olivertosky 005F0191AFEEAD6FF90F78DB71E926104222B60F
+  - &host_ot-desktop age15gr8r6f7elxkz88vads0yxnvwjst42g6x6ms5v282atgx8eqgukqnhpmyv
 
 creation_rules:
   - path_regex: hosts/common/secrets.ya?ml$
     key_groups:
     - pgp:
         - *user_olivertosky
+      age:
+        - *host_ot-desktop
