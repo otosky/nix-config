@@ -10,6 +10,7 @@
     [
       inputs.impermanence.nixosModules.home-manager.impermanence
 
+      ./git.nix
       ../editor
       ../shell
     ]
