@@ -10,22 +10,23 @@ in {
   programs.ssh = {
     enable = true;
     matchBlocks = {
-      trusted = {
-        host = "github.com" + (builtins.concatStringsSep " " hostnames);
+      net = {
+        host = builtins.concatStringsSep " " hostnames;
+        forwardAgent = true;
+        remoteForwards = [
+          {
+            bind.address = ''/%d/.gnupg-sockets/S.gpg-agent'';
+            host.address = ''/%d/.gnupg-sockets/S.gpg-agent.extra'';
+          }
+        ];
+      };
+      trusted = lib.hm.dag.entryBefore ["net"] {
+        host = "github.com";
         forwardAgent = true;
       };
     };
   };
-  services.ssh-agent.enable = true;
 
-  home.sessionVariables = lib.mkIf config.gtk.enable {
-    SSH_ASKPASS_REQUIRE = "prefer";
-    SSH_ASKPASS = "${pkgs.gnome.seahorse}/libexec/seahorse/ssh-askpass";
-  };
-
-  systemd.user.services.ssh-agent.Service.Environment = [
-    "SSH_ASKPASS=${config.home.sessionVariables.SSH_ASKPASS or ""}"
-  ];
   home.persistence = {
     "/persist/home/olivertosky".directories = [".ssh"];
   };
