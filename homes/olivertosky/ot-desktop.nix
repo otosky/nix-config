@@ -11,8 +11,7 @@
     ../_modules/developer
     ../_modules/extra
   ];
-  # Disable impermanence
-  home.persistence = lib.mkForce {};
+
   modules = {
     shell = {
       mise = {
