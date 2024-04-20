@@ -35,7 +35,7 @@
       };
       publicKeys = [
         {
-          source = ../../pgp.asc;
+          source = ../../olivertosky/pgp.asc;
           trust = 5;
         }
       ];
