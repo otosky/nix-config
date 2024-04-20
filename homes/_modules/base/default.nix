@@ -11,6 +11,7 @@
       inputs.impermanence.nixosModules.home-manager.impermanence
 
       ./git.nix
+      ./ssh.nix
       ../editor
       ../shell
     ]
