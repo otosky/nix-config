@@ -17,6 +17,7 @@ in {
     };
     extraConfig = {
       init.defaultBranch = "main";
+      user.useconfigonly = true;
 
       merge.conflictStyle = "zdiff3";
       commit.verbose = true;
