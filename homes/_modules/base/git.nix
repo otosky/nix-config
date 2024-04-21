@@ -11,12 +11,12 @@ in {
     package = pkgs.gitAndTools.gitFull;
     userName = "Oliver Tosky";
     userEmail = "olivertosky@gmail.com";
+    signing = {
+      key = "005F0191AFEEAD6FF90F78DB71E926104222B60F";
+      signByDefault = true;
+    };
     extraConfig = {
       init.defaultBranch = "main";
-
-      user.signing.key = "005F0191AFEEAD6FF90F78DB71E926104222B60F";
-      commit.gpgSign = true;
-      gpg.program = "${config.programs.gpg.package}/bin/gpg2";
 
       merge.conflictStyle = "zdiff3";
       commit.verbose = true;
