@@ -26,6 +26,7 @@
               git
               sops
               gnupg
+              just
             ];
 
             boot.swraid.enable = nixpkgs.lib.mkForce false;
