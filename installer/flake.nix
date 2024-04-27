@@ -36,8 +36,7 @@
               sops
               gnupg
               just
-
-              disko
+              disko.packages.${system}.disko
             ];
 
             boot.swraid.enable = nixpkgs.lib.mkForce false;
