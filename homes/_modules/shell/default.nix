@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   imports = [
     ./fish
     ./mise
@@ -6,4 +6,10 @@
     ./tmux
     ./zellij
   ];
+
+  home = {
+    packages = with pkgs; [
+      just
+    ];
+  };
 }
