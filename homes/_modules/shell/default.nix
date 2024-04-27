@@ -4,5 +4,6 @@
     ./mise
     ./zoxide
     ./tmux
+    ./zellij
   ];
 }
