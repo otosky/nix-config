@@ -27,9 +27,12 @@
               sops
               gnupg
               just
+
+              disko
             ];
 
             boot.swraid.enable = nixpkgs.lib.mkForce false;
+            disko.enableConfig = false;
           })
         ];
       };
