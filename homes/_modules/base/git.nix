@@ -12,7 +12,7 @@ in {
     userName = "Oliver Tosky";
     userEmail = "olivertosky@gmail.com";
     signing = {
-      key = "005F0191AFEEAD6FF90F78DB71E926104222B60F";
+      key = "656968EFE265ED715AF5F2BF1CDC6147DE47244F";
       signByDefault = true;
     };
     extraConfig = {
