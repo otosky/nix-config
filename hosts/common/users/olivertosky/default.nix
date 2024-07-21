@@ -24,7 +24,8 @@ in {
         "libvirtd"
       ];
 
-    # openssh.authorizedKeys.keys = [(builtins.readFile ../../../../home/misterio/ssh.pub)];
+    # TODO: add ssh public key
+    # openssh.authorizedKeys.keys = [(builtins.readFile ../../../../home/olivertosky/ssh.pub)];
     hashedPasswordFile = config.sops.secrets.olivertosky-password.path;
     packages = [pkgs.home-manager];
   };

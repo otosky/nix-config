@@ -5,12 +5,9 @@
   ...
 }: {
   nix = {
-    # TODO
     package = pkgs.nixVersions.nix_2_21;
 
     settings = {
-      # substituters = lib.mkAfter ["https://cache.m7.rs"];
-      # trusted-public-keys = ["cache.m7.rs:kszZ/NSwE/TjhOcPPQ16IuUiuRSisdiIwhKZCxguaWg="];
       trusted-users = [
         "root"
         "@wheel"

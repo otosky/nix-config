@@ -7,8 +7,6 @@
   imports =
     [
       inputs.home-manager.nixosModules.home-manager
-      # ./acme.nix
-      # ./auto-upgrade.nix
       ./fish.nix
       ./locale.nix
       ./nix.nix
@@ -16,12 +14,6 @@
       ./opt-in-persistence.nix
       ./podman.nix
       ./sops.nix
-      # ./ssh-serve-store.nix
-      # ./steam-hardware.nix
-      # ./systemd-initrd.nix
-      # ./tailscale.nix
-      # ./gamemode.nix
-      # ./nix-ld.nix
     ]
     ++ (builtins.attrValues outputs.nixosModules);
 

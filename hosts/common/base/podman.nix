@@ -6,7 +6,7 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
-  # impermanence
+  # TODO impermanence
   # environment.persistence = {
   #   "/persist".directories = ["/var/lib/containers"];
   # };
