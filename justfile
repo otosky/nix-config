@@ -7,3 +7,5 @@ disko-mount host:
 disko-init host:
     disko -m disko --flake .#{{host}}
 
+lint:
+    nix flake check
