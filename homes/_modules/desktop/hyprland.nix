@@ -91,6 +91,7 @@ in {
       bind =
         [
           "SUPER, F, exec, firefox"
+          "SUPER, B, exec, brave"
           ", Print, exec, grimblast copy area"
           "SUPER, return, exec, [float;tile] wezterm start --always-new-process"
           "SUPER, M, exec, wlogout --protocol layer-shell"
