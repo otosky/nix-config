@@ -7,7 +7,10 @@
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
-    sshKeys = ["FB82A5213C5D64641A2877AC327EFB9902F1EA73"];
+    sshKeys = [
+      "FB82A5213C5D64641A2877AC327EFB9902F1EA73"
+      ""
+    ];
     enableExtraSocket = true;
     pinentryPackage = pkgs.pinentry-tty;
   };
