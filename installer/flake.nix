@@ -1,7 +1,7 @@
 {
   description = "Minimal NixOS installation media";
   inputs = {
-    nixpkgs.url = "nixpkgs/23.11";
+    nixpkgs.url = "nixpkgs/24.05";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +30,7 @@
                 ];
               };
             };
+
             environment.systemPackages = with pkgs; [
               neovim
               git
@@ -37,7 +38,14 @@
               gnupg
               just
               disko.packages.${system}.disko
+              pinentry-tty
             ];
+
+            programs.gnupg.agent = {
+              enable = true;
+              enableSSHSupport = true;
+              enableExtraSocket = true;
+            };
 
             boot.swraid.enable = nixpkgs.lib.mkForce false;
             disko.enableConfig = false;
