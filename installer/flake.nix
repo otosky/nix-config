@@ -35,10 +35,10 @@
               neovim
               git
               sops
+              ssh-to-age
               gnupg
               just
               disko.packages.${system}.disko
-              pinentry-tty
             ];
 
             programs.gnupg.agent = {
