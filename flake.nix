@@ -27,7 +27,8 @@
       url = "github:nix-community/neovim-nightly-overlay";
     };
     hyprland = {
-      url = "github:hyprwm/hyprland";
+      # https://github.com/hyprwm/Hyprland/issues/5891#issuecomment-2094865630
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprwm-contrib = {
