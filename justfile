@@ -1,3 +1,7 @@
+# list all recipes
+default:
+  just --list
+
 build-iso:
     cd installer && nix build .#nixosConfigurations.customIso.config.system.build.isoImage
 
