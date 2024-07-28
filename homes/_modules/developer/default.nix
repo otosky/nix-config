@@ -9,6 +9,7 @@
       delta
       age
       fd
+      gnumake
     ];
   };
 
