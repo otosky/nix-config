@@ -7,6 +7,13 @@ Declarative configuration of my machines & dotfiles.
 
 ## Setup
 
+### Prerequisite
+
+```sh
+git clone https://github.com/otosky/nix-config
+cd nix-config
+```
+
 The following requires custom boot media built from manifests under
 `installer/`.
 
@@ -21,23 +28,36 @@ just build-iso
 ```sh
 echo -n "<luks-secret-key>" > /tmp/secret.key
 # set up the drive partitions
-sudo just disko-init <host>
+just disko-init <host>
 # mount the drives so that you can perform nix installation
-sudo just disko-mount <host>
+just disko-mount <host>
+# copy ssh keys from live-media to nixos fs
+cp /etc/ssh/ssh_host_ed25519* /persist/etc/ssh/
 ```
+
+> [!CAUTION]
+> I need to figure out a way to get sops-nix to recognize my gpg key
+> from a yubikey.  Right now this blocks a successful bootstrap install.
+> 
+> To get this working at the moment, I use ssh-to-age to convert the new
+> ed25519 key to an age key, update the host key in .sops.yaml, and then
+> re-encrypt the password file at ./hosts/common/secrets.yaml.
+> 
+> This is an admittedly clunky process.
 
 ### Init Install
 
 ```sh
-git clone https://github.com/otosky/nix-config
-cd nix-config
-sudo nixos-install --root /mnt --flake .#ot-desktop
+just install <host>
 ```
 
 ## Rebuilds
 ```sh
-sudo nixos-rebuild switch --flake .#ot-desktop
-home-manager switch --flake .#olivertosky@ot-desktop
+just rebuild <host>
 ```
 
+```sh
+# just home-manager modules
+home-manager switch --flake .#olivertosky@ot-desktop
+```
 
