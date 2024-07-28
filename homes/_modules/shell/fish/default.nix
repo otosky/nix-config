@@ -52,6 +52,7 @@
         set -gx MISE_ENV_FILE .env
         set -gx devbox_no_prompt true
         set -gx EDITOR nvim
+        set -gx pure_show_system_time true
       '';
 
       interactiveShellInit = ''
