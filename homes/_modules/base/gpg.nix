@@ -8,8 +8,7 @@
     enable = true;
     enableSshSupport = true;
     sshKeys = [
-      "FB82A5213C5D64641A2877AC327EFB9902F1EA73"
-      ""
+      "414D4FC4828AAC81412AED6E9CC9DFD09CA07570"
     ];
     enableExtraSocket = true;
     pinentryPackage = pkgs.pinentry-tty;
