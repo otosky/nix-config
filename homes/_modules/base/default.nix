@@ -23,6 +23,9 @@
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
+      permittedInsecurePackages = [
+        "electron-27.3.11"
+      ];
     };
   };
 

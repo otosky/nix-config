@@ -1,6 +1,6 @@
 # This file defines overlays
 {inputs, ...}: {
-  neovim-nightly = inputs.neovim-nightly-overlay.overlay;
+  neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
 
   # For every flake input, aliases 'pkgs.inputs.${flake}' to
   # 'inputs.${flake}.packages.${pkgs.system}' or

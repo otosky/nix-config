@@ -38,7 +38,7 @@
   };
 
   hardware = {
-    opengl.enable = true;
+    graphics.enable = true;
     opentabletdriver.enable = true;
   };
 
