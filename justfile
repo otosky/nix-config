@@ -1,15 +1,28 @@
 # list all recipes
 default:
-  just --list
+    just --list
 
+# validate nix flake
+lint:
+    nix flake check
+
+# build custom installer iso
 build-iso:
     cd installer && nix build .#nixosConfigurations.customIso.config.system.build.isoImage
 
-disko-mount host:
-    disko -m mount --flake .#{{host}}
-
+# set up drives & partitions
 disko-init host:
-    disko -m disko --flake .#{{host}}
+    sudo disko -m disko --flake .#{{host}}
 
-lint:
-    nix flake check
+# mount initialized drives to filesystem
+disko-mount host:
+    sudo disko -m mount --flake .#{{host}}
+
+# init nix install on a mounted filesystem
+install host:
+    sudo nixos-install --root /mnt --flake .#{{host}}
+
+# rebuild flake
+rebuild host:
+    sudo nixos-rebuild switch --flake .#{{host}}
+
