@@ -37,6 +37,22 @@ in {
       ];
     };
 
+    extraConfig = ''
+      # exit mode
+      # inspired by https://github.com/coffebar/dotfiles/blob/main/.config/hyprland/hyprland.conf
+      bind=SUPER,escape,exec,hyprctl dispatch submap logout; hyprctl notify -2 10000 0 '\ne - exit\n\nr - reboot\n\ns - suspend\n\nS - poweroff\n\nl - lock'
+      submap=logout
+      bindr=,E,exec,hyprctl dispatch exit
+      bindr=,S,exec,hyprctl dispatch submap reset && systemctl suspend
+      bindr=,R,exec,systemctl reboot
+      bindr=SHIFT,S,exec,systemctl poweroff -i
+      bindr=,L,exec,hyprctl dispatch submap reset && swaylock
+      bindr=,escape,submap,reset
+      bind=,Return,submap,reset
+      submap=reset
+
+    '';
+
     settings = {
       general = {
         gaps_in = 5;
@@ -44,6 +60,7 @@ in {
         border_size = 1;
       };
       # exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
+      exec-once = ["${pkgs.swaynotificationcenter}/bin/swaync"];
 
       decoration = {
         rounding = 10;
@@ -94,7 +111,6 @@ in {
           "SUPER, B, exec, brave"
           ", Print, exec, grimblast copy area"
           "SUPER, return, exec, [float;tile] wezterm start --always-new-process"
-          "SUPER, M, exec, wlogout --protocol layer-shell"
 
           "SUPER, 1, workspace, 1"
           "SUPER, 2, workspace, 2"
@@ -138,6 +154,15 @@ in {
               ",XF86Launch4,exec,${swaylock} -S --grace 2"
               "SUPER SHIFT,L,exec,${swaylock} -S --grace 2"
             ]
+        )
+        ++
+        # NOTIFICATIONS
+        (
+          let
+            swaync-client = lib.getExe' pkgs.swaynotificationcenter "swaync-client";
+          in [
+            "SUPER, N, exec, ${swaync-client} -t -sw"
+          ]
         );
     };
   };

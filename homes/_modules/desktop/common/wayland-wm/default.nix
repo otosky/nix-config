@@ -3,6 +3,7 @@
     ./swaylock.nix
     ./waybar.nix
     ./wofi.nix
+    ./swaync.nix
   ];
 
   xdg.mimeApps.enable = true;
