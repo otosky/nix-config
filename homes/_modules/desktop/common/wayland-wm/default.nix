@@ -21,6 +21,7 @@
     wl-mirror
     xdg-utils
     ydotool
+    libnotify
   ];
 
   home.sessionVariables = {
