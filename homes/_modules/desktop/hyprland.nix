@@ -40,7 +40,7 @@ in {
     extraConfig = ''
       # exit mode
       # inspired by https://github.com/coffebar/dotfiles/blob/main/.config/hyprland/hyprland.conf
-      bind=SUPER,escape,exec,hyprctl dispatch submap logout; notify-send -a Hyprland -t 3000 'Exit Mode:\ne - exit\n\nr - reboot\n\ns - suspend\n\nS - poweroff\n\nl - lock'
+      bind=SUPER,escape,exec,hyprctl dispatch submap logout; notify-send -a Hyprland -t 3000 'Exit Mode:' '\ne - exit\n\nr - reboot\n\ns - suspend\n\nS - poweroff\n\nl - lock'
       submap=logout
       bindr=,E,exec,hyprctl dispatch exit
       bindr=,S,exec,hyprctl dispatch submap reset && systemctl suspend
