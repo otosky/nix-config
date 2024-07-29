@@ -11,7 +11,7 @@
       "414D4FC4828AAC81412AED6E9CC9DFD09CA07570"
     ];
     enableExtraSocket = true;
-    pinentryPackage = pkgs.pinentry-tty;
+    pinentryPackage = pkgs.pinentry-curses;
   };
 
   programs = let
