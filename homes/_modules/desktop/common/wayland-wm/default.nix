@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./swaylock.nix
+    ./swayidle.nix
     ./waybar.nix
     ./wofi.nix
     ./swaync.nix

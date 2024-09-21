@@ -30,6 +30,7 @@ in {
     package = hyprland;
     systemd = {
       enable = true;
+      variables = ["--all"];
       # Same as default, but stop graphical-session too
       extraCommands = lib.mkBefore [
         "systemctl --user stop graphical-session.target"
