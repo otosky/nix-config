@@ -7,6 +7,7 @@
   swaylock = "${config.programs.swaylock.package}/bin/swaylock";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
   lockTime = 10 * 60; # TODO: configurable desktop (10 min)/laptop (4 min)
+  img = "/etc/_wallpapers/milad-fakurian-nY14Fs8pxT8-unsplash.jpg";
 in {
   services.swayidle = {
     enable = true;
@@ -19,7 +20,7 @@ in {
       [
         {
           timeout = lockTime;
-          command = "${swaylock} -defF";
+          command = "${swaylock} -defF -i ${img}";
         }
         {
           timeout = lockTime + 120;
@@ -30,7 +31,7 @@ in {
     events = [
       {
         event = "lock";
-        command = "${swaylock} -defF";
+        command = "${swaylock} -defF -i ${img}";
       }
       {
         event = "after-resume";
@@ -38,7 +39,7 @@ in {
       }
       {
         event = "before-sleep";
-        command = "${swaylock} -defF";
+        command = "${swaylock} -defF -i ${img}";
       }
     ];
   };
