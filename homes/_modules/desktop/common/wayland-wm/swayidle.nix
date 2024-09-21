@@ -12,9 +12,6 @@ in {
   services.swayidle = {
     enable = true;
     systemdTarget = "graphical-session.target";
-    extraArgs = [
-      "-d"
-    ];
     timeouts =
       # Lock screen
       [
@@ -26,6 +23,10 @@ in {
           timeout = lockTime + 120;
           command = "${hyprctl} dispatch dpms off";
           resumeCommand = "${hyprctl} dispatch dpms on";
+        }
+        {
+          timeout = 600;
+          command = "systemctl suspend";
         }
       ];
     events = [
