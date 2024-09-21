@@ -29,6 +29,10 @@
       "aarch64-linux"
       "i686-linux"
     ];
+    initrd = {
+      supportedFilesystems = ["nfs"];
+      kernelModules = ["nfs"];
+    };
   };
 
   programs = {
