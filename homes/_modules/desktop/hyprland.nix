@@ -7,6 +7,7 @@
   hyprland = pkgs.inputs.hyprland.hyprland.override {wrapRuntimeDeps = false;};
   xdph = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland.override {inherit hyprland;};
   wallpaper = "/etc/_wallpapers/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
+  gifWallpaper = "/home/olivertosky/Downloads/midnight.gif";
 in {
   imports = [
     ./common
@@ -20,6 +21,7 @@ in {
 
   home.packages = with pkgs; [
     inputs.hyprwm-contrib.grimblast
+    swww
     # hyprslurp
     # hyprpicker
     firefox
@@ -59,8 +61,12 @@ in {
         gaps_out = 10;
         border_size = 1;
       };
-      exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
-      exec-once = ["${pkgs.swaynotificationcenter}/bin/swaync"];
+      exec-once = [
+        "${pkgs.swaynotificationcenter}/bin/swaync"
+        "${pkgs.swww}/bin/swww-daemon"
+      ];
+      # exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
+      exec = ["${pkgs.swww}/bin/swww img ${gifWallpaper}"];
 
       decoration = {
         rounding = 10;
