@@ -1,5 +1,8 @@
 local wezterm = require("wezterm")
 return {
+  keys = {
+    { key = 'V', mods = 'CTRL', action = wezterm.action.PasteFrom 'Clipboard' },
+  },
 
 	-- Mousing bindings
 	mouse_bindings = {
