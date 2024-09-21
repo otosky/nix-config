@@ -1,4 +1,6 @@
 return {
+  -- don't need mason since I'm using nix
+  { "williamboman/mason.nvim", enabled = false },
   {
     "neovim/nvim-lspconfig",
     init = function()

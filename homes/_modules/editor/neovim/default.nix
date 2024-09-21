@@ -31,10 +31,14 @@
 
       # lsps
       nil
+      lua-language-server
+      pyright
+      gopls
 
       # formatters
       alejandra
       shfmt
+      stylua
     ];
   };
 }
