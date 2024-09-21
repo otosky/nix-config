@@ -6,7 +6,7 @@
 }: let
   swaylock = "${config.programs.swaylock.package}/bin/swaylock";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-  lockTime = 1 * 60; # TODO: configurable desktop (10 min)/laptop (4 min)
+  lockTime = 10 * 60; # TODO: configurable desktop (10 min)/laptop (4 min)
 in {
   services.swayidle = {
     enable = true;
@@ -22,7 +22,7 @@ in {
           command = "${swaylock} -defF";
         }
         {
-          timeout = 180;
+          timeout = lockTime + 120;
           command = "${hyprctl} dispatch dpms off";
           resumeCommand = "${hyprctl} dispatch dpms on";
         }
