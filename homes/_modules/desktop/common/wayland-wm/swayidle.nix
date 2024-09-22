@@ -20,13 +20,13 @@ in {
           command = "${swaylock} -defF -i ${img}";
         }
         {
-          timeout = lockTime + 120;
+          timeout = 180;
           command = "${hyprctl} dispatch dpms off";
           resumeCommand = "${hyprctl} dispatch dpms on";
         }
         {
-          timeout = 600;
-          command = "systemctl suspend";
+          timeout = 3600;
+          command = "${pkgs.systemd}/bin/systemctl suspend";
         }
       ];
     events = [
