@@ -6,6 +6,9 @@ default:
 lint:
     nix flake check
 
+setup:
+    curl -sSL https://keybase.io/otosky/pgp_keys.asc | gpg --import
+
 # build custom installer iso
 build-iso:
     cd installer && nix build .#nixosConfigurations.customIso.config.system.build.isoImage
