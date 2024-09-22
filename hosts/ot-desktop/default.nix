@@ -20,7 +20,10 @@
 
   networking = {
     hostName = "ot-desktop";
-    useDHCP = true;
+    useDHCP = false;
+    networkmanager = {
+      enable = true;
+    };
   };
 
   boot = {
