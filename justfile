@@ -1,3 +1,5 @@
+ssh_dir := "/mnt/persist/etc/ssh"
+
 # list all recipes
 default:
     just --list
@@ -8,6 +10,12 @@ lint:
 
 setup:
     curl -sSL https://keybase.io/otosky/pgp_keys.asc | gpg --import
+
+init-keys:
+    sudo mkdir -p {{ ssh_dir }}
+    cp /etc/ssh/ssh_host_ed25519* {{ ssh_dir }}
+    nix-shell --run "sudo ssh-to-age -private-key -i {{ ssh_dir }}/ssh_host_ed25519_key -o {{ ssh_dir }}/age_key.txt"
+    nix-shell --run "sudo ssh-to-age -i {{ ssh_dir }}/ssh_host_ed25519_key.pub -o {{ ssh_dir }}/pub.txt"
 
 # build custom installer iso
 build-iso:

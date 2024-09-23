@@ -31,8 +31,10 @@ echo -n "<luks-secret-key>" > /tmp/secret.key
 just disko-init <host>
 # mount the drives so that you can perform nix installation
 just disko-mount <host>
+# import gpg key
+just setup
 # copy ssh keys from live-media to nixos fs
-cp /etc/ssh/ssh_host_ed25519* /persist/etc/ssh/
+just init-keys
 ```
 
 > [!CAUTION]
