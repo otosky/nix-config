@@ -29,7 +29,13 @@
       calibre
       logseq
       sonixd
+
+      slack
+      discord
+      appimage-run
     ];
+
+    sessionVariables.NIXOS_OZONE_WL = "1";
   };
   services = {
     syncthing = {
