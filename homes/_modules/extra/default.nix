@@ -6,8 +6,6 @@
 }: {
   home = {
     packages = with pkgs; [
-      _1password
-      _1password-gui
       brave
       libreoffice
       zoom-us
@@ -37,6 +35,7 @@
 
     sessionVariables.NIXOS_OZONE_WL = "1";
   };
+
   services = {
     syncthing = {
       enable = true;
