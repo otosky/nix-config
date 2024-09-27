@@ -37,7 +37,7 @@ abbr kn 'kubectl ns'
 abbr kgn 'kubectl get nodes'
 abbr kgp 'kubectl get pods'
 abbr kl 'kubectl logs'
-abbr ku k9s --kubeconfig $KUBECONFIG
+abbr ku k9s
 
 # think "rc-edit":
 abbr rce 'chezmoi edit'
