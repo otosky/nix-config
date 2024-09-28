@@ -37,6 +37,7 @@
       makemkv
       whipper
 
+      # needs to be on stable until https://github.com/logseq/logseq/issues/10851 is fixed
       stable.logseq
     ];
 
