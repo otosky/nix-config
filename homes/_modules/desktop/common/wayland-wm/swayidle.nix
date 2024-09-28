@@ -20,7 +20,7 @@ in {
           command = "${swaylock} -defF -i ${img}";
         }
         {
-          timeout = 180;
+          timeout = lockTime + 180;
           command = "${hyprctl} dispatch dpms off";
           resumeCommand = "${hyprctl} dispatch dpms on";
         }
