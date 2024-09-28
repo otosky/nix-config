@@ -27,7 +27,7 @@
       calibre
       logseq
       sonixd
-      # jellyfin-media-player
+      jellyfin-media-player
       vlc
 
       slack
@@ -35,7 +35,7 @@
 
       caligula
       makemkv
-      # whipper
+      whipper
     ];
 
     sessionVariables.NIXOS_OZONE_WL = "1";
