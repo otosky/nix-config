@@ -1,5 +1,7 @@
 local wezterm = require("wezterm")
 return {
+	-- atm wayland seems to break copy/paste
+	enable_wayland = false,
 	keys = {
 		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") },
 		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("PrimarySelection") },
@@ -61,4 +63,5 @@ return {
 	disable_default_key_bindings = false,
 	window_background_opacity = 0.9,
 	check_for_updates = false,
+	front_end = "WebGpu",
 }

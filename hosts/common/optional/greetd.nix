@@ -29,12 +29,17 @@ in {
       GTK = {
         # Whether to use the dark theme
         application_prefer_dark_theme = true;
-        icon_theme_name = "Papirus";
-        font_name = "JetBrainsMono 16";
       };
       background = {
         path = "/etc/_wallpapers/milad-fakurian-nY14Fs8pxT8-unsplash.jpg";
         fit = "Cover";
+      };
+      font = {
+        name = "JetBrainsMono";
+        size = 16;
+      };
+      iconTheme = {
+        name = "Papirus";
       };
     };
   };
