@@ -27,10 +27,15 @@
       calibre
       logseq
       sonixd
+      # jellyfin-media-player
+      vlc
 
       slack
       discord
-      appimage-run
+
+      caligula
+      makemkv
+      # whipper
     ];
 
     sessionVariables.NIXOS_OZONE_WL = "1";
