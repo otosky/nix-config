@@ -44,7 +44,10 @@
     QT_PLUGIN_PATH = ["/lib/qt-6/plugins"];
   };
 
-  environment.systemPackages = with pkgs; [nfs-utils];
+  environment.systemPackages = with pkgs; [
+    nfs-utils
+    nautilus
+  ];
 
   hardware.enableRedistributableFirmware = true;
   networking.domain = "toskbot.xyz";
