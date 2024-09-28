@@ -13,8 +13,9 @@
     ];
   };
 
-  programs.opam.enable = true;
-  programs.bat = {
-    enable = true;
+  programs = {
+    opam.enable = true;
+    bat.enable = true;
+    gh.enable = true;
   };
 }
