@@ -8,7 +8,6 @@
       coursier
       delta
       age
-      fd
       gnumake
     ];
   };
