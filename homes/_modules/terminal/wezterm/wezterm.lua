@@ -64,4 +64,5 @@ return {
 	window_background_opacity = 0.9,
 	check_for_updates = false,
 	front_end = "WebGpu",
+	mux_enable_ssh_agent = false,
 }
