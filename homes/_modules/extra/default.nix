@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   lib,
   ...
 }: {
@@ -25,7 +26,6 @@
       })
 
       calibre
-      logseq
       sonixd
       jellyfin-media-player
       vlc
@@ -36,6 +36,8 @@
       caligula
       makemkv
       whipper
+
+      stable.logseq
     ];
 
     sessionVariables.NIXOS_OZONE_WL = "1";
