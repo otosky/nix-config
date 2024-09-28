@@ -63,6 +63,6 @@ return {
 	disable_default_key_bindings = false,
 	window_background_opacity = 0.9,
 	check_for_updates = false,
-	front_end = "WebGpu",
+	-- front_end = "WebGpu",
 	mux_enable_ssh_agent = false,
 }
