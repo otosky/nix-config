@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+in {
   nix = {
-    package = pkgs.nixVersions.nix_2_21;
+    package = pkgs.nixVersions.nix_2_22;
 
     settings = {
       trusted-users = [
@@ -16,7 +18,7 @@
       experimental-features = [
         "nix-command"
         "flakes"
-        "repl-flake"
+        "ca-derivations"
       ];
       warn-dirty = false;
       system-features = [
@@ -26,6 +28,7 @@
       ];
       flake-registry = ""; # Disable global flake registry
     };
+
     gc = {
       automatic = true;
       dates = "weekly";
@@ -33,12 +36,7 @@
       options = "--delete-older-than +3";
     };
 
-    # Add each flake input as a registry
-    # To make nix3 commands consistent with the flake
-    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-
-    # Add nixpkgs input to NIX_PATH
-    # This lets nix2 commands still use <nixpkgs>
-    nixPath = ["nixpkgs=${inputs.nixpkgs.outPath}"];
+    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 }
