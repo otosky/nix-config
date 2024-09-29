@@ -11,6 +11,7 @@
       gnumake
       jetbrains.idea-ultimate
       jetbrains.pycharm-professional
+      go
     ];
   };
 
