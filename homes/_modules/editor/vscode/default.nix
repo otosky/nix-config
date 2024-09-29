@@ -14,14 +14,12 @@
         ms-vscode-remote.remote-containers
         innoverio.vscode-dbt-power-user
       ];
-    settings = ''
-    {
-    "python.testing.pytestArgs": [
+    userSettings = {
+      "python.testing.pytestArgs" = [
         "tests"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
-    }
-    ''
+      ];
+      "python.testing.unittestEnabled" = false;
+      "python.testing.pytestEnabled" = true;
+    };
   };
 }
