@@ -18,8 +18,11 @@
     ]
     ++ (builtins.attrValues outputs.nixosModules);
 
-  home-manager.extraSpecialArgs = {
-    inherit inputs outputs;
+  home-manager = {
+    backupFileExtension = "hm-backup";
+    extraSpecialArgs = {
+      inherit inputs outputs;
+    };
   };
 
   nixpkgs = {
