@@ -27,6 +27,7 @@ in {
         {
           timeout = 3600;
           command = "${pkgs.systemd}/bin/systemctl suspend";
+          resumeCommand = "${hyprctl} dispatch dpms on";
         }
       ];
     events = [
