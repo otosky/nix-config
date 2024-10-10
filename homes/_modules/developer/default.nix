@@ -12,6 +12,10 @@
       jetbrains.idea-ultimate
       jetbrains.pycharm-professional
       go
+      uv
+      pdm
+      duckdb
+      pgcli
     ];
   };
 

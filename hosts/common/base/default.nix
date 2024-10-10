@@ -40,6 +40,15 @@
       enable = true;
       binfmt = true;
     };
+
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        stdenv.cc.cc
+        zlib
+        zstd
+      ];
+    };
   };
 
   # Fix for qt6 plugins

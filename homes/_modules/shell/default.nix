@@ -12,6 +12,8 @@
       just
       eza
       fd
+      jq
+      yq
     ];
   };
 }
