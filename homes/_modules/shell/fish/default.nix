@@ -56,6 +56,7 @@
       '';
 
       interactiveShellInit = ''
+        set LD_LIBRARY_PATH $NIX_LD_LIBRARY_PATH
         fish_add_path $HOME/.local/bin
         fish_add_path $HOME/bin/
 
