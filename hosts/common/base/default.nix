@@ -47,6 +47,11 @@
         stdenv.cc.cc
         zlib
         zstd
+
+        libpulseaudio
+        libvdpau
+        libjack2
+        alsa-lib
       ];
     };
   };
