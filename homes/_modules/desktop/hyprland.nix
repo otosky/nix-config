@@ -145,7 +145,7 @@ in {
             wofi = lib.getExe config.programs.wofi.package;
           in
             lib.optionals config.programs.wofi.enable [
-              "SUPER,d,exec,${wofi} -S drun --allow-images"
+              "SUPER,SPACE,exec,${wofi} -S drun --allow-images"
               "SUPER,x,exec,${wofi} -S run --allow-images"
             ]
         )
