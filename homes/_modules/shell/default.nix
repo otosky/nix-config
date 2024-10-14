@@ -14,6 +14,8 @@
       fd
       jq
       yq
+      btop
+      nvtopPackages.full
     ];
   };
 }
