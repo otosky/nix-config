@@ -153,12 +153,10 @@ in {
         # LOCKSCREEN
         (
           let
-            swaylock = lib.getExe config.programs.swaylock.package;
+            hyprlock = lib.getExe config.programs.hyprlock.package;
           in
-            lib.optionals config.programs.swaylock.enable [
-              ",XF86Launch5,exec,${swaylock} -S --grace 2"
-              ",XF86Launch4,exec,${swaylock} -S --grace 2"
-              "SUPER SHIFT,L,exec,${swaylock} -S --grace 2"
+            lib.optionals config.programs.hyprlock.enable [
+              "SUPER SHIFT,L,exec,${hyprlock}"
             ]
         )
         ++
