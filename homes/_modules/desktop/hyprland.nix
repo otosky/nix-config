@@ -53,6 +53,9 @@ in {
       bindr=,escape,submap,reset
       bind=,Return,submap,reset
       submap=reset
+
+      bindm = ALT, mouse:272, movewindow
+      bindm = ALT, mouse:273, resizewindow
     '';
 
     settings = {
