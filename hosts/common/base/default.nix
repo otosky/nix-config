@@ -66,6 +66,8 @@
     nautilus
   ];
 
+  services.envfs.enable = true;
+
   hardware.enableRedistributableFirmware = true;
   networking.domain = "toskbot.xyz";
 
