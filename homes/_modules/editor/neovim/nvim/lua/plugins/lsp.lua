@@ -20,6 +20,7 @@ return {
         ["sh"] = { "shfmt" },
         ["elixir"] = { "mix" },
         ["nix"] = { "alejandra" },
+        ["haskell"] = { "ormolu" },
       },
     },
   },
