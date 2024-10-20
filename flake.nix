@@ -106,6 +106,13 @@
           ./hosts/ot-desktop
         ];
       };
+      ot-framework = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          inputs.disko.nixosModules.disko
+          ./hosts/ot-framework
+        ];
+      };
     };
 
     # Standalone home-manager configuration entrypoint
@@ -116,6 +123,13 @@
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
           ./homes/olivertosky/ot-desktop.nix
+        ];
+      };
+      "olivertosky@ot-framework" = home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgsFor.x86_64-linux;
+        extraSpecialArgs = {inherit inputs outputs;};
+        modules = [
+          ./homes/olivertosky/ot-framework.nix
         ];
       };
     };

@@ -21,7 +21,7 @@
 
   networking = {
     hostName = "ot-framework";
-    useDHCP = true;
+    useDHCP = false;
     networkmanager = {
       enable = true;
     };
