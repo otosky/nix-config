@@ -1,7 +1,9 @@
 local wezterm = require("wezterm")
+local hostname = wezterm.hostname()
+
 return {
-	-- atm wayland seems to break copy/paste
-	enable_wayland = false,
+	-- atm wayland seems to break copy/paste, but is necessary for non-aliasing on framework
+	enable_wayland = (hostname == "ot-framework" and true or false),
 	keys = {
 		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") },
 		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("PrimarySelection") },
