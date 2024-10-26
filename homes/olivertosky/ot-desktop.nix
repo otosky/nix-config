@@ -10,6 +10,7 @@
     ../_modules/kubernetes
     ../_modules/developer
     ../_modules/extra
+    ../_modules/daw
   ];
 
   modules = {
