@@ -24,6 +24,15 @@ in {
         host = "github.com";
         forwardAgent = true;
       };
+      brocade = lib.hm.dag.entryAfter ["net"] {
+        host = "brocade.toskbot.xyz";
+        extraOptions = {
+          KexAlgorithms = "+diffie-hellman-group1-sha1";
+          PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          HostKeyAlgorithms = "+ssh-rsa";
+          IdentityAgent = "~/.1password/agent.sock";
+        };
+      };
     };
   };
 
