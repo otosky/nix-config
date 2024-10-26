@@ -1,0 +1,62 @@
+" GENERIC VIMRC
+syntax on
+
+" remaps
+let mapleader = " "
+inoremap <C-L> <Esc>
+nnoremap <C-n> :nohl <CR>
+nnoremap Y y$
+nnoremap L $
+nnoremap H ^
+nnoremap dH d^
+tnoremap <Esc> <C-\><C-n>
+
+" move text
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+inoremap <C-j> <esc>:m .+1<CR>==
+inoremap <C-k> <esc>:m .-2<CR>==
+nnoremap <leader>k :m .-2<CR>==
+nnoremap <leader>j :m .+1<CR>==
+
+xnoremap <leader>p "_dP
+
+" editor settings
+set number
+set relativenumber
+set autoindent
+set expandtab
+set tabstop=2 shiftwidth=2
+set smarttab
+set backspace=indent,eol,start
+set hlsearch
+set incsearch
+set colorcolumn=100
+set nowrap
+set noswapfile
+set laststatus=2
+set scrolloff=8
+
+" IDEAVIMRC
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'tommcdo/vim-exchange'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'easymotion/vim-easymotion'
+
+set surround
+set commentary
+set vim-indent-object
+set exchange
+set multiple-cursors
+set easymotion
+
+" use `:actionlist` to see all available actions
+nnoremap <Leader>lr :action RenameElement<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gr :action FindUsages<CR>
+nnoremap <C-o> <Action>(Back)<CR>
+nnoremap <C-i> <Action>(Forward)<CR>
+
+" Helpful reference: https://towardsdatascience.com/the-essential-ideavim-remaps-291d4cd3971b
