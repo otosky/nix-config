@@ -49,7 +49,7 @@ in {
       bindr=,S,exec,hyprctl dispatch submap reset && systemctl suspend
       bindr=,R,exec,systemctl reboot
       bindr=SHIFT,S,exec,systemctl poweroff -i
-      bindr=,L,exec,hyprctl dispatch submap reset && swaylock
+      bindr=,L,exec,hyprctl dispatch submap reset && hyprlock
       bindr=,escape,submap,reset
       bind=,Return,submap,reset
       submap=reset
