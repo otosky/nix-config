@@ -82,7 +82,16 @@ return {
       })
     end,
   },
-
+  {
+    "amitds1997/remote-nvim.nvim",
+    version = "*", -- Pin to GitHub releases
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- For standard functions
+      "MunifTanjim/nui.nvim", -- To build the plugin UI
+      "nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
+    },
+    config = true,
+  },
   -- languague specifics
   {
     "cfmeyers/dbt.nvim",
@@ -94,4 +103,32 @@ return {
   },
   { "mhanberg/elixir.nvim", dependencies = { "neovim/nvim-lspconfig", "nvim-lua/plenary.nvim" } },
   { "ionide/Ionide-vim" },
+  {
+    "PedramNavid/dbtpal",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    ft = {
+      "sql",
+      "md",
+      "yaml",
+    },
+    keys = {
+      { "<leader>drf", "<cmd>DbtRun<cr>" },
+      { "<leader>drp", "<cmd>DbtRunAll<cr>" },
+      { "<leader>dtf", "<cmd>DbtTest<cr>" },
+      { "<leader>dm", "<cmd>lua require('dbtpal.telescope').dbt_picker()<cr>" },
+    },
+    config = function()
+      require("dbtpal").setup({
+        path_to_dbt = "dbt",
+        path_to_dbt_project = "",
+        path_to_dbt_profiles_dir = vim.fn.expand("~/.dbt"),
+        extended_path_search = true,
+        protect_compiled_files = true,
+      })
+      require("telescope").load_extension("dbtpal")
+    end,
+  },
 }
