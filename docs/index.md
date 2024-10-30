@@ -1,4 +1,3 @@
 # Nix-Config
 
-Lacinato Kale
 

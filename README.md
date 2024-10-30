@@ -2,9 +2,6 @@
 
 Declarative configuration of my machines & dotfiles.
 
-> [!WARNING]
-> Still a work-in-progress!
-
 ## Setup
 
 ### Prerequisite
