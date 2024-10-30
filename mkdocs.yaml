@@ -44,6 +44,6 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Post-Install:
-      - post-install/common.md
-      - post-install/laptop_specific.md
+      - post_install/common.md
+      - post_install/laptop_specific.md
 
