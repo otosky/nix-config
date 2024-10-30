@@ -71,6 +71,10 @@ in {
       # exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
       exec = ["${pkgs.swww}/bin/swww img ${gifWallpaper}"];
 
+      monitor = [
+        "desc:BOE 0x095F,preferred,auto,1"
+      ];
+
       decoration = {
         rounding = 10;
         blur = {

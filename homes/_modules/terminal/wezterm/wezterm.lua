@@ -1,5 +1,12 @@
 local wezterm = require("wezterm")
 local hostname = wezterm.hostname()
+local font_size
+
+if hostname == "ot-framework" then
+	font_size = 18
+else
+	font_size = 12
+end
 
 return {
 	-- atm wayland seems to break copy/paste, but is necessary for non-aliasing on framework
@@ -36,7 +43,7 @@ return {
 	hyperlink_rules = wezterm.default_hyperlink_rules(),
 	hide_tab_bar_if_only_one_tab = true,
 	color_scheme = "Tokyo Night Storm",
-	font_size = 12,
+	font_size = font_size,
 	launch_menu = {
 		{
 			args = { "top" },

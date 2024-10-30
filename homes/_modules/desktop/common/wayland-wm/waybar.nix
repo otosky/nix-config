@@ -4,6 +4,7 @@
   lib,
   pkgs,
   inputs,
+  osConfig,
   ...
 }: let
   # Dependencies
@@ -25,6 +26,11 @@
   playerctld = "${pkgs.playerctl}/bin/playerctld";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   wofi = "${pkgs.wofi}/bin/wofi";
+
+  fontSize =
+    if osConfig.networking.hostName == "ot-framework"
+    then "18"
+    else "12";
 
   # Function to simplify making waybar outputs
   jsonOutput = name: {
@@ -124,7 +130,7 @@ in {
       * {
         border: none;
         font-family: JetBrains Mono, "Font Awesome 5 Free";
-        font-size: 12px;
+        font-size: ${fontSize}px;
         font-weight: bold;
         min-height: 0;
       }
