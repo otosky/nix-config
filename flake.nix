@@ -132,6 +132,13 @@
           ./homes/olivertosky/ot-framework.nix
         ];
       };
+      "oliver.tosky@DMAC24-T1699DT90K" = home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgsFor.aarch64-darwin;
+        extraSpecialArgs = {inherit inputs outputs;};
+        modules = [
+          ./homes/olivertosky/ot-work-macbook.nix
+        ];
+      };
     };
   };
 }
