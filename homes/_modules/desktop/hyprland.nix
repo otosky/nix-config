@@ -64,6 +64,7 @@ in {
         gaps_out = 10;
         border_size = 1;
       };
+
       exec-once = [
         "${pkgs.swaynotificationcenter}/bin/swaync"
         "${pkgs.swww}/bin/swww-daemon"
@@ -74,6 +75,12 @@ in {
       monitor = [
         "desc:BOE 0x095F,preferred,auto,1"
       ];
+
+      input = {
+        touchpad = {
+          tap-to-click = false;
+        };
+      };
 
       decoration = {
         rounding = 10;
