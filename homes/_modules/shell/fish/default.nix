@@ -32,11 +32,6 @@
           name = "fzf";
           src = pkgs.fishPlugins.fzf-fish.src;
         }
-        # {
-        #   name = "tide";
-        #   src = pkgs.fishPlugins.tide.src;
-        #   # tide configure --auto --style=Lean --prompt_colors='True color' --show_time='24-hour format' --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Sparse --icons='Few icons' --transient=Yes
-        # }
         {
           name = "pure";
           src = pkgs.fishPlugins.pure.src;
@@ -53,6 +48,7 @@
         set -gx devbox_no_prompt true
         set -gx EDITOR nvim
         set -gx pure_show_system_time true
+        set -gx pure_enable_nixdevshell true
       '';
 
       interactiveShellInit = ''
