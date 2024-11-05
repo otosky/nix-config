@@ -22,8 +22,27 @@
   networking = {
     hostName = "ot-framework";
     useDHCP = false;
+
     networkmanager = {
       enable = true;
+    };
+
+    wg-quick.interfaces = {
+      wg0 = {
+        address = ["10.66.5.2/32"];
+        dns = ["10.67.0.3"];
+        generatePrivateKeyFile = true;
+        privateKeyFile = "/persist/etc/wireguard/privatekey";
+
+        peers = [
+          {
+            publicKey = "NgjelohY50W5asSSmaw4lL3A3RtJQNVXX3JU2hmU0xA=";
+            allowedIPs = ["0.0.0.0/0"];
+            endpoint = "ot-eh.casa:51820";
+            persistentKeepalive = 15;
+          }
+        ];
+      };
     };
   };
 
