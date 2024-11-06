@@ -29,6 +29,7 @@
 
     wg-quick.interfaces = {
       wg0 = {
+        autostart = false;
         address = ["10.66.5.2/32"];
         dns = ["10.67.0.3"];
         generatePrivateKeyFile = true;
