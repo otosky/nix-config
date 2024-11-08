@@ -19,6 +19,8 @@
     ../common/optional/1password.nix
   ];
 
+  powerManagement.enable = true;
+
   networking = {
     hostName = "ot-framework";
     useDHCP = false;
