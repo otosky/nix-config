@@ -91,9 +91,6 @@ in {
           new_optimizations = true;
           xray = false;
         };
-        drop_shadow = true;
-        shadow_range = 4;
-        shadow_render_power = 3;
       };
 
       animations = {
