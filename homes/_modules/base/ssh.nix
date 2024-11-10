@@ -33,8 +33,8 @@ in {
           IdentityAgent = "~/.1password/agent.sock";
         };
       };
-      kube = lib.hm.dag.entryAfter ["brocade"] {
-        host = "kube*.toskbot.xyz";
+      internal = lib.hm.dag.entryAfter ["brocade"] {
+        host = "*.toskbot.xyz";
         extraOptions = {
           IdentityAgent = "~/.1password/agent.sock";
         };
