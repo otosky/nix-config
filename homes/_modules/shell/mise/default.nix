@@ -28,6 +28,7 @@ in {
           {
             experimental = true;
             python_venv_auto_create = true;
+            legacy_version_file = false;
           }
           // cfg.settings
         );
