@@ -3,8 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    flake-utils.url = "github:numtide/flake-utils";
 
     # Home manager
     home-manager = {
@@ -56,6 +56,7 @@
     nixpkgs,
     home-manager,
     nixpkgs-stable,
+    flake-utils,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -138,5 +139,26 @@
         ];
       };
     };
+
+    devShells = forAllSystems (system: let
+      pkgs = pkgsFor.${system};
+    in {
+      default = with pkgs;
+        mkShell {
+          buildInputs = with pkgs; [
+            gcc
+            python311
+            python311Packages.ruff
+            git
+            neovim
+
+            sops
+            ssh-to-age
+            gnupg
+            age
+            uv
+          ];
+        };
+    });
   };
 }
