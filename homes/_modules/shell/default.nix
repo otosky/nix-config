@@ -16,6 +16,7 @@
       yq
       btop
       nvtopPackages.full
+      dig
     ];
   };
 
