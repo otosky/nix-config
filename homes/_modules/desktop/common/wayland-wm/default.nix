@@ -22,6 +22,7 @@
       xdg-utils
       ydotool
       libnotify
+      brightnessctl
     ];
     sessionVariables = {
       MOZ_ENABLE_WAYLAND = 1;

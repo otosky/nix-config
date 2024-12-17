@@ -8,6 +8,7 @@
   xdph = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland.override {inherit hyprland;};
   wallpaper = "/etc/_wallpapers/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
   gifWallpaper = "/home/olivertosky/Downloads/midnight.gif";
+  pactl = lib.getExe' pkgs.pulseaudio "pactl";
 in {
   imports = [
     ./common
@@ -148,6 +149,13 @@ in {
           "SUPER SHIFT, 7, movetoworkspace, 7"
           "SUPER SHIFT, 8, movetoworkspace, 8"
           "SUPER SHIFT, 9, movetoworkspace, 9"
+
+          ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+          ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+
+          ", XF86AudioRaiseVolume, exec, ${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
+          ", XF86AudioLowerVolume, exec, ${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
+          ", XF86AudioMute, exec, ${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
         ]
         ++
         # LAUNCHER
