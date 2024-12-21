@@ -17,6 +17,7 @@
     ../common/optional/pipewire.nix
     ../common/optional/quietboot.nix
     ../common/optional/1password.nix
+    ../common/optional/bluetooth.nix
   ];
 
   networking = {
