@@ -14,6 +14,7 @@
       pdm
       duckdb
       pgcli
+      changie
     ];
   };
 
