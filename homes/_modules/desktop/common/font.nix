@@ -2,12 +2,16 @@
   fontProfiles = {
     enable = true;
     monospace = {
-      family = "JetBrains Mono Nerd Font";
+      family = "JetBrainsMono Nerd Font";
       package = pkgs.nerd-fonts.jetbrains-mono;
     };
     regular = {
-      family = "JetBrains Mono";
+      family = "JetBrainsMono";
       package = pkgs.jetbrains-mono;
     };
   };
+
+  home.packages = with pkgs; [
+    font-awesome
+  ];
 }

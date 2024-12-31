@@ -19,7 +19,7 @@
         text = "Open Sesame";
         color = "rgba(222, 222, 222, 1.0)";
         font_size = 50;
-        font_family = "Jetbrains Mono";
+        font_family = "JetbrainsMono";
         position = "0, 70";
         halign = "center";
         valign = "center";

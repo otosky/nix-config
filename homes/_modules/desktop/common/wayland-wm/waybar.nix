@@ -97,19 +97,19 @@ in {
         };
 
         cpu = {
-          format = "  {usage}%";
+          format = " {usage}%";
         };
         memory = {
-          format = "  {}%";
+          format = " {}%";
           interval = 5;
         };
 
         pulseaudio = {
           format = "{icon}  {volume}%";
-          format-muted = "   0%";
+          format-muted = "  0%";
           format-icons = {
-            headphone = "󰋋";
-            headset = "󰋎";
+            headphone = "";
+            headset = "";
             portable = "";
             default = [
               ""
@@ -129,7 +129,7 @@ in {
     style = ''
       * {
         border: none;
-        font-family: JetBrains Mono, "Font Awesome 5 Free";
+        font-family: "JetBrainsMono", "Font Awesome 6 Free";
         font-size: ${fontSize}px;
         font-weight: bold;
         min-height: 0;
