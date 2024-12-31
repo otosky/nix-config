@@ -44,6 +44,11 @@ return {
 	hide_tab_bar_if_only_one_tab = true,
 	color_scheme = "Tokyo Night Storm",
 	font_size = font_size,
+	font = wezterm.font_with_fallback({
+		"JetBrainsMono",
+		"Font Awesome 6 Free",
+		"Font Awesome 6 Free Solid",
+	}),
 	launch_menu = {
 		{
 			args = { "top" },
