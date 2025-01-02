@@ -12,6 +12,7 @@
       packages = with pkgs; [
         fluxcd
         kubectl
+        kubernetes-helm
       ];
     };
   };
