@@ -17,6 +17,7 @@
       btop
       nvtopPackages.full
       dig
+      parallel
     ];
   };
 
