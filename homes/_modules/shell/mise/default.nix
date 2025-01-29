@@ -24,7 +24,7 @@ in {
 
     xdg.configFile = {
       "mise/config.toml" = {
-        source = tomlFormat.generate "mise-settings" (
+        source = tomlFormat.generate "settings" (
           {
             experimental = true;
             python_venv_auto_create = true;
