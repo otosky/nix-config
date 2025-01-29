@@ -23,12 +23,12 @@ in {
     ];
 
     xdg.configFile = {
-      "mise/settings.toml" = {
+      "mise/config.toml" = {
         source = tomlFormat.generate "mise-settings" (
           {
             experimental = true;
             python_venv_auto_create = true;
-            legacy_version_file = false;
+            idiomatic_version_file = false;
           }
           // cfg.settings
         );
