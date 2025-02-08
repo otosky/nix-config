@@ -86,4 +86,6 @@
       value = "1048576";
     }
   ];
+
+  boot.kernelModules = ["sg"];
 }
