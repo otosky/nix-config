@@ -48,6 +48,8 @@
 
       arduino-ide
       arduino-cli
+
+      code-cursor
     ];
 
     sessionVariables.NIXOS_OZONE_WL = "1";
