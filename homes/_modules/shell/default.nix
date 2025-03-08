@@ -18,6 +18,7 @@
       nvtopPackages.full
       dig
       parallel
+      xh
     ];
   };
 
