@@ -18,17 +18,6 @@
     ]
     ++ (builtins.attrValues outputs.homeManagerModules);
 
-  nixpkgs = {
-    overlays = builtins.attrValues outputs.overlays;
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = _: true;
-      permittedInsecurePackages = [
-        "electron-27.3.11"
-      ];
-    };
-  };
-
   nix = {
     package = lib.mkDefault pkgs.nix;
     settings = {

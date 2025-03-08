@@ -20,6 +20,7 @@
 
   home-manager = {
     backupFileExtension = "hm-backup";
+    useGlobalPkgs = true;
     extraSpecialArgs = {
       inherit inputs outputs;
     };

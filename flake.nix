@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
     flake-utils.url = "github:numtide/flake-utils";
+    systems.url = "github:nix-systems/default-linux";
 
     # Home manager
     home-manager = {
@@ -56,21 +57,13 @@
     home-manager,
     nixpkgs-stable,
     flake-utils,
+    systems,
     ...
   } @ inputs: let
     inherit (self) outputs;
-    # Supported systems for your flake packages, shell, etc.
-    systems = [
-      "aarch64-linux"
-      "i686-linux"
-      "x86_64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
-    ];
-    # This is a function that generates an attribute by calling a function you
-    # pass to it, with each system as an argument
-    forAllSystems = nixpkgs.lib.genAttrs systems;
-    pkgsFor = nixpkgs.lib.genAttrs systems (
+    lib = nixpkgs.lib // home-manager.lib;
+    forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
+    pkgsFor = lib.genAttrs (import systems) (
       system:
         import nixpkgs {
           inherit system;
@@ -80,13 +73,13 @@
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
-    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+    packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    formatter = forEachSystem (pkgs: pkgs.alejandra);
 
     # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
+    overlays = import ./overlays {inherit inputs outputs;};
     # Reusable nixos modules you might want to export
     # These are usually stuff you would upstream into nixpkgs
     nixosModules = import ./modules/nixos;
@@ -97,14 +90,14 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      ot-desktop = nixpkgs.lib.nixosSystem {
+      ot-desktop = lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
           inputs.disko.nixosModules.disko
           ./hosts/ot-desktop
         ];
       };
-      ot-framework = nixpkgs.lib.nixosSystem {
+      ot-framework = lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
           inputs.disko.nixosModules.disko
@@ -116,21 +109,21 @@
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
-      "olivertosky@ot-desktop" = home-manager.lib.homeManagerConfiguration {
+      "olivertosky@ot-desktop" = lib.homeManagerConfiguration {
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
           ./homes/olivertosky/ot-desktop.nix
         ];
       };
-      "olivertosky@ot-framework" = home-manager.lib.homeManagerConfiguration {
+      "olivertosky@ot-framework" = lib.homeManagerConfiguration {
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
           ./homes/olivertosky/ot-framework.nix
         ];
       };
-      "oliver.tosky@DMAC24-T1699DT90K" = home-manager.lib.homeManagerConfiguration {
+      "oliver.tosky@DMAC24-T1699DT90K" = lib.homeManagerConfiguration {
         pkgs = pkgsFor.aarch64-darwin;
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
@@ -139,9 +132,7 @@
       };
     };
 
-    devShells = forAllSystems (system: let
-      pkgs = pkgsFor.${system};
-    in {
+    devShells = forEachSystem (pkgs: {
       default = with pkgs;
         mkShell {
           buildInputs = with pkgs; [

@@ -4,8 +4,6 @@
   pkgs,
   ...
 }: let
-  hyprland = pkgs.inputs.hyprland.hyprland.override {wrapRuntimeDeps = false;};
-  xdph = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland.override {inherit hyprland;};
   wallpaper = "/etc/_wallpapers/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
   gifWallpaper = "/home/olivertosky/Downloads/midnight.gif";
   pactl = lib.getExe' pkgs.pulseaudio "pactl";
@@ -16,24 +14,25 @@ in {
   ];
 
   xdg.portal = {
-    extraPortals = [xdph];
-    configPackages = [hyprland];
+    extraPortals = [pkgs.xdg-desktop-portal-wlr];
+    config.hyprland = {
+      default = ["wlr" "gtk"];
+    };
   };
 
   home.packages = with pkgs; [
-    inputs.hyprwm-contrib.grimblast
+    grimblast
     swww
-    # hyprslurp
-    # hyprpicker
-    firefox
+    hyprpicker
+    hyprland-qtutils
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = hyprland;
+    package = pkgs.hyprland.override {wrapRuntimeDeps = false;};
     systemd = {
       enable = true;
-      variables = ["--all"];
+
       # Same as default, but stop graphical-session too
       extraCommands = lib.mkBefore [
         "systemctl --user stop graphical-session.target"
