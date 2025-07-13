@@ -6,5 +6,5 @@
     ];
   };
   location.provider = "geoclue2";
-  time.timeZone = lib.mkDefault "America/New_York";
+  time.timeZone = lib.mkDefault "America/Los_Angeles";
 }
