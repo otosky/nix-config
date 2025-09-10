@@ -24,3 +24,4 @@ _JAVA_AWT_WM_NONPARENTING=1
 
 In `brave://flags`, set "Preferred Ozone Platform" to "Wayland".
 
+
