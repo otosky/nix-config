@@ -65,6 +65,7 @@
   environment.systemPackages = with pkgs; [
     nfs-utils
     nautilus
+    usbutils
   ];
 
   services.envfs.enable = true;
