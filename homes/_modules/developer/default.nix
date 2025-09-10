@@ -15,6 +15,8 @@
       duckdb
       pgcli
       changie
+
+      claude-code
     ];
   };
 
