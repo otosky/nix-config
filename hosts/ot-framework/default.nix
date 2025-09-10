@@ -73,6 +73,21 @@
           inherit (pkgs) system;
         })
       .fwupd;
+
+    udev.packages = [
+      pkgs.qmk-udev-rules
+    ];
+
+    udev.extraRules = ''
+      # RP2040 Bootloader mode
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0003", MODE:="0666"
+      KERNEL=="ttyACM*", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0003", MODE:="0666"
+      # RP2040 USB Serial
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000a", MODE:="0666"
+      KERNEL=="ttyACM*", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000a", MODE:="0666"
+
+      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
+    '';
   };
 
   environment.systemPackages = with pkgs; [
