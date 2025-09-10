@@ -18,7 +18,8 @@
 
       calibre
       sonixd
-      jellyfin-media-player
+      # has an outdated qtwebengine dependency
+      #jellyfin-media-player
       vlc
 
       slack

@@ -7,7 +7,7 @@
   flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
 in {
   nix = {
-    package = pkgs.nixVersions.nix_2_24;
+    package = pkgs.nixVersions.nix_2_28;
 
     settings = {
       trusted-users = [

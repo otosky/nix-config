@@ -45,7 +45,7 @@ return {
 	color_scheme = "Tokyo Night Storm",
 	font_size = font_size,
 	font = wezterm.font_with_fallback({
-		"JetBrainsMono",
+		"JetBrains Mono",
 		"Font Awesome 6 Free",
 		"Font Awesome 6 Free Solid",
 	}),
