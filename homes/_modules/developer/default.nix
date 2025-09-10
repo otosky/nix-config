@@ -17,6 +17,9 @@
       changie
 
       claude-code
+      gemini-cli
+
+      cocogitto
     ];
   };
 
