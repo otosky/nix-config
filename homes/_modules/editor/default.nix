@@ -3,5 +3,6 @@
     ./neovim
     ./vscode
     ./jetbrains
+    ./zed
   ];
 }
