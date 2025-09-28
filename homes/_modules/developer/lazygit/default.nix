@@ -92,14 +92,12 @@
                 key = "Breaking";
                 options = [
                   {
-                    value = "false";
+                    value = false;
                     name = "No";
-                    description = "Not a breaking change";
                   }
                   {
-                    value = "true";
+                    value = true;
                     name = "Yes";
-                    description = "This is a breaking change";
                   }
                 ];
               }
