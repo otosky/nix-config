@@ -20,6 +20,9 @@
       gemini-cli
 
       cocogitto
+
+      erlang_28
+      beamMinimal28Packages.elixir
     ];
   };
 
