@@ -22,6 +22,13 @@
       packages = with pkgs; [
         fzf
       ];
+      sessionPath = [
+        "$HOME/.local/bin"
+        "$HOME/bin/"
+        "$HOME/.krew/bin"
+        "$HOME/.local/share/coursier/bin"
+        "$HOME/.ghcup/bin"
+      ];
     };
 
     programs.fish = {
@@ -49,17 +56,7 @@
         set -gx EDITOR nvim
         set -gx pure_show_system_time true
         set -gx pure_enable_nixdevshell true
-      '';
-
-      interactiveShellInit = ''
         set LD_LIBRARY_PATH $NIX_LD_LIBRARY_PATH
-        fish_add_path $HOME/.local/bin
-        fish_add_path $HOME/bin/
-
-        fish_add_path $HOME/.krew/bin
-        fish_add_path $HOME/.local/share/coursier/bin
-        fish_add_path $HOME/.ghcup/bin
-        fish_add_path $HOME/.docker/bin # for macOS
       '';
     };
   };
