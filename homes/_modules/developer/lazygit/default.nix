@@ -92,11 +92,11 @@
                 key = "Breaking";
                 options = [
                   {
-                    value = false;
+                    value = "";
                     name = "No";
                   }
                   {
-                    value = true;
+                    value = "true";
                     name = "Yes";
                   }
                 ];
