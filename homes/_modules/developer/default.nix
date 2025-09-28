@@ -3,6 +3,10 @@
   pkgs,
   ...
 }: {
+  imports = [
+    ./lazygit
+  ];
+
   home = {
     packages = with pkgs; [
       coursier
