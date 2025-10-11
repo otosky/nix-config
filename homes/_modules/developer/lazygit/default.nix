@@ -12,7 +12,7 @@
             key = "<c-x>";
             context = "files";
             description = "Generic cocogitto commit";
-            command = "cog commit {{.Form.Type}} {{.Form.Message | quote}}{{if .Form.Scope}} {{.Form.Scope | quote}}{{end}}{{.Form.Breaking}}";
+            command = "cog commit {{.Form.Type}} {{.Form.Message | quote}}{{if .Form.Scope}} {{.Form.Scope | quote}}{{end}} {{.Form.Breaking}}";
             prompts = [
               {
                 type = "menu";
