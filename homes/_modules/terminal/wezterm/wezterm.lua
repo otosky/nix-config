@@ -14,6 +14,7 @@ return {
 	keys = {
 		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") },
 		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("PrimarySelection") },
+		{ key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
 	},
 
 	-- Mousing bindings
