@@ -13,6 +13,7 @@ abbr gaa 'git add --all'
 abbr gba 'git branch -a'
 abbr gbd 'git branch -d'
 abbr gbD 'git branch -D'
+abbr gbx git_cleanup_branches
 abbr gbl 'git blame -b -w'
 abbr gc 'git commit -v'
 abbr gco 'git checkout'
