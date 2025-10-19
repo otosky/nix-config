@@ -14,6 +14,7 @@ in {
         "wheel"
         "video"
         "audio"
+        "dialout"
       ]
       ++ ifTheyExist [
         "network"
