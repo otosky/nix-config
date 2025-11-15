@@ -1,13 +1,4 @@
 return {
-  {
-    "kylechui/nvim-surround",
-    version = "*",
-    event = "VeryLazy",
-    config = function()
-      require("nvim-surround").setup()
-    end,
-  },
-
   { "mechatroner/rainbow_csv" },
   { "ap/vim-css-color" },
 
@@ -73,16 +64,6 @@ return {
   },
 
   {
-    "kylechui/nvim-surround",
-    version = "*", -- Use for stability; omit to use `main` branch for the latest features
-    event = "VeryLazy",
-    config = function()
-      require("nvim-surround").setup({
-        -- Configuration here, or leave empty to use defaults
-      })
-    end,
-  },
-  {
     "amitds1997/remote-nvim.nvim",
     version = "*", -- Pin to GitHub releases
     dependencies = {
@@ -101,7 +82,6 @@ return {
       "rcarriga/nvim-notify",
     },
   },
-  { "mhanberg/elixir.nvim", dependencies = { "neovim/nvim-lspconfig", "nvim-lua/plenary.nvim" } },
   { "ionide/Ionide-vim" },
   {
     "PedramNavid/dbtpal",
