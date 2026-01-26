@@ -8,8 +8,6 @@
 }: {
   imports =
     [
-      inputs.impermanence.nixosModules.home-manager.impermanence
-
       ./gpg.nix
       ./git.nix
       ./ssh.nix
@@ -47,7 +45,7 @@
     };
 
     persistence = {
-      "/persist/home/olivertosky" = {
+      "/persist" = {
         directories = [
           "Documents"
           "Downloads"
@@ -56,7 +54,6 @@
           ".local/bin"
           ".local/share/nix" # trusted settings and repl history
         ];
-        allowOther = true;
       };
     };
   };

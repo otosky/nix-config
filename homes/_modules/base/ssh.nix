@@ -9,6 +9,7 @@
 in {
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     matchBlocks = {
       net = {
         host = builtins.concatStringsSep " " hostnames;
@@ -43,6 +44,6 @@ in {
   };
 
   home.persistence = {
-    "/persist/home/olivertosky".directories = [".ssh"];
+    "/persist".directories = [".ssh"];
   };
 }
