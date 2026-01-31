@@ -9,7 +9,7 @@
       extensions = let
         # https://github.com/nix-community/nix-vscode-extensions/issues/99#issuecomment-2703326753
         pkgs-ext = import inputs.nixpkgs {
-          inherit (pkgs) system;
+          system = pkgs.stdenv.hostPlatform.system;
           config.allowUnfree = true;
           overlays = [inputs.nix-vscode-extensions.overlays.default];
         };

@@ -4,11 +4,12 @@
   inputs,
   lib,
   ...
-}: {
+}: let
+in {
   home = {
     packages = with pkgs; [
-      jetbrains.idea-ultimate
-      jetbrains.pycharm-professional
+      jetbrains.idea
+      jetbrains.pycharm
 
       brave
       libreoffice

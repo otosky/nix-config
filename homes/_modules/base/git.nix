@@ -9,15 +9,16 @@ in {
   programs.git = {
     enable = true;
     package = pkgs.gitFull;
-    userName = "Oliver Tosky";
-    userEmail = "olivertosky@gmail.com";
     signing = {
       key = "656968EFE265ED715AF5F2BF1CDC6147DE47244F";
       signByDefault = true;
     };
-    extraConfig = {
-      init.defaultBranch = "main";
+    settings = {
+      user.name = "Oliver Tosky";
+      user.email = "olivertosky@gmail.com";
       user.useconfigonly = true;
+
+      init.defaultBranch = "main";
 
       merge.conflictStyle = "zdiff3";
       commit.verbose = true;
