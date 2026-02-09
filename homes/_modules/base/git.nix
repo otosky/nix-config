@@ -30,6 +30,9 @@ in {
       push.autoSetupRemote = true;
       # Reuse merge conflict fixes when rebasing
       rerere.enabled = true;
+
+      git-town.github-connector = "gh";
+      git-town.main-branch = "main";
     };
     lfs.enable = true;
     ignores = [
