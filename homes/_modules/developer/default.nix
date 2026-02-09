@@ -24,6 +24,7 @@
       gemini-cli
 
       cocogitto
+      git-town
 
       erlang_28
       beamMinimal28Packages.elixir
