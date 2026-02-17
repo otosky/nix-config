@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, config, ...}: {
   imports = [
     ./hyprlock.nix
     ./hypridle.nix
@@ -13,6 +13,7 @@
       gtk3 # For gtk-launch
       imv
       mimeo
+      networkmanager_dmenu
       pulseaudio
       slurp
       waypipe
@@ -34,6 +35,13 @@
   xdg = {
     mimeApps.enable = true;
     portal.extraPortals = [pkgs.xdg-desktop-portal-wlr];
+    configFile."networkmanager-dmenu/config.ini".text = ''
+      [dmenu]
+      dmenu_command = ${lib.getExe config.programs.wofi.package} -d -i
+
+      [editor]
+      gui_if_available = false
+    '';
     desktopEntries = {
       sleek = {
         name = "sleek";

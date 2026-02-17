@@ -185,7 +185,12 @@ in {
           in [
             "SUPER, N, exec, ${swaync-client} -t -sw"
           ]
-        );
+        )
+        ++
+        # NETWORK
+        [
+          "SUPER, W, exec, ${lib.getExe pkgs.networkmanager_dmenu}"
+        ];
     };
   };
 }
