@@ -40,8 +40,11 @@
     };
   };
 
+  environment.systemPackages = with pkgs; [
+    android-tools
+  ];
+
   programs = {
-    adb.enable = true;
     dconf.enable = true;
     kdeconnect.enable = true;
   };
