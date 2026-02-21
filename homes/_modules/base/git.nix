@@ -33,6 +33,7 @@ in {
 
       git-town.github-connector = "gh";
       git-town.main-branch = "main";
+      git-town.sync-feature-strategy = "rebase";
     };
     lfs.enable = true;
     ignores = [
