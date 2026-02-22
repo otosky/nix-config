@@ -6,6 +6,7 @@ default:
 
 # validate nix flake
 lint:
+    nix fmt -- --check .
     nix flake check
 
 setup:
