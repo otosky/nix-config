@@ -129,7 +129,7 @@ in {
     style = ''
       * {
         border: none;
-        font-family: "JetBrainsMono", "Font Awesome 6 Free";
+        font-family: "JetBrains Mono", "Font Awesome 7 Free Solid";
         font-size: ${fontSize}px;
         font-weight: bold;
         min-height: 0;
