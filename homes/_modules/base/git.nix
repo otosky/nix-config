@@ -35,6 +35,26 @@ in {
       git-town.main-branch = "main";
       git-town.sync-feature-strategy = "rebase";
     };
+    aliases = {
+      # git-town basics
+      hack = "town hack";
+      propose = "town propose";
+      sync = "town sync";
+
+      # git-town stacking commands
+      append = "town append";
+      prepend = "town prepend";
+      detach = "town detach";
+      swap = "town swap";
+      set-parent = "town set-parent";
+      branch = "town branch";
+      switch = "town switch";
+      down = "town down";
+      up = "town up";
+      walk = "town walk";
+      ship = "town ship";
+      compress = "town compress";
+    };
     lfs.enable = true;
     ignores = [
       ".direnv"
