@@ -11,6 +11,7 @@ end
 return {
 	-- atm wayland seems to break copy/paste, but is necessary for non-aliasing on framework
 	enable_wayland = (hostname == "ot-framework" and true or false),
+	enable_kitty_keyboard = true,
 	keys = {
 		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") },
 		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("PrimarySelection") },
