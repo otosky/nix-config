@@ -5,7 +5,9 @@
 }: {
   imports = [
     ../_modules/base
+    ../_modules/linux
     ../_modules/terminal
+    ../_modules/terminal/foot
     ../_modules/desktop/hyprland.nix
     ../_modules/kubernetes
     ../_modules/developer

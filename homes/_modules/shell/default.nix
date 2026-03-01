@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ./fish
     ./mise
@@ -8,18 +12,21 @@
   ];
 
   home = {
-    packages = with pkgs; [
-      just
-      eza
-      fd
-      jq
-      yq
-      btop
-      nvtopPackages.full
-      dig
-      parallel
-      xh
-    ];
+    packages = with pkgs;
+      [
+        just
+        eza
+        fd
+        jq
+        yq
+        btop
+        dig
+        parallel
+        xh
+      ]
+      ++ lib.optionals pkgs.stdenv.isLinux [
+        nvtopPackages.full
+      ];
   };
 
   programs = {

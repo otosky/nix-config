@@ -9,6 +9,8 @@
     ../_modules/developer
   ];
 
+  home.username = "oliver.tosky";
+
   modules = {
     shell = {
       mise = {

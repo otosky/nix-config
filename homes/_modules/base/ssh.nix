@@ -1,8 +1,6 @@
 {
   outputs,
   lib,
-  config,
-  pkgs,
   ...
 }: let
   hostnames = builtins.attrNames outputs.nixosConfigurations;
@@ -41,9 +39,5 @@ in {
         };
       };
     };
-  };
-
-  home.persistence = {
-    "/persist".directories = [".ssh"];
   };
 }
