@@ -28,8 +28,6 @@
     };
   };
 
-  systemd.user.startServices = "sd-switch";
-
   programs = {
     home-manager.enable = true;
     git.enable = true;
@@ -37,24 +35,15 @@
 
   home = {
     username = lib.mkDefault "olivertosky";
-    homeDirectory = lib.mkDefault "/home/${config.home.username}";
+    homeDirectory = lib.mkDefault (
+      if pkgs.stdenv.isDarwin
+      then "/Users/${config.home.username}"
+      else "/home/${config.home.username}"
+    );
     stateVersion = lib.mkDefault "23.11";
     sessionPath = ["$HOME/.local/bin"];
     sessionVariables = {
       FLAKE = "$HOME/Documents/NixConfig";
-    };
-
-    persistence = {
-      "/persist" = {
-        directories = [
-          "Documents"
-          "Downloads"
-          "Pictures"
-          "Videos"
-          ".local/bin"
-          ".local/share/nix" # trusted settings and repl history
-        ];
-      };
     };
   };
 }

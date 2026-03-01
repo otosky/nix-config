@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   imports = [
     ./fish
     ./mise
@@ -15,10 +15,11 @@
       jq
       yq
       btop
-      nvtopPackages.full
       dig
       parallel
       xh
+    ] ++ lib.optionals pkgs.stdenv.isLinux [
+      nvtopPackages.full
     ];
   };
 
