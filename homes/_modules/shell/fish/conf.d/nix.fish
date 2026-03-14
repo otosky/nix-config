@@ -1,4 +1,4 @@
 # added by Nix installer
-if test -e /home/olivertosky/.nix-profile/etc/profile.d/nix.fish
-    . /home/olivertosky/.nix-profile/etc/profile.d/nix.fish
+if test -e /nix/var/nix/profiles/default/etc/profile.d/nix.fish
+    . /nix/var/nix/profiles/default/etc/profile.d/nix.fish
 end

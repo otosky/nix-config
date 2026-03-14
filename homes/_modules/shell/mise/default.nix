@@ -40,7 +40,6 @@ in {
       '';
 
       fish.shellInit = lib.mkAfter ''
-        ${lib.getExe cfg.package} hook-env | source
         ${lib.getExe cfg.package} activate fish | source
       '';
     };
