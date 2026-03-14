@@ -22,6 +22,7 @@
 
       claude-code
       gemini-cli
+      opencode
 
       cocogitto
       git-town
