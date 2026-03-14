@@ -94,7 +94,6 @@
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
-          inputs.impermanence.homeManagerModules.impermanence
           ./homes/olivertosky/ot-desktop.nix
         ];
       };
@@ -102,7 +101,6 @@
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
-          inputs.impermanence.homeManagerModules.impermanence
           ./homes/olivertosky/ot-framework.nix
         ];
       };
