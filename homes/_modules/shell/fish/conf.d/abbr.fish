@@ -47,10 +47,10 @@ abbr rcy 'chezmoi apply'
 abbr rccd 'cd ~/.local/share/chezmoi' # I don't like how chezmoi cd spawns a subshell
 abbr rca 'chezmoi add'
 
-abbr tffmt 'terraform fmt'
-abbr tffmta 'terraform fmt -recursive'
-abbr tfp 'terraform plan'
-abbr tfv 'terraform validate'
+abbr tffmt 'tofu fmt'
+abbr tffmta 'tofu fmt -recursive'
+abbr tfp 'tofu plan'
+abbr tfv 'tofu validate'
 
 abbr fluxrs 'flux reconcile source git home-ops-kubernetes'
 abbr fluxrk 'flux reconcile ks'

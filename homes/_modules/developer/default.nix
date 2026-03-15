@@ -29,6 +29,11 @@
 
       erlang_28
       beamMinimal28Packages.elixir
+
+      awscli2
+      google-cloud-sdk
+      azure-cli
+      opentofu
     ];
   };
 
