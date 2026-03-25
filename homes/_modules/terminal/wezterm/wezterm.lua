@@ -4,6 +4,8 @@ local font_size
 
 if hostname == "ot-framework" then
 	font_size = 18
+elseif wezterm.target_triple:find("darwin") then
+	font_size = 16
 else
 	font_size = 12
 end
@@ -80,5 +82,5 @@ return {
 	window_background_opacity = 0.9,
 	check_for_updates = false,
 	-- front_end = "WebGpu",
-	mux_enable_ssh_agent = false,
+	mux_enable_ssh_agent = wezterm.target_triple:find("darwin") == nil and false or nil,
 }

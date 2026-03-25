@@ -16,6 +16,8 @@
     signing.key = lib.mkForce "200F44D11B87E2B868AAEAD2EF3F73D616D190A0";
   };
 
+  services.gpg-agent.pinentry.package = lib.mkForce pkgs.pinentry_mac;
+
   modules = {
     shell = {
       mise = {

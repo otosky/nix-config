@@ -27,8 +27,8 @@ in {
         source = tomlFormat.generate "settings" {
           settings = {
             experimental = true;
-            python_venv_auto_create = true;
             idiomatic_version_file = false;
+            lockfile = true;
           };
         };
       };
