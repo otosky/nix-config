@@ -31,6 +31,24 @@ Workflow:
 2. Merge via the web UI (GitHub, GitLab, etc.)
 3. `git town sync` - detects merged branches, cleans up
 
+### Creating PRs (git town propose)
+
+When running non-interactively, ALWAYS provide `--title` and `--body`:
+
+```
+git town propose --title "feat: description" --body "PR body here"
+```
+
+Common flags:
+
+| Flag              | Description                              |
+| ----------------- | ---------------------------------------- |
+| `-t, --title`     | PR title (required non-interactively)    |
+| `-b, --body`      | PR body (required non-interactively)     |
+| `-f, --body-file` | Read body from file (use "-" for stdin)  |
+| `-s, --stack`     | Propose entire stack                     |
+| `--dry-run`       | Print what would happen without doing it |
+
 ---
 
 ## Stacked Changes (Dependent PRs)
