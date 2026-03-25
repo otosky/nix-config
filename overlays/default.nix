@@ -26,9 +26,10 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    # example = prev.example.overrideAttrs (oldAttrs: rec {
-    # ...
-    # });
+    mise =
+      (import inputs.nixpkgs-mise {
+        system = final.stdenv.hostPlatform.system;
+      }).mise;
   };
   # access stable packages as pkgs.stable
   stable-packages = final: _prev: {
