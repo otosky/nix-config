@@ -10,7 +10,7 @@ branch and sync operations.
 
 ### Detection
 
-Before using git-town commands, verify it's installed by running `git town version`.
+Before using git-town commands, verify it's installed by running `git town --version`.
 If not installed, fall back to raw git commands.
 
 ### Command Mapping
