@@ -22,7 +22,7 @@ in {
 
   home.packages = with pkgs; [
     grimblast
-    swww
+    awww
     hyprpicker
     hyprland-qtutils
   ];
@@ -67,10 +67,10 @@ in {
 
       exec-once = [
         "${pkgs.swaynotificationcenter}/bin/swaync"
-        "${pkgs.swww}/bin/swww-daemon"
+        "${pkgs.awww}/bin/awww-daemon"
       ];
       # exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
-      exec = ["${pkgs.swww}/bin/swww img ${gifWallpaper}"];
+      exec = ["${pkgs.awww}/bin/awww img ${gifWallpaper}"];
 
       monitor = [
         "desc:BOE 0x095F,preferred,auto,1"
