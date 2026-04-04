@@ -34,6 +34,8 @@ in {
       git-town.github-connector = "gh";
       git-town.main-branch = "main";
       git-town.sync-feature-strategy = "rebase";
+      git-town.proposal-breadcrumb = "stacks";
+      git-town.sync-tags = "false";
       alias = {
         # git-town basics
         hack = "town hack";
