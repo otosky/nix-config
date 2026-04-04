@@ -24,17 +24,9 @@
     (import ../pkgs {pkgs = final;})
     // {
       claude-code = final.callPackage ../pkgs/claude-code {};
+      mise = final.callPackage ../pkgs/mise {};
     };
 
-  # This one contains whatever you want to overlay
-  # You can change versions, add patches, set compilation flags, anything really.
-  # https://nixos.wiki/wiki/Overlays
-  modifications = final: prev: {
-    mise =
-      (import inputs.nixpkgs-mise {
-        system = final.stdenv.hostPlatform.system;
-      }).mise;
-  };
   # access stable packages as pkgs.stable
   stable-packages = final: _prev: {
     stable = import inputs.nixpkgs-stable {
