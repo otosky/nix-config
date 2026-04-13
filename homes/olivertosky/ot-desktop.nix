@@ -22,6 +22,7 @@
         package = pkgs.mise;
       };
     };
+    voxtype.package = pkgs.voxtype-vulkan;
   };
 
   programs = {

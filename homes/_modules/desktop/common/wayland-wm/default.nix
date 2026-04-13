@@ -10,6 +10,7 @@
     ./waybar.nix
     ./wofi.nix
     ./swaync.nix
+    ./voxtype.nix
   ];
 
   home = {

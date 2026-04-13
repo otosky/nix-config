@@ -21,6 +21,11 @@
         package = pkgs.mise;
       };
     };
+    voxtype = {
+      package = pkgs.voxtype-onnx;
+      engine = "parakeet";
+      model = "parakeet-tdt-0.6b-v3";
+    };
   };
 
   wayland.windowManager.hyprland.settings.input = {
