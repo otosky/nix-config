@@ -56,6 +56,7 @@ in {
 
       bindm = ALT, mouse:272, movewindow
       bindm = ALT, mouse:273, resizewindow
+
     '';
 
     settings = {
