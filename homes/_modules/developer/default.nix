@@ -28,6 +28,7 @@
 
       cocogitto
       git-town
+      git-spice
 
       erlang_28
       beamMinimal28Packages.elixir
