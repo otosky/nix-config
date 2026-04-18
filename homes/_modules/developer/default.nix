@@ -21,6 +21,7 @@
       pgcli
       changie
 
+      agor
       claude-code
       codex
       gemini-cli
