@@ -22,6 +22,7 @@
       changie
 
       claude-code
+      codex
       gemini-cli
       opencode
 
