@@ -32,8 +32,9 @@ buildNpmPackage (finalAttrs: {
 
   postInstall = ''
     # @agor/core is a private workspace package bundled under dist/core/.
-    # Node.js won't resolve it from the package.json imports map (non-# prefix),
-    # so create a real node_modules entry pointing at the bundled dist.
+    # The package.json "imports" field maps "@agor/core" -> "./dist/core/index.js",
+    # but Node.js only honors "#"-prefixed keys in "imports" — "@"-prefixed keys are
+    # silently ignored. A node_modules symlink is the only way to make it resolvable.
     mkdir -p $out/lib/node_modules/agor-live/node_modules/@agor
     ln -s ../../dist/core $out/lib/node_modules/agor-live/node_modules/@agor/core
   '';
