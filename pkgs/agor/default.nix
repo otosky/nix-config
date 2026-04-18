@@ -24,9 +24,10 @@ buildNpmPackage (finalAttrs: {
       --replace-warn '"@agor-live/client": "workspace:*"' '"@agor-live/client": "^${finalAttrs.version}"'
   '';
 
-  nativeBuildInputs = [pkg-config];
+  nativeBuildInputs = [pkg-config libsecret];
   buildInputs = [libsecret];
 
+  strictDeps = true;
   dontNpmBuild = true;
 
   postInstall = ''
@@ -40,7 +41,7 @@ buildNpmPackage (finalAttrs: {
   meta = {
     description = "Multiplayer canvas for orchestrating AI coding sessions";
     homepage = "https://github.com/preset-io/agor";
-    license = lib.licenses.asl20;
+    license = lib.licenses.bsl11;
     mainProgram = "agor";
   };
 })
