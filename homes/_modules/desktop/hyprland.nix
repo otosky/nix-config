@@ -69,6 +69,7 @@ in {
       exec-once = [
         "${pkgs.swaynotificationcenter}/bin/swaync"
         "${pkgs.awww}/bin/awww-daemon"
+        "${pkgs.xorg.xrdb}/bin/xrdb -merge ${config.home.homeDirectory}/.Xresources"
       ];
       # exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
       exec = ["${pkgs.awww}/bin/awww img ${gifWallpaper}"];

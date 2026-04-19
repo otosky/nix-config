@@ -16,4 +16,7 @@
     };
   };
   xdg.portal.enable = true;
+  xresources.properties = {
+    "Xft.dpi" = 96;
+  };
 }
