@@ -4,7 +4,6 @@
       reaper
       renoise
       supercollider
-      haskellPackages.tidal
     ];
   };
 
