@@ -4,6 +4,7 @@
       reaper
       renoise
       supercollider
+      vcv-rack
     ];
   };
 
