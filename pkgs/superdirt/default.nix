@@ -2,8 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-}:
-let
+}: let
   superdirt-src = fetchFromGitHub {
     owner = "musikinformatik";
     repo = "SuperDirt";
@@ -17,22 +16,22 @@ let
     hash = "sha256-OzVvy/L6jfEgGx3dMdhe/PkfMAWVV0HQ9wGy500++fw=";
   };
 in
-stdenv.mkDerivation {
-  pname = "superdirt";
-  version = "1.7.4";
+  stdenv.mkDerivation {
+    pname = "superdirt";
+    version = "1.7.4";
 
-  dontUnpack = true;
+    dontUnpack = true;
 
-  installPhase = ''
-    mkdir -p $out/SuperDirt $out/Dirt-Samples
-    cp -r ${superdirt-src}/. $out/SuperDirt/
-    cp -r ${dirt-samples-src}/. $out/Dirt-Samples/
-  '';
+    installPhase = ''
+      mkdir -p $out/SuperDirt $out/Dirt-Samples
+      cp -r ${superdirt-src}/. $out/SuperDirt/
+      cp -r ${dirt-samples-src}/. $out/Dirt-Samples/
+    '';
 
-  meta = with lib; {
-    description = "SuperDirt audio engine and samples for TidalCycles";
-    homepage = "https://github.com/musikinformatik/SuperDirt";
-    license = licenses.gpl2Only;
-    platforms = platforms.unix;
-  };
-}
+    meta = with lib; {
+      description = "SuperDirt audio engine and samples for TidalCycles";
+      homepage = "https://github.com/musikinformatik/SuperDirt";
+      license = licenses.gpl2Only;
+      platforms = platforms.unix;
+    };
+  }
