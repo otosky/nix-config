@@ -33,6 +33,9 @@
       permittedInsecurePackages = [
         "electron-27.3.11"
       ];
+      problems.handlers = {
+        sonic-pi.broken = "ignore";
+      };
     };
   };
 

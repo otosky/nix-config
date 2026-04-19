@@ -7,6 +7,7 @@
     packages = with pkgs; [
       reaper
       renoise
+      sonic-pi
     ];
   };
 }
