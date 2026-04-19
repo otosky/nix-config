@@ -32,4 +32,12 @@
   };
 in {
   home.packages = [vcv-rack];
+
+  xdg.desktopEntries.vcv-rack = {
+    name = "VCV Rack";
+    exec = "vcv-rack";
+    terminal = false;
+    type = "Application";
+    categories = ["Audio" "Music"];
+  };
 }
