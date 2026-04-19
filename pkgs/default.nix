@@ -3,4 +3,5 @@
 {pkgs}: {
   # example = pkgs.callPackage ./example { };
   agor = pkgs.callPackage ./agor {};
+  superdirt = pkgs.callPackage ./superdirt {};
 }
