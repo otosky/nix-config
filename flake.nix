@@ -32,6 +32,8 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
+
+    nixgl.url = "github:nix-community/nixGL";
   };
 
   outputs = {
