@@ -1,4 +1,6 @@
 {pkgs, ...}: {
+  imports = [./vcv-rack.nix];
+
   home = {
     packages = with pkgs; [
       reaper

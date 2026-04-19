@@ -30,6 +30,7 @@
       ydotool
       libnotify
       brightnessctl
+      zenity
     ];
     sessionVariables = {
       MOZ_ENABLE_WAYLAND = 1;
