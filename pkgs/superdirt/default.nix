@@ -33,6 +33,6 @@ stdenv.mkDerivation {
     description = "SuperDirt audio engine and samples for TidalCycles";
     homepage = "https://github.com/musikinformatik/SuperDirt";
     license = licenses.gpl2Only;
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }
