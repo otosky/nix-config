@@ -26,6 +26,7 @@
       codex
       gemini-cli
       opencode
+      pi-coding-agent
 
       cocogitto
       git-town
