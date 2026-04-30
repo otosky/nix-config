@@ -19,9 +19,9 @@ buildNpmPackage (finalAttrs: {
   npmDepsHash = "sha256-pEVIqp9rbuHFE6eqSmADmIXWAPey1VbD7qmOJwksz1o=";
 
   npmWorkspace = "packages/coding-agent";
-  npmRebuildFlags = [ "--ignore-scripts" ];
+  npmRebuildFlags = ["--ignore-scripts"];
 
-  nativeBuildInputs = [ typescript-go ];
+  nativeBuildInputs = [typescript-go];
 
   buildPhase = ''
     runHook preBuild
@@ -47,7 +47,7 @@ buildNpmPackage (finalAttrs: {
 
   postFixup = ''
     wrapProgram $out/bin/pi \
-      --prefix PATH : ${lib.makeBinPath [ ripgrep ]}
+      --prefix PATH : ${lib.makeBinPath [ripgrep]}
   '';
 
   meta = {

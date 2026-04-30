@@ -4,8 +4,7 @@
   fetchzip,
   makeWrapper,
   autoPatchelfHook,
-}:
-let
+}: let
   platformMap = {
     "x86_64-linux" = {
       suffix = "linux-x64";
@@ -26,47 +25,47 @@ let
   };
   platform = platformMap.${stdenv.hostPlatform.system};
 in
-stdenv.mkDerivation (finalAttrs: {
-  pname = "opencode";
-  version = "1.14.30";
+  stdenv.mkDerivation (finalAttrs: {
+    pname = "opencode";
+    version = "1.14.30";
 
-  src = fetchzip {
-    url = "https://registry.npmjs.org/opencode-${platform.suffix}/-/opencode-${platform.suffix}-${finalAttrs.version}.tgz";
-    hash = platform.hash;
-  };
+    src = fetchzip {
+      url = "https://registry.npmjs.org/opencode-${platform.suffix}/-/opencode-${platform.suffix}-${finalAttrs.version}.tgz";
+      hash = platform.hash;
+    };
 
-  nativeBuildInputs =
-    [ makeWrapper ]
-    ++ lib.optionals stdenv.hostPlatform.isLinux [ autoPatchelfHook ];
+    nativeBuildInputs =
+      [makeWrapper]
+      ++ lib.optionals stdenv.hostPlatform.isLinux [autoPatchelfHook];
 
-  # glibc for the interpreter; cc.lib for libstdc++.so.6 which is dlopen'd at
-  # runtime by bundled native modules (file watcher, state management).
-  buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
-    stdenv.cc.libc
-    stdenv.cc.cc.lib
-  ];
+    # glibc for the interpreter; cc.lib for libstdc++.so.6 which is dlopen'd at
+    # runtime by bundled native modules (file watcher, state management).
+    buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
+      stdenv.cc.libc
+      stdenv.cc.cc.lib
+    ];
 
-  dontBuild = true;
-  # Self-contained Bun executable with embedded JS bundle; stripping corrupts it.
-  dontStrip = true;
+    dontBuild = true;
+    # Self-contained Bun executable with embedded JS bundle; stripping corrupts it.
+    dontStrip = true;
 
-  installPhase = ''
-    runHook preInstall
-    install -Dm755 bin/opencode $out/bin/opencode
-    runHook postInstall
-  '';
+    installPhase = ''
+      runHook preInstall
+      install -Dm755 bin/opencode $out/bin/opencode
+      runHook postInstall
+    '';
 
-  postInstall = ''
-    wrapProgram $out/bin/opencode \
-      --set DISABLE_AUTOUPDATER 1 \
-      --prefix LD_LIBRARY_PATH : "${stdenv.cc.cc.lib}/lib"
-  '';
+    postInstall = ''
+      wrapProgram $out/bin/opencode \
+        --set DISABLE_AUTOUPDATER 1 \
+        --prefix LD_LIBRARY_PATH : "${stdenv.cc.cc.lib}/lib"
+    '';
 
-  meta = {
-    description = "AI coding agent for the terminal";
-    homepage = "https://opencode.ai";
-    license = lib.licenses.mit;
-    mainProgram = "opencode";
-    platforms = builtins.attrNames platformMap;
-  };
-})
+    meta = {
+      description = "AI coding agent for the terminal";
+      homepage = "https://opencode.ai";
+      license = lib.licenses.mit;
+      mainProgram = "opencode";
+      platforms = builtins.attrNames platformMap;
+    };
+  })
