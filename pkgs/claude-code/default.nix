@@ -1,57 +1,80 @@
 {
   lib,
   stdenv,
-  buildNpmPackage,
   fetchzip,
+  makeWrapper,
+  autoPatchelfHook,
   bubblewrap,
   procps,
   socat,
-}:
-buildNpmPackage (finalAttrs: {
-  pname = "claude-code";
-  version = "2.1.91";
-
-  src = fetchzip {
-    url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
-    hash = "sha256-u7jdM6hTYN05ZLPz630Yj7gI0PeCSArg4O6ItQRAMy4=";
+}: let
+  platformMap = {
+    "x86_64-linux" = {
+      suffix = "linux-x64";
+      hash = "sha256-vQoFGcLSRBI+k5yZ9LYTAmYSSojkKN4RJx8vvMl2JWw=";
+    };
+    "aarch64-linux" = {
+      suffix = "linux-arm64";
+      hash = "sha256-TuzEnQimu29ZXkYCDufBGbfXbahKU5QsCJeVh7QkMJo=";
+    };
+    "x86_64-darwin" = {
+      suffix = "darwin-x64";
+      hash = "sha256-aFBD4gdEzkeZTg/AOQMVhIdS8kzk7ur9ZNHR5J9mqoc=";
+    };
+    "aarch64-darwin" = {
+      suffix = "darwin-arm64";
+      hash = "sha256-aeIbXYRQHt1DhWyowxxHyXFIfCmP6Nq+xl9n8uOuP24=";
+    };
   };
+  platform = platformMap.${stdenv.hostPlatform.system};
+in
+  stdenv.mkDerivation (finalAttrs: {
+    pname = "claude-code";
+    version = "2.1.123";
 
-  npmDepsHash = "sha256-0ppKP+XMgTzVVZtL7GDsOjgvSPUDrUa7SoG048RLaNg=";
+    src = fetchzip {
+      url = "https://registry.npmjs.org/@anthropic-ai/claude-code-${platform.suffix}/-/claude-code-${platform.suffix}-${finalAttrs.version}.tgz";
+      hash = platform.hash;
+    };
 
-  strictDeps = true;
+    nativeBuildInputs =
+      [makeWrapper]
+      ++ lib.optionals stdenv.hostPlatform.isLinux [autoPatchelfHook];
 
-  postPatch = ''
-    cp ${./package-lock.json} package-lock.json
+    buildInputs = lib.optionals stdenv.hostPlatform.isLinux [stdenv.cc.libc];
 
-    substituteInPlace cli.js \
-      --replace-warn '#!/bin/bash' '#!/usr/bin/env bash'
-  '';
+    dontBuild = true;
+    # The binary is a self-contained Bun executable with an embedded JS bundle;
+    # stripping it corrupts that bundle.
+    dontStrip = true;
 
-  dontNpmBuild = true;
+    installPhase = ''
+      runHook preInstall
+      install -Dm755 claude $out/bin/claude
+      runHook postInstall
+    '';
 
-  env.AUTHORIZED = "1";
+    postInstall = ''
+      wrapProgram $out/bin/claude \
+        --set DISABLE_AUTOUPDATER 1 \
+        --set DISABLE_INSTALLATION_CHECKS 1 \
+        --unset DEV \
+        --prefix PATH : ${
+        lib.makeBinPath (
+          [procps]
+          ++ lib.optionals stdenv.hostPlatform.isLinux [
+            bubblewrap
+            socat
+          ]
+        )
+      }
+    '';
 
-  postInstall = ''
-    wrapProgram $out/bin/claude \
-      --set DISABLE_AUTOUPDATER 1 \
-      --unset DEV \
-      --prefix PATH : ${
-      lib.makeBinPath (
-        [
-          procps
-        ]
-        ++ lib.optionals stdenv.hostPlatform.isLinux [
-          bubblewrap
-          socat
-        ]
-      )
-    }
-  '';
-
-  meta = {
-    description = "Agentic coding tool that lives in your terminal";
-    homepage = "https://github.com/anthropics/claude-code";
-    license = lib.licenses.unfree;
-    mainProgram = "claude";
-  };
-})
+    meta = {
+      description = "Agentic coding tool that lives in your terminal";
+      homepage = "https://github.com/anthropics/claude-code";
+      license = lib.licenses.unfree;
+      mainProgram = "claude";
+      platforms = builtins.attrNames platformMap;
+    };
+  })

@@ -38,3 +38,6 @@ install host:
 rebuild host:
     sudo nixos-rebuild switch --flake .#{{host}}
 
+# update a single flake input in flake.lock
+update-input input:
+    nix flake update {{input}}

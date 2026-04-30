@@ -26,6 +26,8 @@
     // {
       claude-code = final.callPackage ../pkgs/claude-code {};
       mise = final.callPackage ../pkgs/mise {};
+      opencode = final.callPackage ../pkgs/opencode {};
+      pi-coding-agent = final.callPackage ../pkgs/pi-coding-agent {};
     };
 
   # access stable packages as pkgs.stable
