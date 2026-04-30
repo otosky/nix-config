@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   imports = [
@@ -9,7 +10,9 @@
   ];
 
   home = {
-    packages = with pkgs; [
+    packages = with pkgs; lib.optionals pkgs.stdenv.isLinux [
+      agor
+    ] ++ [
       coursier
       delta
       age
@@ -21,7 +24,6 @@
       pgcli
       changie
 
-      agor
       claude-code
       codex
       gemini-cli
