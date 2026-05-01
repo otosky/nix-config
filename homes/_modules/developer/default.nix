@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    ./claude-code
+    ./ai-agents
     ./lazygit
   ];
 
