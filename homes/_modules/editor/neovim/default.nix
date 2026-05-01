@@ -1,6 +1,8 @@
 {pkgs, ...}: {
   programs.neovim = {
     enable = true;
+    withPython3 = true;
+    withRuby = true;
   };
 
   home = {

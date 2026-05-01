@@ -16,12 +16,12 @@
       with pkgs; [
         mesa
         libGL
-        xorg.libX11
-        xorg.libXext
-        xorg.libXcursor
-        xorg.libXrandr
-        xorg.libXinerama
-        xorg.libXi
+        libx11
+        libxext
+        libxcursor
+        libxrandr
+        libxinerama
+        libxi
         alsa-lib
         libpulseaudio
       ];

@@ -10,6 +10,7 @@ in {
     enable = true;
     package = pkgs.gitFull;
     signing = {
+      format = "openpgp";
       key = "656968EFE265ED715AF5F2BF1CDC6147DE47244F";
       signByDefault = true;
     };
