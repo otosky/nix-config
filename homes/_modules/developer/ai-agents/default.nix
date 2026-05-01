@@ -9,6 +9,12 @@ in {
     ".claude/skills/git-town/SKILL.md".source = ./skills/git-town/SKILL.md;
     ".agents/skills/git-town/SKILL.md".source = ./skills/git-town/SKILL.md;
 
+    ".pi/agent" = {
+      force = true;
+      recursive = true;
+      source = ./pi;
+    };
+
     ".codex/config.toml" = {
       # Codex only reads a single config.toml. Keep the known mutable NUX key
       # while making durable defaults reproducible through Home Manager.
