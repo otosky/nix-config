@@ -21,7 +21,7 @@
         gnumake
         go
         uv
-        pdm
+        stable.pdm
         duckdb
         stable.pgcli
         changie

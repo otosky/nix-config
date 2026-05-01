@@ -23,6 +23,11 @@ buildNpmPackage (finalAttrs: {
 
   nativeBuildInputs = [typescript-go];
 
+  postPatch = ''
+    substituteInPlace tsconfig.base.json \
+      --replace-fail '"ES2022"' '"ES2024"'
+  '';
+
   buildPhase = ''
     runHook preBuild
     tsgo -p packages/ai/tsconfig.build.json
