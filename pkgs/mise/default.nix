@@ -3,19 +3,19 @@
   stdenv,
   fetchurl,
 }: let
-  version = "2026.4.3";
+  version = "2026.4.17";
   sources = {
     x86_64-linux = {
       url = "https://github.com/jdx/mise/releases/download/v${version}/mise-v${version}-linux-x64-musl";
-      hash = "sha256-f6CMYz2wQAtb8G/7XKNXBi2DwH2GoBdJtdlnI8Y+aHI=";
+      hash = "sha256-eKTECRmraSK0aBEhh1MD9hKWc6Dapd4RNsUwf6blCjg=";
     };
     aarch64-linux = {
       url = "https://github.com/jdx/mise/releases/download/v${version}/mise-v${version}-linux-arm64-musl";
-      hash = "sha256-bwt5L3QA9Im66Yp42nbTdmxivH0skYu3hVtUWoV70lw=";
+      hash = "sha256-W85ErADa2VwJw7gnIklJsN8huJm1bqMNtibKrgzOm18=";
     };
     aarch64-darwin = {
       url = "https://github.com/jdx/mise/releases/download/v${version}/mise-v${version}-macos-arm64";
-      hash = "sha256-0LhpmrAEhT8Z+QP5fU7WZoX0CXUa4oOJ/wbzW2CsJUM=";
+      hash = "sha256-kbsP5tdNmDhpeXpzV91N9Pci5FXhZ/DVHOumvJ39u5s=";
     };
   };
   src = sources.${stdenv.hostPlatform.system} or (throw "Unsupported platform: ${stdenv.hostPlatform.system}");
