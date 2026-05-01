@@ -23,7 +23,7 @@
         uv
         pdm
         duckdb
-        pgcli
+        stable.pgcli
         changie
 
         claude-code
