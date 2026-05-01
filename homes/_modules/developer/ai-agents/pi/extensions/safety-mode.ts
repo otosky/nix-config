@@ -1,5 +1,5 @@
 import path from "node:path";
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import { isToolCallEventType, type ExtensionAPI, type ExtensionContext } from "@mariozechner/pi-coding-agent";
 
 type PathDecision = {
 	level: "allow" | "confirm" | "block";
@@ -13,7 +13,7 @@ type CommandFinding = {
 
 let safetyEnabled = true;
 
-const statusKey = "safety-guard";
+const statusKey = "safety-mode";
 
 const dangerousCommands: CommandFinding[] = [
 	{ reason: "uses sudo", pattern: /(^|[\s;&|()])sudo(\s|$)/ },
@@ -49,7 +49,7 @@ function updateStatus(ctx: ExtensionContext) {
 function setSafetyEnabled(enabled: boolean, ctx: ExtensionContext, source: string) {
 	safetyEnabled = enabled;
 	updateStatus(ctx);
-	ctx.ui.notify(`Safety guard ${enabled ? "enabled" : "disabled"} (${source})`, enabled ? "success" : "warning");
+	ctx.ui.notify(`Safety mode ${enabled ? "enabled" : "disabled"} (${source})`, enabled ? "success" : "warning");
 }
 
 function stripQuotes(value: string) {
@@ -102,7 +102,7 @@ function analyzeCommand(command: string) {
 
 function extractRedirectTargets(command: string) {
 	const targets: string[] = [];
-	const redirectPattern = /(?:^|\s)(?:>|>>|2>|2>>|&>|&>>|1>|1>>)\s*([^\s;&|]+)/g;
+	const redirectPattern = /(?:&>>|&>|2>>|2>|1>>|1>|>>|>)\s*([^\s;&|]+)/g;
 	let match: RegExpExecArray | null;
 	while ((match = redirectPattern.exec(command))) {
 		targets.push(match[1]);
@@ -132,6 +132,22 @@ async function confirmOrBlock(ctx: ExtensionContext, title: string, message: str
 	return ctx.ui.confirm(title, message);
 }
 
+async function checkPathTool(toolName: "write" | "edit", targetPath: string | undefined, ctx: ExtensionContext) {
+	const decision = classifyPath(targetPath, ctx.cwd);
+
+	if (decision.level === "block") {
+		return {
+			block: true,
+			reason: `Safety mode blocked ${toolName} to ${targetPath}: ${decision.reason}. Toggle safety off with Shift+Tab or /safety off if this is intentional.`,
+		};
+	}
+
+	if (decision.level === "confirm") {
+		const ok = await confirmOrBlock(ctx, "Safety Mode", `${toolName} targets ${targetPath}\nReason: ${decision.reason}\n\nAllow this operation?`);
+		if (!ok) return { block: true, reason: `Safety mode denied ${toolName} to ${targetPath}: ${decision.reason}.` };
+	}
+}
+
 export default function (pi: ExtensionAPI) {
 	pi.on("session_start", async (_event, ctx) => {
 		updateStatus(ctx);
@@ -142,19 +158,19 @@ export default function (pi: ExtensionAPI) {
 		return {
 			systemPrompt:
 				event.systemPrompt +
-				"\n\nSafety Guard extension is active. Prefer non-destructive commands. Avoid editing secrets, private keys, generated files, build outputs, node_modules, and .git internals unless the user explicitly asks.",
+				"\n\nSafety Mode extension is active. Prefer non-destructive commands. Avoid editing secrets, private keys, generated files, build outputs, node_modules, and .git internals unless the user explicitly asks.",
 		};
 	});
 
 	pi.registerShortcut("shift+tab", {
-		description: "Toggle safety guard",
+		description: "Toggle safety mode",
 		handler: async (ctx) => {
 			setSafetyEnabled(!safetyEnabled, ctx, "Shift+Tab");
 		},
 	});
 
 	pi.registerCommand("safety", {
-		description: "Show or toggle Safety Guard: /safety [on|off|toggle|status]",
+		description: "Show or toggle Safety Mode: /safety [on|off|toggle|status]",
 		handler: async (args, ctx) => {
 			const action = (args ?? "status").trim().toLowerCase();
 
@@ -172,7 +188,7 @@ export default function (pi: ExtensionAPI) {
 			}
 			if (action === "" || action === "status") {
 				updateStatus(ctx);
-				ctx.ui.notify(`Safety guard is ${safetyEnabled ? "ON" : "OFF"}. Shift+Tab toggles it.`, safetyEnabled ? "info" : "warning");
+				ctx.ui.notify(`Safety mode is ${safetyEnabled ? "ON" : "OFF"}. Shift+Tab toggles it.`, safetyEnabled ? "info" : "warning");
 				return;
 			}
 
@@ -184,34 +200,21 @@ export default function (pi: ExtensionAPI) {
 		updateStatus(ctx);
 		if (!safetyEnabled) return;
 
-		if (event.toolName === "write" || event.toolName === "edit") {
-			const targetPath = (event.input as { path?: string }).path;
-			const decision = classifyPath(targetPath, ctx.cwd);
-
-			if (decision.level === "block") {
-				return {
-					block: true,
-					reason: `Safety guard blocked ${event.toolName} to ${targetPath}: ${decision.reason}. Toggle safety off with Shift+Tab or /safety off if this is intentional.`,
-				};
-			}
-
-			if (decision.level === "confirm") {
-				const ok = await confirmOrBlock(
-					ctx,
-					"Safety Guard",
-					`${event.toolName} targets ${targetPath}\nReason: ${decision.reason}\n\nAllow this operation?`,
-				);
-				if (!ok) return { block: true, reason: `Safety guard denied ${event.toolName} to ${targetPath}: ${decision.reason}.` };
-			}
+		if (isToolCallEventType("write", event)) {
+			return checkPathTool("write", event.input.path, ctx);
 		}
 
-		if (event.toolName === "bash") {
-			const command = String((event.input as { command?: unknown }).command ?? "");
+		if (isToolCallEventType("edit", event)) {
+			return checkPathTool("edit", event.input.path, ctx);
+		}
+
+		if (isToolCallEventType("bash", event)) {
+			const command = event.input.command;
 			const protectedTarget = commandWritesProtectedPath(command, ctx.cwd);
 			if (protectedTarget) {
 				return {
 					block: true,
-					reason: `Safety guard blocked shell command writing to protected path: ${protectedTarget}. Toggle safety off with Shift+Tab or /safety off if this is intentional.`,
+					reason: `Safety mode blocked shell command writing to protected path: ${protectedTarget}. Toggle safety off with Shift+Tab or /safety off if this is intentional.`,
 				};
 			}
 
@@ -220,10 +223,10 @@ export default function (pi: ExtensionAPI) {
 				const reasons = [...new Set(findings.map((finding) => finding.reason))].join(", ");
 				const ok = await confirmOrBlock(
 					ctx,
-					"Safety Guard",
+					"Safety Mode",
 					`Shell command looks potentially destructive: ${reasons}\n\n${command}\n\nAllow this command?`,
 				);
-				if (!ok) return { block: true, reason: `Safety guard denied shell command: ${reasons}.` };
+				if (!ok) return { block: true, reason: `Safety mode denied shell command: ${reasons}.` };
 			}
 		}
 	});
