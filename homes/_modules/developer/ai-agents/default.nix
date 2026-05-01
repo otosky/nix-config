@@ -9,10 +9,6 @@ in {
     ".claude/skills/git-town/SKILL.md".source = ./skills/git-town/SKILL.md;
     ".agents/skills/git-town/SKILL.md".source = ./skills/git-town/SKILL.md;
 
-    ".claude/agents/reviewer.md".source = ./agents/claude-reviewer.md;
-    ".codex/agents/reviewer.toml".source = ./agents/codex-reviewer.toml;
-    ".config/opencode/agents/reviewer.md".source = ./agents/opencode-reviewer.md;
-
     ".codex/config.toml" = {
       # Codex only reads a single config.toml. Keep the known mutable NUX key
       # while making durable defaults reproducible through Home Manager.
