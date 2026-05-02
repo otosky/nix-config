@@ -25,7 +25,6 @@
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
 

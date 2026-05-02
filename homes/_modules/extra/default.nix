@@ -36,8 +36,6 @@ in {
       arduino-ide
       arduino-cli
 
-      code-cursor
-
       unrar-free
     ];
 
