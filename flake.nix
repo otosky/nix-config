@@ -25,10 +25,6 @@
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-    };
-
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
