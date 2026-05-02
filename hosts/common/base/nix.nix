@@ -5,7 +5,10 @@
   ...
 }: let
   flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  keptGenerations = 3;
 in {
+  boot.loader.systemd-boot.configurationLimit = keptGenerations;
+
   nix = {
     package = pkgs.nixVersions.nix_2_28;
 
@@ -33,7 +36,7 @@ in {
       automatic = true;
       dates = "weekly";
       # Keep the last 3 generations
-      options = "--delete-older-than +3";
+      options = "--delete-older-than +${toString keptGenerations}";
     };
 
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
