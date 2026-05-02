@@ -437,15 +437,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#jetbrains" class="md-nav__link">
-    <span class="md-ellipsis">
-      Jetbrains
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#brave-browser" class="md-nav__link">
     <span class="md-ellipsis">
       Brave Browser
@@ -512,15 +503,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#jetbrains" class="md-nav__link">
-    <span class="md-ellipsis">
-      Jetbrains
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#brave-browser" class="md-nav__link">
     <span class="md-ellipsis">
       Brave Browser
@@ -552,14 +534,6 @@
 <h1 id="laptop-specific">Laptop-Specific</h1>
 <h2 id="fixing-blurry-apps">Fixing Blurry Apps</h2>
 <p>This is a Wayland problem on the Framework.</p>
-<h3 id="jetbrains">Jetbrains</h3>
-<p>Opt-in to using the new Wayland support by adding this to the JVM options:</p>
-<pre><code>-Dawt.toolkit.name=WLToolkit
-</code></pre>
-<p><a href="https://blog.jetbrains.com/platform/2024/07/wayland-support-preview-in-2024-2/#how-to-opt-in">Ref</a></p>
-<p>This JVM property also needs to be added:</p>
-<pre><code>_JAVA_AWT_WM_NONPARENTING=1
-</code></pre>
 <h3 id="brave-browser">Brave Browser</h3>
 <p>In <code>brave://flags</code>, set "Preferred Ozone Platform" to "Wayland".</p>
 
