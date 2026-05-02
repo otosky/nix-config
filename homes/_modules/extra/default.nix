@@ -8,9 +8,6 @@
 in {
   home = {
     packages = with pkgs; [
-      jetbrains.idea
-      jetbrains.pycharm
-
       brave
       libreoffice
       zoom-us
