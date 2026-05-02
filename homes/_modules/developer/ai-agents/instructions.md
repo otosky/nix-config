@@ -21,6 +21,17 @@ You and the user share the same workspace. Work pragmatically, make the smallest
 - Do not force-push unless explicitly requested, and never force-push to main or master.
 - Prefer Git Town for branch, sync, and PR workflows when it is installed.
 
+## Branch Naming
+
+- Before creating a branch, check the repository's `CONTRIBUTING.md` and `README.md` for project-specific branch naming guidance. Follow those guidelines if they conflict with these defaults.
+- Otherwise, use short, descriptive, lowercase kebab-case branch names.
+- Do not use `/` in branch names. Slash-separated names are messy with git worktrees and filesystem-derived worktree paths.
+- Use only lowercase letters, digits, and hyphens when possible: `^[a-z0-9]+(-[a-z0-9]+)*$`.
+- Prefer intent-oriented names based on the planned diff, for example `chore-branch-naming-conventions`, `fix-login-timeout`, or `feat-search-filter`.
+- A Conventional Commit type prefix is optional but useful when obvious: `feat-`, `fix-`, `docs-`, `chore-`, etc.
+- Do not include agent names, model names, `ai`, `wip`, timestamps, or implementation noise unless the repository explicitly asks for them.
+- For stacked changes, let Git Town track parent/child relationships; do not encode stack hierarchy in the branch name.
+
 ## Pull Requests
 
 - Before creating a pull request, check the repository's `CONTRIBUTING.md` and `README.md` for project-specific PR title guidance. Follow those guidelines if they conflict with these defaults.

@@ -13,13 +13,27 @@ branch and sync operations.
 Before using git-town commands, verify it's installed by running `git town --version`.
 If not installed, fall back to raw git commands.
 
+### Branch Naming
+
+Before creating a branch, check the repository's `CONTRIBUTING.md` and `README.md` for project-specific branch naming guidance. Follow those guidelines if they conflict with these defaults.
+
+Default branch naming rules:
+
+- Use short, descriptive, lowercase kebab-case names.
+- Do not use `/` in branch names. Slash-separated names are messy with git worktrees and filesystem-derived worktree paths.
+- Use only lowercase letters, digits, and hyphens when possible: `^[a-z0-9]+(-[a-z0-9]+)*$`.
+- Prefer intent-oriented names based on the planned diff, for example `chore-branch-naming-conventions`, `fix-login-timeout`, or `feat-search-filter`.
+- A Conventional Commit type prefix is optional but useful when obvious: `feat-`, `fix-`, `docs-`, `chore-`, etc.
+- Do not include agent names, model names, `ai`, `wip`, timestamps, or implementation noise unless the repository explicitly asks for them.
+- For stacked changes, let Git Town track parent/child relationships; do not encode stack hierarchy in the branch name.
+
 ### Command Mapping
 
-| Instead of                  | Use                     |
-| --------------------------- | ----------------------- |
-| `git checkout -b feature`   | `git town hack feature` |
-| `git pull && git rebase main` | `git town sync`       |
-| `gh pr create`              | `git town propose`      |
+| Instead of                         | Use                                |
+| ---------------------------------- | ---------------------------------- |
+| `git checkout -b short-description` | `git town hack short-description` |
+| `git pull && git rebase main`      | `git town sync`                    |
+| `gh pr create`                     | `git town propose`                 |
 
 ### Shipping Work
 
@@ -66,6 +80,8 @@ Common flags:
 Use stacking when changes depend on each other.
 
 ### Creating Stacks
+
+Use branch names that follow the branch naming rules above.
 
 - `git town append <name>` - new branch as CHILD of current
 - `git town prepend <name>` - new branch as PARENT of current
