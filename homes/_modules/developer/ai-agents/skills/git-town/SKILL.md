@@ -33,11 +33,21 @@ Workflow:
 
 ### Creating PRs (git town propose)
 
-When running non-interactively, ALWAYS provide `--title` and `--body`:
+Before creating a PR, check the repository's `CONTRIBUTING.md` and `README.md` for project-specific PR title guidance. Follow those guidelines if they conflict with these defaults.
+
+When running non-interactively, ALWAYS provide `--title` and `--body`. The title must use Conventional Commits unless project-specific guidance says otherwise:
 
 ```
-git town propose --title "feat: description" --body "PR body here"
+git town propose --title "feat(scope): description" --body "PR body here"
 ```
+
+PR title rules:
+
+- Use one of: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `build`, `ci`, `perf`, `revert`.
+- Scopes are optional but encouraged when useful.
+- Synthesize the title from the actual diff, not just the branch name or first commit.
+- Make the best type/scope call without asking; the user can edit the PR later.
+- Use `chore` for dependency, Nix, and routine maintenance updates unless another type is clearly more accurate.
 
 Common flags:
 

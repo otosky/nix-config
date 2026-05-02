@@ -9,11 +9,15 @@ in {
     ".claude/skills/git-town/SKILL.md".source = ./skills/git-town/SKILL.md;
     ".agents/skills/git-town/SKILL.md".source = ./skills/git-town/SKILL.md;
 
-    ".pi/agent" = {
+    ".pi/agent/AGENTS.md".source = ./instructions.md;
+
+    ".pi/agent/extensions" = {
       force = true;
       recursive = true;
-      source = ./pi;
+      source = ./pi/extensions;
     };
+
+    ".pi/agent/keybindings.json".source = ./pi/keybindings.json;
 
     ".codex/config.toml" = {
       # Codex only reads a single config.toml. Keep the known mutable NUX key
