@@ -24,7 +24,7 @@
       '';
     gpgKey = pkgs.fetchurl {
       url = "https://keybase.io/otosky/pgp_keys.asc";
-      sha256 = "Fm4o9XSVuJgcdcGS7d9z2c2lEbe0W++5uj0Iz9g+VcY=";
+      sha256 = "sha256-1yzZEusziS3CA8V4Qgtpj2KzLvEO6ra2hiPJEb9/YNU=";
     };
   in {
     # Start gpg-agent if it's not running or tunneled in
@@ -48,6 +48,15 @@
     };
   };
 
+  systemd.user.timers.refresh-gpg-keybase-key = {
+    Unit.Description = "Refresh GPG public key metadata from Keybase weekly";
+    Timer = {
+      OnCalendar = "weekly";
+      Persistent = true;
+    };
+    Install.WantedBy = ["timers.target"];
+  };
+
   systemd.user.services = {
     # Link /run/user/$UID/gnupg to ~/.gnupg-sockets
     # So that SSH config does not have to know the UID
@@ -62,6 +71,14 @@
         RemainAfterExit = true;
       };
       Install.WantedBy = ["default.target"];
+    };
+
+    refresh-gpg-keybase-key = {
+      Unit.Description = "Refresh GPG public key metadata from Keybase";
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.gnupg}/bin/gpg --fetch-keys https://keybase.io/otosky/pgp_keys.asc";
+      };
     };
   };
 }
