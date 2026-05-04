@@ -29,11 +29,13 @@ Default branch naming rules:
 
 ### Command Mapping
 
-| Instead of                          | Use                               |
-| ----------------------------------- | --------------------------------- |
-| `git checkout -b short-description` | `git town hack short-description` |
-| `git pull && git rebase main`       | `git town sync`                   |
-| `gh pr create`                      | `git town propose`                |
+| Instead of                                   | Use                               |
+| -------------------------------------------- | --------------------------------- |
+| `git checkout -b short-description`          | `git town hack short-description` |
+| `git pull && git rebase main`                | `git town sync`                   |
+| `git push`                                   | `git town sync`                   |
+| `git push --force-with-lease` after an amend | `git town sync`                   |
+| `gh pr create`                               | `git town propose`                |
 
 ### Shipping Work
 
