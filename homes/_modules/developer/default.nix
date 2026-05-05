@@ -16,6 +16,7 @@
       ]
       ++ [
         sqlit-tui
+        usql
         coursier
         delta
         age
