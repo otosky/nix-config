@@ -68,7 +68,10 @@
     usbutils
   ];
 
-  services.envfs.enable = true;
+  services = {
+    envfs.enable = true;
+    gnome.gnome-keyring.enable = true;
+  };
 
   hardware.enableRedistributableFirmware = true;
   networking.domain = "toskbot.xyz";

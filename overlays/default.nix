@@ -29,6 +29,26 @@
       pi-coding-agent = final.callPackage ../pkgs/pi-coding-agent {};
     };
 
+  sqlit-tui = final: prev: {
+    sqlit-tui = prev.sqlit-tui.overridePythonAttrs (finalAttrs: previousAttrs: {
+      version = "1.4.0";
+      src = final.fetchFromGitHub {
+        owner = "Maxteabag";
+        repo = "sqlit";
+        tag = "v${finalAttrs.version}";
+        hash = "sha256-lcZe7EiN/wZllRO7KnXryoeGiUVBhSE4AYaRniZV6Cw=";
+      };
+      dependencies = final.lib.unique (previousAttrs.dependencies
+        ++ [
+          final.python3Packages.duckdb
+          final.python3Packages.google-cloud-bigquery
+          final.python3Packages.pyathena
+          final.python3Packages.snowflake-connector-python
+          final.python3Packages.trino-python-client
+        ]);
+    });
+  };
+
   # access stable packages as pkgs.stable
   stable-packages = final: _prev: {
     stable = import inputs.nixpkgs-stable {

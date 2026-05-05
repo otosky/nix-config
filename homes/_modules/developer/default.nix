@@ -15,6 +15,7 @@
         agor
       ]
       ++ [
+        sqlit-tui
         coursier
         delta
         age
