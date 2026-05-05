@@ -59,11 +59,12 @@ git town propose --title "feat(scope): description" --body "PR body here"
 
 PR title rules:
 
-- Use one of: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `build`, `ci`, `perf`, `revert`.
+- Use one of: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `deps`, `build`, `ci`, `perf`, `revert`.
 - Scopes are optional but encouraged when useful.
 - Synthesize the title from the actual diff, not just the branch name or first commit.
 - Make the best type/scope call without asking; the user can edit the PR later.
-- Use `chore` for dependency, Nix, and routine maintenance updates unless another type is clearly more accurate.
+- Use `deps` for dependency and package additions, removals, or updates, including Nix package list changes and flake updates.
+- Use `chore` for routine maintenance that is not dependency or package related unless another type is clearly more accurate.
 
 Common flags:
 
