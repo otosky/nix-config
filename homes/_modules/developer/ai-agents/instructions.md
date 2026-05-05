@@ -16,7 +16,6 @@ You and the user share the same workspace. Work pragmatically, make the smallest
 ## Git Safety
 
 - Commit messages must use Conventional Commits.
-- Before choosing a commit or PR title type, inspect repository-specific conventions when available: `CONTRIBUTING.md`, `README.md`, commit tooling such as `cog.toml`, and recent commit history.
 - Use `deps` for dependency and package additions, removals, or updates, including Nix package list changes and flake updates.
 - Never discard, reset, or overwrite user changes unless explicitly asked.
 - Do not amend commits unless explicitly requested.

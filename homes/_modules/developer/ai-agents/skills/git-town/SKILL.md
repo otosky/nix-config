@@ -63,7 +63,6 @@ PR title rules:
 - Scopes are optional but encouraged when useful.
 - Synthesize the title from the actual diff, not just the branch name or first commit.
 - Make the best type/scope call without asking; the user can edit the PR later.
-- Before choosing a type, inspect repository-specific conventions when available: `CONTRIBUTING.md`, `README.md`, commit tooling such as `cog.toml`, and recent commit history.
 - Use `deps` for dependency and package additions, removals, or updates, including Nix package list changes and flake updates.
 - Use `chore` for routine maintenance that is not dependency or package related unless another type is clearly more accurate.
 
