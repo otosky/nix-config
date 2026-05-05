@@ -38,11 +38,14 @@
         tag = "v${finalAttrs.version}";
         hash = "sha256-lcZe7EiN/wZllRO7KnXryoeGiUVBhSE4AYaRniZV6Cw=";
       };
-      dependencies =
-        previousAttrs.dependencies
+      dependencies = final.lib.unique (previousAttrs.dependencies
         ++ [
+          final.python3Packages.duckdb
+          final.python3Packages.google-cloud-bigquery
+          final.python3Packages.pyathena
           final.python3Packages.snowflake-connector-python
-        ];
+          final.python3Packages.trino-python-client
+        ]);
     });
   };
 
