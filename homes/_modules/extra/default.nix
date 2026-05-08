@@ -11,6 +11,7 @@ in {
       brave
       libreoffice
       zoom-us
+      xournalpp
 
       gimp-with-plugins
 
