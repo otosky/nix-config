@@ -22,6 +22,7 @@
         age
         gnumake
         go
+        jq
         uv
         stable.pdm
         duckdb
