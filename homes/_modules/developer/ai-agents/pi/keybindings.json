@@ -2,5 +2,6 @@
   "app.thinking.cycle": ["ctrl+shift+t"],
   "app.model.select": [],
   "app.model.cycleForward": [],
-  "app.model.cycleBackward": []
+  "app.model.cycleBackward": [],
+  "app.tree.filter.labeledOnly": []
 }
