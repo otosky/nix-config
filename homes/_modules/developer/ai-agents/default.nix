@@ -6,81 +6,6 @@
 }: let
   nixConfigProject = "${config.home.homeDirectory}/personal/nix-config";
   claudeStatusline = "${config.home.homeDirectory}/.local/bin/claude-statusline";
-  claudeStatuslineScript = pkgs.writeShellScript "claude-statusline" ''
-    ${pkgs.jq}/bin/jq -r '
-      def number_or_null:
-        if type == "number" then .
-        elif . == null then null
-        else try tonumber catch null
-        end;
-
-      def percent:
-        (. | number_or_null) as $number
-        | if $number == null then "?%"
-          elif $number > 0 and $number < 0.1 then "<0.1%"
-          elif (($number | floor) == $number) then "\($number | floor)%"
-          else "\((($number * 10) | round) / 10)%"
-          end;
-
-      def token_text:
-        (. | number_or_null) as $number
-        | if $number == null then "?"
-          else ($number | floor | tostring)
-          end;
-
-      def context:
-        (.context_window // {}) as $window
-        | (($window.total_input_tokens | number_or_null) // 0) as $input
-        | (($window.total_output_tokens | number_or_null) // 0) as $output
-        | ($input + $output) as $used_tokens
-        | ($window.context_window_size | number_or_null) as $window_size
-        | (
-            if ($window_size != null and $window_size != 0)
-            then ($used_tokens / $window_size * 100)
-            else null
-            end
-          ) as $used_percent
-        | "🧠 ctx: \($used_percent | percent) used \($used_tokens | token_text)/\($window_size | token_text)";
-
-      def compact_duration:
-        (. | floor) as $seconds
-        | if $seconds <= 0 then "now"
-          else
-            (($seconds / 86400) | floor) as $days
-            | ((($seconds % 86400) / 3600) | floor) as $hours
-            | ((($seconds % 3600) / 60) | floor) as $minutes
-            | if $days > 0 then
-                "\($days)d" + if $hours > 0 then "\($hours)h" else "" end
-              elif $hours > 0 then
-                "\($hours)h" + if $minutes > 0 then "\($minutes)m" else "" end
-              else
-                "\($minutes)m"
-              end
-          end;
-
-      def reset_text:
-        (. | number_or_null) as $epoch
-        | if $epoch == null then "resets ?"
-          else "resets in \(($epoch - now) | compact_duration)"
-          end;
-
-      def rate_limit($key; $label):
-        (.rate_limits[$key] // {}) as $window
-        | ($window.used_percentage | number_or_null) as $used
-        | ($window.resets_at | number_or_null) as $reset_epoch
-        | if $used == null and $reset_epoch == null then empty
-          elif $used == null then "\($label): \($reset_epoch | reset_text)"
-          else "\($label): \($used | percent) used; \($reset_epoch | reset_text)"
-          end;
-
-      [
-        "🤖 \(.model.display_name // .model.name // .model.id // "Claude")",
-        context,
-        rate_limit("five_hour"; "🕔 5h"),
-        rate_limit("seven_day"; "📅 7d")
-      ] | join(" · ")
-    '
-  '';
 
   skillTargets = {
     ".claude/skills" = {
@@ -111,7 +36,10 @@ in {
 
       ".pi/agent/keybindings.json".source = ./pi/keybindings.json;
 
-      ".local/bin/claude-statusline".source = claudeStatuslineScript;
+      ".local/bin/claude-statusline" = {
+        executable = true;
+        source = ./claude-statusline;
+      };
 
       ".codex/config.toml" = {
         # Codex only reads a single config.toml. Keep the known mutable NUX key
