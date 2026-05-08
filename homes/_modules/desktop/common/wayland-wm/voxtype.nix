@@ -74,8 +74,8 @@ in {
       pre_type_delay_ms = 0
 
       [output.notification]
-      on_recording_start = false
-      on_recording_stop = false
+      on_recording_start = true
+      on_recording_stop = true
       on_transcription = true
 
       [status]
