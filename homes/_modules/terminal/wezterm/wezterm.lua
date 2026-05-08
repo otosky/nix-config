@@ -15,8 +15,8 @@ return {
 	enable_wayland = (hostname == "ot-framework" and true or false),
 	enable_kitty_keyboard = true,
 	keys = {
-		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") },
-		{ key = "V", mods = "CTRL", action = wezterm.action.PasteFrom("PrimarySelection") },
+		{ key = "V", mods = "CTRL", action = wezterm.action.DisableDefaultAssignment },
+		{ key = "V", mods = "SHIFT|CTRL", action = wezterm.action.PasteFrom("Clipboard") },
 		{ key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
 	},
 
