@@ -39,7 +39,7 @@ jq -r '
       ) as $used_percent
     | "🧠 ctx: \($used_percent | percent) used \($used_tokens | token_text)/\($window_size | token_text)";
 
-  def compact_duration:
+  def relative_duration:
     (. | floor) as $seconds
     | if $seconds <= 0 then "now"
       else
@@ -58,7 +58,7 @@ jq -r '
   def reset_text:
     (. | number_or_null) as $epoch
     | if $epoch == null then "resets ?"
-      else "resets in \(($epoch - now) | compact_duration)"
+      else "resets in \(($epoch - now) | relative_duration)"
       end;
 
   def rate_limit($key; $label):
