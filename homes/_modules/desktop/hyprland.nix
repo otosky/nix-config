@@ -128,6 +128,7 @@ in {
           "SUPER, F, exec, firefox"
           "SUPER, B, exec, brave"
           ", Print, exec, grimblast copy area"
+          "SHIFT, Print, exec, grimblast save area"
           "SUPER, return, exec, [float;tile] wezterm start --always-new-process"
 
           "SUPER, 1, workspace, 1"
