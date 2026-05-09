@@ -14,6 +14,8 @@ in {
       xournalpp
 
       gimp-with-plugins
+      imagemagick
+      libresprite
 
       calibre
       sonixd
