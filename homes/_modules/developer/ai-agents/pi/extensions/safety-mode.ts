@@ -1,5 +1,5 @@
 import path from "node:path";
-import { isToolCallEventType, type ExtensionAPI, type ExtensionContext } from "@mariozechner/pi-coding-agent";
+import { isToolCallEventType, type ExtensionAPI, type ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 type PathDecision = {
 	level: "allow" | "confirm" | "block";
