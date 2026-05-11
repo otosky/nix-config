@@ -66,11 +66,13 @@
     nfs-utils
     nautilus
     usbutils
+    yubikey-manager
   ];
 
   services = {
     envfs.enable = true;
     gnome.gnome-keyring.enable = true;
+    pcscd.enable = true;
   };
 
   hardware.enableRedistributableFirmware = true;
