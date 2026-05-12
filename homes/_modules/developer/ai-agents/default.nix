@@ -55,6 +55,14 @@ in {
           personality = "pragmatic"
           web_search = "cached"
 
+          ${lib.optionalString pkgs.stdenv.isDarwin ''
+            [features]
+            fast_mode = false
+            apps = false
+
+            [plugins."superpowers@openai-curated"]
+            enabled = true
+          ''}
           [agents]
           max_threads = 6
           max_depth = 1
