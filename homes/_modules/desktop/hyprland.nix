@@ -7,46 +7,89 @@
   wallpaper = "/etc/_wallpapers/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
   gifWallpaper = "/home/olivertosky/Downloads/midnight.gif";
   pactl = lib.getExe' pkgs.pulseaudio "pactl";
-  hyprlandClamshell = pkgs.writeShellApplication {
-    name = "hyprland-clamshell";
+  hyprlandDisplayProfile = pkgs.writeShellApplication {
+    name = "hyprland-display-profile";
     runtimeInputs = [
       config.wayland.windowManager.hyprland.package
+      pkgs.coreutils
       pkgs.jq
+      pkgs.socat
       pkgs.systemd
     ];
     text = ''
       set -euo pipefail
 
-      action="''${1:-}"
-      internal_monitor="$(
-        hyprctl monitors all -j \
-          | jq -r '[.[] | select(.name | test("^(eDP|LVDS|DSI)-"))][0].name // empty'
-      )"
-      active_external_monitors="$(
-        hyprctl monitors -j \
-          | jq --arg internal "$internal_monitor" '[.[] | select(.name != $internal)] | length'
-      )"
+      internal_monitor=""
+      external_monitor=""
 
-      case "$action" in
-        close)
-          if [[ -n "$internal_monitor" && "$active_external_monitors" -gt 0 ]]; then
-            hyprctl keyword monitor "$internal_monitor,disable"
-          else
-            systemctl suspend
-          fi
-          ;;
-        open)
+      detect_monitors() {
+        local all_monitors
+
+        all_monitors="$(hyprctl monitors all -j)"
+        internal_monitor="$(
+          jq -r '[.[] | select(.name | test("^(eDP|LVDS|DSI)-"))][0].name // empty' \
+            <<< "$all_monitors"
+        )"
+        external_monitor="$(
+          jq -r --arg internal "$internal_monitor" \
+            '[.[] | select(.name != $internal and (.name | test("^(eDP|LVDS|DSI)-") | not))][0].name // empty' \
+            <<< "$all_monitors"
+        )"
+      }
+
+      apply_profile() {
+        detect_monitors
+
+        if [[ -n "$external_monitor" ]]; then
+          hyprctl keyword monitor "$external_monitor,preferred,0x0,1"
           if [[ -n "$internal_monitor" ]]; then
-            if [[ "$active_external_monitors" -gt 0 ]]; then
-              hyprctl keyword monitor "$internal_monitor,preferred,auto,1"
-            else
-              hyprctl keyword monitor "$internal_monitor,preferred,0x0,1"
-              hyprctl dispatch movecursor 100 100
-            fi
+            hyprctl keyword monitor "$internal_monitor,disable"
           fi
+        elif [[ -n "$internal_monitor" ]]; then
+          hyprctl keyword monitor "$internal_monitor,preferred,0x0,1"
+        fi
+
+        hyprctl dispatch movecursor 100 100
+      }
+
+      handle_lid_close() {
+        detect_monitors
+
+        if [[ -n "$external_monitor" ]]; then
+          apply_profile
+        else
+          systemctl suspend
+        fi
+      }
+
+      watch_monitors() {
+        local socket
+
+        apply_profile
+        socket="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+        socat -u UNIX-CONNECT:"$socket" - | while IFS= read -r event; do
+          case "$event" in
+            monitoradded*|monitorremoved*)
+              sleep 1
+              apply_profile
+              ;;
+          esac
+        done
+      }
+
+      action="''${1:-apply}"
+      case "$action" in
+        apply | open)
+          apply_profile
+          ;;
+        close)
+          handle_lid_close
+          ;;
+        watch)
+          watch_monitors
           ;;
         *)
-          echo "usage: hyprland-clamshell {open|close}" >&2
+          echo "usage: hyprland-display-profile {apply|open|close|watch}" >&2
           exit 2
           ;;
       esac
@@ -114,6 +157,7 @@ in {
       exec-once = [
         "${pkgs.swaynotificationcenter}/bin/swaync"
         "${pkgs.awww}/bin/awww-daemon"
+        "${lib.getExe hyprlandDisplayProfile} watch"
       ];
       # exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
       exec = ["${pkgs.awww}/bin/awww img ${gifWallpaper}"];
@@ -240,8 +284,8 @@ in {
         ];
 
       bindl = [
-        ", switch:on:Lid Switch, exec, ${lib.getExe hyprlandClamshell} close"
-        ", switch:off:Lid Switch, exec, ${lib.getExe hyprlandClamshell} open"
+        ", switch:on:Lid Switch, exec, ${lib.getExe hyprlandDisplayProfile} close"
+        ", switch:off:Lid Switch, exec, ${lib.getExe hyprlandDisplayProfile} open"
       ];
     };
   };
