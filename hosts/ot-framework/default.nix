@@ -63,6 +63,12 @@
   };
 
   services = {
+    logind.settings.Login = {
+      HandleLidSwitch = "suspend";
+      HandleLidSwitchDocked = "ignore";
+      HandleLidSwitchExternalPower = "suspend";
+    };
+
     fwupd.enable = true;
     # we need fwupd 1.9.7 to downgrade the fingerprint sensor firmware
     fwupd.package =

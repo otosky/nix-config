@@ -7,6 +7,7 @@
   wallpaper = "/etc/_wallpapers/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
   gifWallpaper = "/home/olivertosky/Downloads/midnight.gif";
   pactl = lib.getExe' pkgs.pulseaudio "pactl";
+  hyprctl = lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl";
 in {
   imports = [
     ./common
@@ -26,6 +27,44 @@ in {
     hyprpicker
     hyprland-qtutils
   ];
+
+  services.kanshi = {
+    enable = true;
+    settings = [
+      {
+        output = {
+          criteria = "ASUSTek COMPUTER INC VG27B R2LMQS029617";
+          alias = "asus-vg27b";
+        };
+      }
+      {
+        profile.name = "undocked";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            status = "enable";
+            position = "0,0";
+          }
+        ];
+        profile.exec = "${hyprctl} dispatch movecursor 100 100";
+      }
+      {
+        profile.name = "docked";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            status = "disable";
+          }
+          {
+            criteria = "$asus-vg27b";
+            status = "enable";
+            position = "0,0";
+          }
+        ];
+        profile.exec = "${hyprctl} dispatch movecursor 100 100";
+      }
+    ];
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
