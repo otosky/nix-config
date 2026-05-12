@@ -7,94 +7,7 @@
   wallpaper = "/etc/_wallpapers/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
   gifWallpaper = "/home/olivertosky/Downloads/midnight.gif";
   pactl = lib.getExe' pkgs.pulseaudio "pactl";
-  hyprlandDisplayProfile = pkgs.writeShellApplication {
-    name = "hyprland-display-profile";
-    runtimeInputs = [
-      config.wayland.windowManager.hyprland.package
-      pkgs.coreutils
-      pkgs.jq
-      pkgs.socat
-      pkgs.systemd
-    ];
-    text = ''
-      set -euo pipefail
-
-      internal_monitor=""
-      external_monitor=""
-
-      detect_monitors() {
-        local all_monitors
-
-        all_monitors="$(hyprctl monitors all -j)"
-        internal_monitor="$(
-          jq -r '[.[] | select(.name | test("^(eDP|LVDS|DSI)-"))][0].name // empty' \
-            <<< "$all_monitors"
-        )"
-        external_monitor="$(
-          jq -r --arg internal "$internal_monitor" \
-            '[.[] | select(.name != $internal and (.name | test("^(eDP|LVDS|DSI)-") | not))][0].name // empty' \
-            <<< "$all_monitors"
-        )"
-      }
-
-      apply_profile() {
-        detect_monitors
-
-        if [[ -n "$external_monitor" ]]; then
-          hyprctl keyword monitor "$external_monitor,preferred,0x0,1"
-          if [[ -n "$internal_monitor" ]]; then
-            hyprctl keyword monitor "$internal_monitor,disable"
-          fi
-        elif [[ -n "$internal_monitor" ]]; then
-          hyprctl keyword monitor "$internal_monitor,preferred,0x0,1"
-        fi
-
-        hyprctl dispatch movecursor 100 100
-      }
-
-      handle_lid_close() {
-        detect_monitors
-
-        if [[ -n "$external_monitor" ]]; then
-          apply_profile
-        else
-          systemctl suspend
-        fi
-      }
-
-      watch_monitors() {
-        local socket
-
-        apply_profile
-        socket="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
-        socat -u UNIX-CONNECT:"$socket" - | while IFS= read -r event; do
-          case "$event" in
-            monitoradded*|monitorremoved*)
-              sleep 1
-              apply_profile
-              ;;
-          esac
-        done
-      }
-
-      action="''${1:-apply}"
-      case "$action" in
-        apply | open)
-          apply_profile
-          ;;
-        close)
-          handle_lid_close
-          ;;
-        watch)
-          watch_monitors
-          ;;
-        *)
-          echo "usage: hyprland-display-profile {apply|open|close|watch}" >&2
-          exit 2
-          ;;
-      esac
-    '';
-  };
+  hyprctl = lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl";
 in {
   imports = [
     ./common
@@ -114,6 +27,44 @@ in {
     hyprpicker
     hyprland-qtutils
   ];
+
+  services.kanshi = {
+    enable = true;
+    settings = [
+      {
+        output = {
+          criteria = "ASUSTek COMPUTER INC VG27B R2LMQS029617";
+          alias = "asus-vg27b";
+        };
+      }
+      {
+        profile.name = "undocked";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            status = "enable";
+            position = "0,0";
+          }
+        ];
+        profile.exec = "${hyprctl} dispatch movecursor 100 100";
+      }
+      {
+        profile.name = "docked";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            status = "disable";
+          }
+          {
+            criteria = "$asus-vg27b";
+            status = "enable";
+            position = "0,0";
+          }
+        ];
+        profile.exec = "${hyprctl} dispatch movecursor 100 100";
+      }
+    ];
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -157,7 +108,6 @@ in {
       exec-once = [
         "${pkgs.swaynotificationcenter}/bin/swaync"
         "${pkgs.awww}/bin/awww-daemon"
-        "${lib.getExe hyprlandDisplayProfile} watch"
       ];
       # exec = ["${pkgs.swaybg}/bin/swaybg -i ${wallpaper} --mode fill"];
       exec = ["${pkgs.awww}/bin/awww img ${gifWallpaper}"];
@@ -282,11 +232,6 @@ in {
         [
           "SUPER, W, exec, ${lib.getExe pkgs.networkmanager_dmenu}"
         ];
-
-      bindl = [
-        ", switch:on:Lid Switch, exec, ${lib.getExe hyprlandDisplayProfile} close"
-        ", switch:off:Lid Switch, exec, ${lib.getExe hyprlandDisplayProfile} open"
-      ];
     };
   };
 }
