@@ -36,13 +36,13 @@ Thinking "skip TDD just this once"? Stop. That's rationalization.
 NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
 ```
 
-Write code before the test? Delete it. Start over.
+Write code before the test? Stop and restart from a failing test. Discard only implementation changes you authored for the current task; never delete user-authored, pre-existing, or unrelated work without explicit confirmation.
 
 **No exceptions:**
-- Don't keep it as "reference"
+- Don't keep your current-task implementation as "reference"
 - Don't "adapt" it while writing tests
-- Don't look at it
-- Delete means delete
+- Don't look at it while re-implementing
+- Discard means discard only your own unapproved current-task implementation
 
 Implement fresh from tests. Period.
 
@@ -230,7 +230,7 @@ Automated tests are systematic. They run the same way every time.
 **"Deleting X hours of work is wasteful"**
 
 Sunk cost fallacy. The time is already gone. Your choice now:
-- Delete and rewrite with TDD (X more hours, high confidence)
+- Discard only your own unapproved current-task implementation and rewrite with TDD (X more hours, high confidence)
 - Keep it and add tests after (30 min, low confidence, likely bugs)
 
 The "waste" is keeping code you can't trust. Working code without real tests is technical debt.
@@ -264,8 +264,8 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 | "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
 | "Already manually tested" | Ad-hoc ≠ systematic. No record, can't re-run. |
 | "Deleting X hours is wasteful" | Sunk cost fallacy. Keeping unverified code is technical debt. |
-| "Keep as reference, write tests first" | You'll adapt it. That's testing after. Delete means delete. |
-| "Need to explore first" | Fine. Throw away exploration, start with TDD. |
+| "Keep as reference, write tests first" | You'll adapt it. That's testing after. Discard only your own unapproved current-task implementation. |
+| "Need to explore first" | Fine. Set aside only your own exploratory current-task changes, then start with TDD. |
 | "Test hard = design unclear" | Listen to test. Hard to test = hard to use. |
 | "TDD will slow me down" | TDD faster than debugging. Pragmatic = test-first. |
 | "Manual test faster" | Manual doesn't prove edge cases. You'll re-test every change. |
@@ -287,7 +287,7 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 - "TDD is dogmatic, I'm being pragmatic"
 - "This is different because..."
 
-**All of these mean: Delete code. Start over with TDD.**
+**All of these mean: discard only your own unapproved current-task implementation, then start over with TDD. Preserve user-authored, pre-existing, and unrelated work unless explicitly confirmed.**
 
 ## Example: Bug Fix
 
@@ -339,7 +339,7 @@ Before marking work complete:
 - [ ] Tests use real code (mocks only if unavoidable)
 - [ ] Edge cases and errors covered
 
-Can't check all boxes? You skipped TDD. Start over.
+Can't check all boxes? You skipped TDD. Restart from tests, discarding only your own unapproved current-task implementation changes.
 
 ## When Stuck
 
