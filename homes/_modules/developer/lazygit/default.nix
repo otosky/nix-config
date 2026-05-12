@@ -11,8 +11,8 @@
           {
             key = "<c-x>";
             context = "files";
-            description = "Generic cocogitto commit";
-            command = "cog commit {{.Form.Type}} {{.Form.Message | quote}}{{if .Form.Scope}} {{.Form.Scope | quote}}{{end}} {{.Form.Breaking}}";
+            description = "Conventional commit";
+            command = "sh -c 'git commit -m \"$1\${2:+($2)}$3: $4\"' _ {{.Form.Type | quote}} {{.Form.Scope | quote}} {{.Form.Breaking | quote}} {{.Form.Message | quote}}";
             prompts = [
               {
                 type = "menu";
@@ -96,7 +96,7 @@
                     name = "No";
                   }
                   {
-                    value = "-B";
+                    value = "!";
                     name = "Yes";
                   }
                 ];
