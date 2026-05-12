@@ -3,5 +3,6 @@
 {pkgs}: {
   # example = pkgs.callPackage ./example { };
   agor = pkgs.callPackage ./agor {};
+  cymbal = pkgs.callPackage ./cymbal {};
   superdirt = pkgs.callPackage ./superdirt {};
 }

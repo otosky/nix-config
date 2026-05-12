@@ -23,6 +23,7 @@
         gnumake
         go
         jq
+        ast-grep
         uv
         stable.pdm
         duckdb
@@ -34,6 +35,7 @@
         gemini-cli
         opencode
         pi-coding-agent
+        cymbal
 
         cocogitto
         git-town
