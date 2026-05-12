@@ -113,7 +113,7 @@ digraph brainstorming {
 - Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
   - User preferences for spec location override this default
 - Use a writing-clearly-and-concisely skill if available
-- Commit the design document to git unless the user or repository instructions say not to
+- Commit the design document only when repository and user policy explicitly allow commits; otherwise leave it uncommitted and report the path
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
@@ -128,9 +128,9 @@ Fix any issues inline. No need to re-review — just fix and move on.
 **User Review Gate:**
 After the spec review loop passes, ask the user to review the written spec before proceeding:
 
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
+> If committed: "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
 
-If the spec was not committed, say "Spec written to `<path>`" instead.
+If not committed, say "Spec written to `<path>`" instead.
 
 Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
 
