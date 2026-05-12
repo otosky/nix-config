@@ -7,6 +7,51 @@
   wallpaper = "/etc/_wallpapers/milad-fakurian-JrMz6hVQeu4-unsplash.jpg";
   gifWallpaper = "/home/olivertosky/Downloads/midnight.gif";
   pactl = lib.getExe' pkgs.pulseaudio "pactl";
+  hyprlandClamshell = pkgs.writeShellApplication {
+    name = "hyprland-clamshell";
+    runtimeInputs = [
+      config.wayland.windowManager.hyprland.package
+      pkgs.jq
+      pkgs.systemd
+    ];
+    text = ''
+      set -euo pipefail
+
+      action="''${1:-}"
+      internal_monitor="$(
+        hyprctl monitors all -j \
+          | jq -r '[.[] | select(.name | test("^(eDP|LVDS|DSI)-"))][0].name // empty'
+      )"
+      active_external_monitors="$(
+        hyprctl monitors -j \
+          | jq --arg internal "$internal_monitor" '[.[] | select(.name != $internal)] | length'
+      )"
+
+      case "$action" in
+        close)
+          if [[ -n "$internal_monitor" && "$active_external_monitors" -gt 0 ]]; then
+            hyprctl keyword monitor "$internal_monitor,disable"
+          else
+            systemctl suspend
+          fi
+          ;;
+        open)
+          if [[ -n "$internal_monitor" ]]; then
+            if [[ "$active_external_monitors" -gt 0 ]]; then
+              hyprctl keyword monitor "$internal_monitor,preferred,auto,1"
+            else
+              hyprctl keyword monitor "$internal_monitor,preferred,0x0,1"
+              hyprctl dispatch movecursor 100 100
+            fi
+          fi
+          ;;
+        *)
+          echo "usage: hyprland-clamshell {open|close}" >&2
+          exit 2
+          ;;
+      esac
+    '';
+  };
 in {
   imports = [
     ./common
@@ -193,6 +238,11 @@ in {
         [
           "SUPER, W, exec, ${lib.getExe pkgs.networkmanager_dmenu}"
         ];
+
+      bindl = [
+        ", switch:on:Lid Switch, exec, ${lib.getExe hyprlandClamshell} close"
+        ", switch:off:Lid Switch, exec, ${lib.getExe hyprlandClamshell} open"
+      ];
     };
   };
 }
