@@ -44,40 +44,6 @@ in {
         source = ./claude-statusline;
       };
 
-      ".codex/config.toml" = {
-        # Codex only reads a single config.toml. Keep the known mutable NUX key
-        # while making durable defaults reproducible through Home Manager.
-        force = true;
-        text = ''
-          model = "gpt-5.5"
-          approval_policy = "on-request"
-          sandbox_mode = "workspace-write"
-          personality = "pragmatic"
-          web_search = "cached"
-
-          ${lib.optionalString pkgs.stdenv.isDarwin ''
-            [features]
-            fast_mode = false
-            apps = false
-
-            [plugins."superpowers@openai-curated"]
-            enabled = true
-          ''}
-          [agents]
-          max_threads = 6
-          max_depth = 1
-
-          [tui]
-          status_line = ["model", "context-used", "context-remaining", "five-hour-limit", "weekly-limit"]
-
-          [projects."${nixConfigProject}"]
-          trust_level = "trusted"
-
-          [tui.model_availability_nux]
-          "gpt-5.5" = 1
-        '';
-      };
-
       ".config/opencode/opencode.json" = {
         text = builtins.toJSON {
           "$schema" = "https://opencode.ai/config.json";
@@ -91,6 +57,43 @@ in {
         };
       };
     };
+
+  home.activation.configureCodex = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    config_path="$HOME/.codex/config.toml"
+    config_dir="$(${pkgs.coreutils}/bin/dirname "$config_path")"
+    ${pkgs.coreutils}/bin/mkdir -p "$config_dir"
+
+    if [ -L "$config_path" ]; then
+      tmp="$(${pkgs.coreutils}/bin/mktemp "$config_dir/config.toml.tmp.XXXXXX")"
+      ${pkgs.coreutils}/bin/cp "$config_path" "$tmp"
+      ${pkgs.coreutils}/bin/mv "$tmp" "$config_path"
+    elif [ ! -e "$config_path" ]; then
+      ${pkgs.coreutils}/bin/touch "$config_path"
+    fi
+
+    # Keep root keys before TOML tables, otherwise newly-added root keys would
+    # parse as members of the last table.
+    if ! ${pkgs.yq-go}/bin/yq -i -p toml -o toml ${lib.escapeShellArg ''
+      .model = "gpt-5.5" |
+      .approval_policy = "on-request" |
+      .sandbox_mode = "workspace-write" |
+      .personality = "pragmatic" |
+      .web_search = "cached" |
+      ${lib.optionalString pkgs.stdenv.isDarwin ''
+        .features.fast_mode = false |
+        .features.apps = false |
+        .plugins."superpowers@openai-curated".enabled = true |
+      ''}
+      .agents.max_threads = 6 |
+      .agents.max_depth = 1 |
+      .tui.status_line = ["model", "context-used", "context-remaining", "five-hour-limit", "weekly-limit"] |
+      .projects."${nixConfigProject}".trust_level = "trusted" |
+      .tui.model_availability_nux."gpt-5.5" = 1 |
+      (with_entries(select(.value | tag != "!!map")) * with_entries(select(.value | tag == "!!map")))
+    ''} "$config_path"; then
+      echo "warning: leaving $config_path unchanged; expected valid TOML" >&2
+    fi
+  '';
 
   home.activation.configurePiPackages = lib.hm.dag.entryAfter ["writeBoundary"] ''
     package=${lib.escapeShellArg piEmotePackage}
