@@ -25,6 +25,8 @@
         jq
         ast-grep
         uv
+        bun
+        pnpm
         stable.pdm
         duckdb
         stable.pgcli
