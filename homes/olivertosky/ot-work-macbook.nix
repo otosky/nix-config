@@ -6,6 +6,7 @@
   imports = [
     ../_modules/base
     ../_modules/terminal
+    ../_modules/kubernetes
     ../_modules/developer
   ];
 
