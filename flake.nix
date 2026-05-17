@@ -55,6 +55,9 @@
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
     packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
+    checks = forEachSystem (pkgs: {
+      usqlp = pkgs.usqlp.tests;
+    });
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
     formatter = forEachSystem (pkgs: pkgs.alejandra);
