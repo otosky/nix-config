@@ -7,6 +7,7 @@
   gnused,
   lib,
   runCommand,
+  shellcheck,
   usql,
   writeShellApplication,
   yq,
@@ -32,8 +33,10 @@
         coreutils
         gnugrep
         gnused
+        shellcheck
       ];
     } ''
+      shellcheck ${./usqlp.sh} ${./test.bats}
       export USQLP_BIN=${usqlp}/bin/usqlp
       bats ${./test.bats}
       touch $out

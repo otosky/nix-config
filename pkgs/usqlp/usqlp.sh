@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 set -euo pipefail
 
 USQL_BIN="${USQL_BIN:-usql}"
@@ -17,7 +18,7 @@ unsafe_runtime_dir() {
 
 ensure_runtime_base() {
   if [[ ! -e "$runtime_base" ]]; then
-    mkdir "$runtime_base"
+    mkdir -m 700 "$runtime_base"
   fi
 
   if [[ ! -d "$runtime_base" || -L "$runtime_base" ]]; then
@@ -39,6 +40,13 @@ Usage:
   usqlp --list          List configured connections
   usqlp --refresh       Re-render config from 1Password
   usqlp --config-path   Print generated runtime config path
+
+Agent/non-interactive usage:
+  usqlp --list
+  usqlp <connection> -c 'select 1'
+  usqlp --refresh
+
+Raw usql remains available for direct DSNs and scripts.
 
 Env:
   USQL_CONFIG_TEMPLATE      Override template path
@@ -110,7 +118,9 @@ if [[ $# -gt 0 ]]; then
   exec "$USQL_BIN" --config "$runtime_config" "$@"
 fi
 
-conn="$(pick_connection)"
+if ! conn="$(pick_connection)"; then
+  exit 130
+fi
 
 if [[ -z "$conn" ]]; then
   exit 1

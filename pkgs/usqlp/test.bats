@@ -1,4 +1,5 @@
 #!/usr/bin/env bats
+# shellcheck shell=bash disable=SC2153
 
 setup() {
   test_dir="$(mktemp -d)"
@@ -72,6 +73,9 @@ SH
 set -euo pipefail
 echo "fzf $*" >> "$CALL_LOG"
 cat > /dev/null
+if [[ -n "${FZF_EXIT:-}" ]]; then
+  exit "$FZF_EXIT"
+fi
 printf '%s\n' "${FZF_CHOICE:-prod}"
 SH
 
@@ -117,6 +121,15 @@ file_mode() {
   grep -q '^op inject ' "$call_log"
 }
 
+@test "--help includes agent-friendly non-interactive usage" {
+  run "$USQLP_BIN" --help
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Agent/non-interactive usage:"* ]]
+  [[ "$output" == *"usqlp <connection> -c 'select 1'"* ]]
+  [[ "$output" == *"Raw usql remains available for direct DSNs and scripts."* ]]
+}
+
 @test "--list reuses an existing runtime config without injecting" {
   mkdir -p "$runtime_base/usql"
   chmod 700 "$runtime_base/usql"
@@ -132,7 +145,9 @@ YAML
 
   [ "$status" -eq 0 ]
   [ "$output" = "cached" ]
-  ! grep -q '^op ' "$call_log"
+  if grep -q '^op ' "$call_log"; then
+    false
+  fi
 }
 
 @test "--refresh reinjects an existing runtime config" {
@@ -162,7 +177,20 @@ YAML
 
   [ "$status" -eq 0 ]
   [[ "$output" == "USQL_ARGS: [--config] [$runtime_base/usql/config.yaml] [prod] [-c] [select 1]" ]]
-  ! grep -q '^fzf ' "$call_log"
+  if grep -q '^fzf ' "$call_log"; then
+    false
+  fi
+}
+
+@test "fzf cancellation exits without running usql" {
+  export FZF_EXIT=130
+
+  run "$USQLP_BIN"
+
+  [ "$status" -eq 130 ]
+  if grep -q '^usql ' "$call_log"; then
+    false
+  fi
 }
 
 @test "missing template exits with a useful error" {

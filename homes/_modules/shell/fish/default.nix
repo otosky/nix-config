@@ -10,6 +10,10 @@
           recursive = true;
           source = ./conf.d;
         };
+        ".config/fish/completions" = {
+          recursive = true;
+          source = ./completions;
+        };
         ".config/fish/functions" = {
           recursive = true;
           source = ./functions;
