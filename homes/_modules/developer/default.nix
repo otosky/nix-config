@@ -12,7 +12,7 @@
   home = {
     file.".config/usql/config.yaml.tpl".text = ''
       connections:
-        local-postgres:
+        local_postgres:
           protocol: postgres
           host: localhost
           port: 5432
