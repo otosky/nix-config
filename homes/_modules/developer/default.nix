@@ -10,6 +10,19 @@
   ];
 
   home = {
+    file.".config/usql/config.yaml.tpl".text = ''
+      connections:
+        local_postgres:
+          protocol: postgres
+          host: localhost
+          port: 5432
+          database: postgres
+          username: postgres
+          password: postgres
+          options:
+            sslmode: disable
+    '';
+
     packages = with pkgs;
       lib.optionals pkgs.stdenv.isLinux [
         agor
@@ -17,6 +30,7 @@
       ++ [
         sqlit-tui
         usql
+        usqlp
         coursier
         delta
         age
