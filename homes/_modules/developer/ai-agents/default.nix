@@ -31,8 +31,14 @@
         maxTokens = 8192;
       }
       {
-        id = "glm4:9b-chat";
-        name = "GLM-4 9B Chat Local";
+        id = "gemma3:12b";
+        name = "Gemma 3 12B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
+        id = "llama3.1:8b";
+        name = "Llama 3.1 8B Local";
         contextWindow = 32768;
         maxTokens = 8192;
       }
