@@ -7,16 +7,16 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "pi-coding-agent";
-  version = "0.74.0";
+  version = "0.75.1";
 
   src = fetchFromGitHub {
     owner = "earendil-works";
     repo = "pi";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-wEiqOezD8w08vyuenh3Kk+YCYBbQoEq67wATDEKy5XM=";
+    hash = "sha256-/mtTxi6kwf8I3KJime//QqwVuW2dY2PV66Z/xcfjAFc=";
   };
 
-  npmDepsHash = "sha256-BjQsrnAxGxNQgM4oVHBGug5Sq0kTT5kBCw8EZj4VySc=";
+  npmDepsHash = "sha256-HcZcw+D1JzI89nn/r93QOmIGBReUCnMPo4LZQ4Baexg=";
   npmDepsFetcherVersion = 2;
 
   npmWorkspace = "packages/coding-agent";
@@ -25,8 +25,6 @@ buildNpmPackage (finalAttrs: {
   nativeBuildInputs = [typescript-go];
 
   postPatch = ''
-    cp ${./package-lock.json} package-lock.json
-
     substituteInPlace tsconfig.base.json \
       --replace-fail '"ES2022"' '"ES2024"'
   '';
