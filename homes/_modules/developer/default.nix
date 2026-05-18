@@ -46,6 +46,7 @@
         duckdb
         stable.pgcli
         changie
+        _1password-cli
 
         claude-code
         codex
