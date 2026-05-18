@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ../ai
     ./ai-agents
     ./lazygit
   ];
