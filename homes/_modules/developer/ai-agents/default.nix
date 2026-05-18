@@ -9,6 +9,47 @@
   localPiEmoteFork = "${config.home.homeDirectory}/oss/pi-emote";
   piEmotePackage = "git:github.com/otosky/pi-emote@main";
   previousPiEmotePackages = ["file:${localPiEmoteFork}"];
+  ollamaPiProvider = {
+    baseUrl = "http://localhost:11434/v1";
+    api = "openai-completions";
+    apiKey = "ollama";
+    compat = {
+      supportsDeveloperRole = false;
+      supportsReasoningEffort = false;
+    };
+    models = [
+      {
+        id = "qwen3.5:9b";
+        name = "Qwen 3.5 9B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
+        id = "qwen3.5:27b";
+        name = "Qwen 3.5 27B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
+        id = "qwen3.6:27b";
+        name = "Qwen 3.6 27B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
+        id = "gemma4:e4b";
+        name = "Gemma 4 E4B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
+        id = "llama3.1:8b";
+        name = "Llama 3.1 8B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+    ];
+  };
 
   skillTargets = {
     ".claude/skills" = {
@@ -92,6 +133,41 @@ in {
       (with_entries(select(.value | tag != "!!map")) * with_entries(select(.value | tag == "!!map")))
     ''} "$config_path"; then
       echo "warning: leaving $config_path unchanged; expected valid TOML" >&2
+    fi
+  '';
+
+  home.activation.configurePiModels = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    provider=${lib.escapeShellArg (builtins.toJSON ollamaPiProvider)}
+    models_path="$HOME/.pi/agent/models.json"
+    models_dir="$(${pkgs.coreutils}/bin/dirname "$models_path")"
+    ${pkgs.coreutils}/bin/mkdir -p "$models_dir"
+
+    tmp="$(${pkgs.coreutils}/bin/mktemp "$models_dir/models.json.tmp.XXXXXX")"
+    if [ -e "$models_path" ]; then
+      if ! ${pkgs.jq}/bin/jq -e 'type == "object"' "$models_path" >/dev/null; then
+        echo "warning: leaving $models_path unchanged; expected a JSON object" >&2
+        ${pkgs.coreutils}/bin/rm -f "$tmp"
+        exit 0
+      fi
+      input="$models_path"
+    else
+      input="$tmp.input"
+      printf '{}\n' > "$input"
+    fi
+
+    ${pkgs.jq}/bin/jq \
+      --argjson provider "$provider" \
+      '.providers = ((.providers // {}) + {ollama: $provider})' \
+      "$input" > "$tmp"
+
+    if [ "$input" != "$models_path" ]; then
+      ${pkgs.coreutils}/bin/rm -f "$input"
+    fi
+
+    if [ -e "$models_path" ] && ${pkgs.coreutils}/bin/cmp -s "$models_path" "$tmp"; then
+      ${pkgs.coreutils}/bin/rm -f "$tmp"
+    else
+      ${pkgs.coreutils}/bin/mv "$tmp" "$models_path"
     fi
   '';
 

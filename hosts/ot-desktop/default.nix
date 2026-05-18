@@ -18,6 +18,7 @@
     ../common/optional/quietboot.nix
     ../common/optional/1password.nix
     ../common/optional/bluetooth.nix
+    ../common/optional/ai.nix
   ];
 
   networking = {
@@ -54,7 +55,10 @@
     opentabletdriver.enable = true;
   };
 
-  services.fprintd.enable = true;
+  services = {
+    fprintd.enable = true;
+    ollama.package = pkgs.ollama-rocm;
+  };
 
   system.stateVersion = "23.11";
 }
