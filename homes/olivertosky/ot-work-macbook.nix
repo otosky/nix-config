@@ -20,6 +20,8 @@
   services.gpg-agent.pinentry.package = lib.mkForce pkgs.pinentry_mac;
 
   modules = {
+    ai.localLlm.enable = true;
+
     shell = {
       mise = {
         enable = true;
