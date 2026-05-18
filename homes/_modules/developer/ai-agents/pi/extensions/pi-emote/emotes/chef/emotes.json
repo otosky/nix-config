@@ -1,0 +1,19 @@
+{
+  "idle": {
+    "default": "idle.png",
+    "blink": "idle_blink.png"
+  },
+  "think": {
+    "default": "think_deadpan.png",
+    "hard": "think_hard_deadpan.png"
+  },
+  "talk": {
+    "weights": {
+      "talk_close.png": 0.12,
+      "talk_expletive_small.png": 0.26,
+      "talk_expletive_mid.png": 0.28,
+      "talk_no_expletive.png": 0.20,
+      "talk_rage_expletive.png": 0.14
+    }
+  }
+}
