@@ -6,9 +6,8 @@
 }: let
   nixConfigProject = "${config.home.homeDirectory}/personal/nix-config";
   claudeStatusline = "${config.home.homeDirectory}/.local/bin/claude-statusline";
-  localPiEmoteFork = "${config.home.homeDirectory}/oss/pi-emote";
-  piEmotePackage = "git:github.com/otosky/pi-emote@main";
-  previousPiEmotePackages = ["file:${localPiEmoteFork}"];
+  piEmotePackage = "git:github.com/cgxeiji/pi-emote@f6f66f332619a79190e78bda0a538da5692a62da";
+  previousPiEmotePackages = [];
   ollamaPiProvider = {
     baseUrl = "http://localhost:11434/v1";
     api = "openai-completions";

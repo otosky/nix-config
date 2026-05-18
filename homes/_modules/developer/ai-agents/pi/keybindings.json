@@ -1,5 +1,5 @@
 {
-  "app.thinking.cycle": ["ctrl+shift+t"],
+  "app.thinking.cycle": ["ctrl+alt+t"],
   "app.session.new": ["ctrl+n"],
   "app.session.toggleNamedFilter": [],
   "app.model.select": [],
