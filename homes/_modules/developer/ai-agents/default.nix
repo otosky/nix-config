@@ -31,6 +31,30 @@
         maxTokens = 8192;
       }
       {
+        id = "qwen3.5:9b";
+        name = "Qwen 3.5 9B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
+        id = "qwen3.5:27b";
+        name = "Qwen 3.5 27B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
+        id = "qwen3.6:27b";
+        name = "Qwen 3.6 27B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
+        id = "gemma4:e4b";
+        name = "Gemma 4 E4B Local";
+        contextWindow = 32768;
+        maxTokens = 8192;
+      }
+      {
         id = "llama3.1:8b";
         name = "Llama 3.1 8B Local";
         contextWindow = 32768;
