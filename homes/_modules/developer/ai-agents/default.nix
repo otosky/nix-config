@@ -19,18 +19,6 @@
     };
     models = [
       {
-        id = "qwen2.5-coder:14b";
-        name = "Qwen Coder 14B Local";
-        contextWindow = 32768;
-        maxTokens = 8192;
-      }
-      {
-        id = "qwen2.5-coder:32b";
-        name = "Qwen Coder 32B Local";
-        contextWindow = 32768;
-        maxTokens = 8192;
-      }
-      {
         id = "llama3.1:8b";
         name = "Llama 3.1 8B Local";
         contextWindow = 32768;
