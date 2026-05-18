@@ -19,18 +19,6 @@
     };
     models = [
       {
-        id = "qwen3:8b";
-        name = "Qwen 3 8B Local";
-        contextWindow = 32768;
-        maxTokens = 8192;
-      }
-      {
-        id = "qwen3:14b";
-        name = "Qwen 3 14B Local";
-        contextWindow = 32768;
-        maxTokens = 8192;
-      }
-      {
         id = "qwen3.5:9b";
         name = "Qwen 3.5 9B Local";
         contextWindow = 32768;
