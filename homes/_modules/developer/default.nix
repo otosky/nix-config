@@ -11,7 +11,7 @@
 
   defaultPspgTheme = pkgs.writeText "pspg-theme-tokyonight" ''
     template = 1
-    template_menu = 1
+    template_menu = 9
 
     background = #c0caf5, #1a1b26
     data = #c0caf5, #1a1b26
