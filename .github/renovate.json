@@ -1,0 +1,31 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "labels": ["dependencies"],
+  "dependencyDashboard": true,
+  "nix": {
+    "enabled": true
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Track upstream releases used by local Nix packages.",
+      "managerFilePatterns": ["/(^|/)pkgs/[^/]+/default\\.nix$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?(?: extractVersion=(?<extractVersion>\\S+))?\\s+version = \\\"(?<currentValue>[^\\\"]+)\\\";"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Group Nix flake lockfile updates.",
+      "matchManagers": ["nix"],
+      "groupName": "nix flake inputs"
+    },
+    {
+      "description": "Run the Nix hash fixer after local package updates.",
+      "matchManagers": ["custom.regex"],
+      "labels": ["dependencies", "nix-hash-refresh"]
+    }
+  ]
+}

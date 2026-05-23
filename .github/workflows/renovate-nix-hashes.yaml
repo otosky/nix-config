@@ -1,0 +1,74 @@
+name: Renovate Nix Hashes
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - pkgs/**/default.nix
+      - flake.nix
+      - flake.lock
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  refresh-hashes:
+    if: github.actor == 'renovate[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Configure Git author
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Refresh package hashes
+        run: |
+          set -euo pipefail
+
+          packages=(
+            "pi-coding-agent pkgs/pi-coding-agent/default.nix"
+          )
+
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          updated=false
+
+          for package in "${packages[@]}"; do
+            read -r attr path <<< "$package"
+
+            if ! grep -qx "$path" <<< "$changed_files"; then
+              echo "$attr was not changed by Renovate; skipping."
+              continue
+            fi
+
+            version=$(nix eval --raw ".#$attr.version")
+            nix run nixpkgs#nix-update -- "$attr" --flake --version "$version"
+            updated=true
+          done
+
+          if [[ "$updated" == false ]]; then
+            echo 'No configured package updates to refresh.'
+          fi
+
+      - name: Commit refreshed hashes
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet; then
+            echo 'No hash changes to commit.'
+            exit 0
+          fi
+
+          git add pkgs flake.lock
+          git commit -m 'chore(deps): refresh nix hashes'
+          git push

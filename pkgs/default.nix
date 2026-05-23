@@ -5,5 +5,6 @@
   usqlp = pkgs.callPackage ./usqlp {};
   agor = pkgs.callPackage ./agor {};
   cymbal = pkgs.callPackage ./cymbal {};
+  pi-coding-agent = pkgs.callPackage ./pi-coding-agent {};
   superdirt = pkgs.callPackage ./superdirt {};
 }
