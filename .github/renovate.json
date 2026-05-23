@@ -14,6 +14,14 @@
       "matchStrings": [
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?(?: extractVersion=(?<extractVersion>\\S+))?\\s+version = \\\"(?<currentValue>[^\\\"]+)\\\";"
       ]
+    },
+    {
+      "customType": "regex",
+      "description": "Track hinted Nix flake input refs.",
+      "managerFilePatterns": ["/(^|/)flake\\.nix$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) packageName=(?<packageName>\\S+) versioning=(?<versioning>\\S+)\\s+(?<depName>[A-Za-z0-9_-]+)\\.url = \\\"github:[^\\\"]+/(?<currentValue>[^\\\"]+)\\\";"
+      ]
     }
   ],
   "packageRules": [
@@ -23,7 +31,14 @@
       "groupName": "nix flake inputs"
     },
     {
-      "description": "Run the Nix hash fixer after local package updates.",
+      "description": "Let the regex hint manage stable NixOS channel upgrades.",
+      "matchManagers": ["nix"],
+      "matchDepNames": ["nixpkgs-stable"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Run the Nix refresh workflow after custom regex updates.",
       "matchManagers": ["custom.regex"],
       "labels": ["dependencies", "nix-hash-refresh"]
     }

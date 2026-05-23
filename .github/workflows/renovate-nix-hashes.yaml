@@ -37,12 +37,27 @@ jobs:
         run: |
           set -euo pipefail
 
+          flake_inputs=(
+            "nixpkgs-stable flake.nix"
+          )
           packages=(
             "pi-coding-agent pkgs/pi-coding-agent/default.nix"
           )
 
           changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
           updated=false
+
+          for flake_input in "${flake_inputs[@]}"; do
+            read -r input path <<< "$flake_input"
+
+            if ! grep -qx "$path" <<< "$changed_files"; then
+              echo "$input was not changed by Renovate; skipping."
+              continue
+            fi
+
+            nix flake update "$input"
+            updated=true
+          done
 
           for package in "${packages[@]}"; do
             read -r attr path <<< "$package"
