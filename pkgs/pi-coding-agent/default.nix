@@ -7,16 +7,16 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "pi-coding-agent";
-  version = "0.75.1";
+  version = "0.75.5";
 
   src = fetchFromGitHub {
     owner = "earendil-works";
     repo = "pi";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-/mtTxi6kwf8I3KJime//QqwVuW2dY2PV66Z/xcfjAFc=";
+    hash = "sha256-RNQ4ospdohOA8hyegCMziJHHbmFGdk/QtkjzJmS/PZc=";
   };
 
-  npmDepsHash = "sha256-HcZcw+D1JzI89nn/r93QOmIGBReUCnMPo4LZQ4Baexg=";
+  npmDepsHash = "sha256-LjvdnDyCqr90YddiVT/SWNOMQ+3YD+DWhatVOaxcLw0=";
   npmDepsFetcherVersion = 2;
 
   npmWorkspace = "packages/coding-agent";
