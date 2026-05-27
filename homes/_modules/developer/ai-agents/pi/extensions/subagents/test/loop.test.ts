@@ -166,6 +166,40 @@ test("executeLoop exposes malformed decider output in failed details", async () 
   assert.match(formatLoopToolText(details), /review notes without a decision block/);
 });
 
+test("executeLoop emits running step updates from the runner", async () => {
+  const updates: string[] = [];
+  const runner: LoopRunner = async ({ agentName, task, onUpdate }) => {
+    onUpdate?.({
+      ...singleResult(agentName, task, ""),
+      exitCode: -1,
+      progress: {
+        status: "running",
+        currentActivity: `running ${agentName}`,
+        recentTools: [],
+        recentText: [],
+        startedAt: 0,
+        updatedAt: 0,
+        turns: 0,
+      },
+    });
+    if (agentName === "worker") return singleResult(agentName, task, "implemented once");
+    return singleResult(agentName, task, 'review ok\n```json\n{"status":"done","feedback":"complete"}\n```');
+  };
+
+  await executeLoop({
+    params: params({ maxIterations: 1 }),
+    agents,
+    agentScope: "user",
+    projectAgentsDir: null,
+    defaultCwd: "/repo",
+    runner,
+    onUpdate: (details) => updates.push(details.iterations.at(-1)?.steps.at(-1)?.result.progress?.currentActivity ?? ""),
+  });
+
+  assert.ok(updates.includes("running worker"));
+  assert.ok(updates.includes("running reviewer"));
+});
+
 test("executeLoop stops when decider returns done", async () => {
   const calls: Array<{ agent: string; task: string }> = [];
   const runner: LoopRunner = async ({ agentName, task }) => {

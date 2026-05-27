@@ -1,8 +1,9 @@
 import type { AgentScope } from "./agents.ts";
 import type { LoopDecision } from "./loop-decision.ts";
+import { formatResultProgress } from "./progress.ts";
 import { formatUsage, resultOutput, type SingleResult, type UsageStats } from "./result.ts";
 
-export type LoopStatus = "done" | "max_iterations" | "failed";
+export type LoopStatus = "running" | "done" | "max_iterations" | "failed";
 
 export interface LoopStepResult {
   id: string;
@@ -67,6 +68,11 @@ export function formatLoopRenderResult(details: LoopDetails | undefined, expande
   if (usage) lines.push(`Total: ${usage}`);
 
   const last = details.iterations.at(-1);
+  const latestStep = last?.steps.at(-1);
+  if (latestStep) {
+    lines.push(`current: iteration ${last.index} step ${latestStep.id}`);
+    if (latestStep.result.progress) lines.push(formatResultProgress(latestStep.result));
+  }
   if (last?.decision) lines.push(`decision: ${last.decision.status} - ${last.decision.feedback}`);
 
   if (expanded) {

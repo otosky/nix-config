@@ -107,6 +107,7 @@ export interface LoopRunnerInput {
   task: string;
   cwd?: string;
   stepNumber: number;
+  onUpdate?: (result: SingleResult) => void;
 }
 
 export type LoopRunner = (input: LoopRunnerInput) => Promise<SingleResult>;
@@ -145,6 +146,19 @@ export async function executeLoop(options: ExecuteLoopOptions): Promise<LoopDeta
   validateLoopParams(options.params);
   validateRequestedLoopAgents(options.params, options.agents);
 
+  const emitUpdate = (iterations: LoopIterationResult[], finalFeedback: string) => {
+    options.onUpdate?.(
+      makeDetails({
+        status: "running",
+        params: options.params,
+        agentScope: options.agentScope,
+        projectAgentsDir: options.projectAgentsDir,
+        iterations,
+        finalFeedback,
+      }),
+    );
+  };
+
   const maxIterations = options.params.maxIterations ?? DEFAULT_LOOP_ITERATIONS;
   const iterations: LoopIterationResult[] = [];
   const history: LoopHistoryItem[] = [];
@@ -167,8 +181,20 @@ export async function executeLoop(options: ExecuteLoopOptions): Promise<LoopDeta
         stepOutputs,
       });
       const task = step.id === options.params.deciderStep ? appendDeciderInstructions(expanded) : expanded;
-      const result = await options.runner({ agentName: step.agent, task, cwd: step.cwd, stepNumber: stepIndex + 1 });
-      iteration.steps.push({ id: step.id, result });
+      const updateStepResult = (result: SingleResult) => {
+        const existing = iteration.steps.find((candidate) => candidate.id === step.id);
+        if (existing) existing.result = result;
+        else iteration.steps.push({ id: step.id, result });
+        emitUpdate(iterations, feedback);
+      };
+      const result = await options.runner({
+        agentName: step.agent,
+        task,
+        cwd: step.cwd,
+        stepNumber: stepIndex + 1,
+        onUpdate: updateStepResult,
+      });
+      updateStepResult(result);
       previous = resultOutput(result);
       stepOutputs.set(step.id, previous);
 
@@ -296,13 +322,28 @@ export default function registerLoop(pi: ExtensionAPI, getBuiltinAgentsDir: () =
         agentScope,
         projectAgentsDir: discovery.projectAgentsDir,
         defaultCwd: ctx.cwd,
-        runner: ({ agentName, task, cwd, stepNumber }) =>
-          runSingleAgent(ctx.cwd, discovery.agents, agentName, task, cwd, stepNumber, signal, undefined, () => ({
-            mode: "single",
-            agentScope,
-            projectAgentsDir: discovery.projectAgentsDir,
-            results: [],
-          })),
+        runner: ({ agentName, task, cwd, stepNumber, onUpdate }) =>
+          runSingleAgent(
+            ctx.cwd,
+            discovery.agents,
+            agentName,
+            task,
+            cwd,
+            stepNumber,
+            signal,
+            onUpdate
+              ? (partial) => {
+                  const current = partial.details?.results[0];
+                  if (current) onUpdate(current);
+                }
+              : undefined,
+            (results) => ({
+              mode: "single",
+              agentScope,
+              projectAgentsDir: discovery.projectAgentsDir,
+              results,
+            }),
+          ),
         onUpdate: (details) => onUpdate?.({ content: [{ type: "text", text: formatLoopToolText(details) }], details }),
       });
 
