@@ -90,6 +90,12 @@ pick_connection() {
   list_connections | "$FZF_BIN" --prompt='usql connection> '
 }
 
+run_usql() {
+  : "${PAGER:=pspg}"
+  export PAGER
+  exec "$USQL_BIN" --config "$runtime_config" "$@"
+}
+
 case "${1:-}" in
   -h|--help)
     usage
@@ -115,7 +121,7 @@ esac
 ensure_config
 
 if [[ $# -gt 0 ]]; then
-  exec "$USQL_BIN" --config "$runtime_config" "$@"
+  run_usql "$@"
 fi
 
 if ! conn="$(pick_connection)"; then
@@ -126,4 +132,4 @@ if [[ -z "$conn" ]]; then
   exit 1
 fi
 
-exec "$USQL_BIN" --config "$runtime_config" "$conn"
+run_usql "$conn"

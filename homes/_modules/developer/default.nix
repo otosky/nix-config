@@ -60,7 +60,6 @@
   defaultUsqlConfigTemplate = pkgs.writeText "usql-config.yaml.tpl" ''
     # Copy this file per-host and replace the placeholder 1Password references.
     init: |
-      \set PAGER pspg
       \pset pager on
 
     connections:
