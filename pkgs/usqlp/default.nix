@@ -8,6 +8,7 @@
   lib,
   runCommand,
   shellcheck,
+  pspg,
   usql,
   writeShellApplication,
   yq,
@@ -19,6 +20,7 @@
       _1password-cli
       coreutils
       fzf
+      pspg
       usql
       yq
     ];

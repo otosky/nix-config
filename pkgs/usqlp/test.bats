@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-# shellcheck shell=bash disable=SC2153
+# shellcheck shell=bash disable=SC2030,SC2031,SC2153
 
 setup() {
   test_dir="$(mktemp -d)"
@@ -88,6 +88,9 @@ for arg in "$@"; do
   printf ' [%s]' "$arg"
 done
 printf '\n'
+if [[ "${USQL_PRINT_PAGER:-}" == "1" ]]; then
+  printf 'USQL_PAGER: %s\n' "${PAGER:-}"
+fi
 SH
 
   chmod +x "$fakebin/op" "$fakebin/yq" "$fakebin/fzf" "$fakebin/usql"
@@ -191,6 +194,26 @@ YAML
   if grep -q '^usql ' "$call_log"; then
     false
   fi
+}
+
+@test "usql execution defaults PAGER to pspg" {
+  unset PAGER
+  export USQL_PRINT_PAGER=1
+
+  run "$USQLP_BIN" prod
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"USQL_PAGER: pspg"* ]]
+}
+
+@test "usql execution preserves an existing PAGER" {
+  export PAGER=less
+  export USQL_PRINT_PAGER=1
+
+  run "$USQLP_BIN" prod
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"USQL_PAGER: less"* ]]
 }
 
 @test "missing template exits with a useful error" {
