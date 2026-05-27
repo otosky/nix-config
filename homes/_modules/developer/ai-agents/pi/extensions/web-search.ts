@@ -13,6 +13,7 @@ type SearchResult = {
 
 const SearchProvider = {
 	Auto: "auto",
+	Searxng: "searxng",
 	Codex: "codex",
 	Tavily: "tavily",
 	Brave: "brave",
@@ -21,6 +22,12 @@ type SearchProvider = (typeof SearchProvider)[keyof typeof SearchProvider];
 type SearchBackend = Exclude<SearchProvider, typeof SearchProvider.Auto>;
 const searchProviders = Object.values(SearchProvider) as SearchProvider[];
 const DEFAULT_SEARCH_PROVIDER: SearchProvider = SearchProvider.Auto;
+const AUTO_SEARCH_PROVIDERS: SearchBackend[] = [
+	SearchProvider.Searxng,
+	SearchProvider.Codex,
+	SearchProvider.Brave,
+	SearchProvider.Tavily,
+];
 
 const CodexSearchFreshness = {
 	Cached: "cached",
@@ -46,6 +53,7 @@ type CodexSearchDetails = {
 const CODEX_API_ENDPOINT = "https://chatgpt.com/backend-api/codex/responses";
 const CODEX_AUTH_PATH = join(homedir(), ".codex", "auth.json");
 const DEFAULT_CODEX_MODEL = "gpt-5.4-mini";
+const DEFAULT_SEARXNG_URL = "https://search.toskbot.xyz";
 const SEARCH_TIMEOUT_MS = 120_000;
 
 function isSearchProvider(value: string): value is SearchProvider {
@@ -105,6 +113,24 @@ async function searchBrave(query: string, maxResults: number, apiKey: string, si
 		title: r.title ?? "",
 		url: r.url ?? "",
 		snippet: r.description ?? "",
+	}));
+}
+
+async function searchSearxng(query: string, maxResults: number, baseUrl: string, signal?: AbortSignal): Promise<SearchResult[]> {
+	const endpoint = new URL(`${baseUrl.replace(/\/+$/, "")}/search`);
+	endpoint.searchParams.set("q", query);
+	endpoint.searchParams.set("format", "json");
+	endpoint.searchParams.set("categories", "general");
+
+	const res = await fetch(endpoint, { headers: { Accept: "application/json" }, signal });
+	if (!res.ok) throw new Error(`SearXNG: HTTP ${res.status}`);
+	const data = (await res.json()) as {
+		results?: Array<{ title?: string; url?: string; content?: string }>;
+	};
+	return (data.results ?? []).slice(0, maxResults).map((r) => ({
+		title: r.title ?? "",
+		url: r.url ?? "",
+		snippet: (r.content ?? "").slice(0, 300),
 	}));
 }
 
@@ -225,6 +251,29 @@ function formatResults(results: SearchResult[], query: string, provider: SearchB
 	return summary ? `${metadata}\n\n${summary}\n\nSources:\n${resultText}` : `${metadata}\n\n${resultText}`;
 }
 
+async function searchBackend(
+	provider: SearchBackend,
+	query: string,
+	maxResults: number,
+	freshness: CodexSearchFreshness,
+	signal?: AbortSignal,
+): Promise<AgentToolResult<unknown>> {
+	if (provider === SearchProvider.Searxng) {
+		const baseUrl = process.env.PI_SEARXNG_URL ?? DEFAULT_SEARXNG_URL;
+		const results = await searchSearxng(query, maxResults, baseUrl, signal);
+		return { content: [{ type: "text", text: formatResults(results, query, SearchProvider.Searxng) }], details: { provider: SearchProvider.Searxng, results } };
+	}
+	if (provider === SearchProvider.Codex) return searchCodex(query, maxResults, freshness, signal);
+	if (provider === SearchProvider.Tavily) {
+		if (!process.env.PI_TAVILY_API_KEY) throw new Error("PI_WEB_SEARCH_PROVIDER=tavily requires PI_TAVILY_API_KEY.");
+		const results = await searchTavily(query, maxResults, process.env.PI_TAVILY_API_KEY, signal);
+		return { content: [{ type: "text", text: formatResults(results, query, SearchProvider.Tavily) }], details: { provider: SearchProvider.Tavily, results } };
+	}
+	if (!process.env.PI_BRAVE_SEARCH_API_KEY) throw new Error("PI_WEB_SEARCH_PROVIDER=brave requires PI_BRAVE_SEARCH_API_KEY.");
+	const results = await searchBrave(query, maxResults, process.env.PI_BRAVE_SEARCH_API_KEY, signal);
+	return { content: [{ type: "text", text: formatResults(results, query, SearchProvider.Brave) }], details: { provider: SearchProvider.Brave, results } };
+}
+
 async function doSearch(
 	query: string,
 	maxResults: number,
@@ -236,29 +285,18 @@ async function doSearch(
 		throw new Error(`PI_WEB_SEARCH_PROVIDER must be one of: ${searchProviders.join(", ")}.`);
 	}
 
-	if (provider === SearchProvider.Codex) return searchCodex(query, maxResults, freshness, signal);
-	if (provider === SearchProvider.Tavily) {
-		if (!process.env.PI_TAVILY_API_KEY) throw new Error("PI_WEB_SEARCH_PROVIDER=tavily requires PI_TAVILY_API_KEY.");
-		const results = await searchTavily(query, maxResults, process.env.PI_TAVILY_API_KEY, signal);
-		return { content: [{ type: "text", text: formatResults(results, query, SearchProvider.Tavily) }], details: { provider: SearchProvider.Tavily, results } };
-	}
-	if (provider === SearchProvider.Brave) {
-		if (!process.env.PI_BRAVE_SEARCH_API_KEY) throw new Error("PI_WEB_SEARCH_PROVIDER=brave requires PI_BRAVE_SEARCH_API_KEY.");
-		const results = await searchBrave(query, maxResults, process.env.PI_BRAVE_SEARCH_API_KEY, signal);
-		return { content: [{ type: "text", text: formatResults(results, query, SearchProvider.Brave) }], details: { provider: SearchProvider.Brave, results } };
+	if (provider !== SearchProvider.Auto) return searchBackend(provider, query, maxResults, freshness, signal);
+
+	const errors: string[] = [];
+	for (const backend of AUTO_SEARCH_PROVIDERS) {
+		try {
+			return await searchBackend(backend, query, maxResults, freshness, signal);
+		} catch (error) {
+			errors.push(`${backend}: ${error instanceof Error ? error.message : String(error)}`);
+		}
 	}
 
-	const tavilyKey = process.env.PI_TAVILY_API_KEY;
-	if (tavilyKey) {
-		const results = await searchTavily(query, maxResults, tavilyKey, signal);
-		return { content: [{ type: "text", text: formatResults(results, query, SearchProvider.Tavily) }], details: { provider: SearchProvider.Tavily, results } };
-	}
-	const braveKey = process.env.PI_BRAVE_SEARCH_API_KEY;
-	if (braveKey) {
-		const results = await searchBrave(query, maxResults, braveKey, signal);
-		return { content: [{ type: "text", text: formatResults(results, query, SearchProvider.Brave) }], details: { provider: SearchProvider.Brave, results } };
-	}
-	return searchCodex(query, maxResults, freshness, signal);
+	throw new Error(`All web search providers failed: ${errors.join("; ")}`);
 }
 
 export default function (pi: ExtensionAPI) {
@@ -266,8 +304,8 @@ export default function (pi: ExtensionAPI) {
 		name: "web_search",
 		label: "Web Search",
 		description:
-			"Searches the web for up-to-date information beyond your knowledge cutoff. Prefer primary sources (official docs, papers, announcements) and corroborate key claims with multiple sources. Always include links for cited sources in your response.",
-		promptSnippet: "web_search(query) — fetch current information from the web",
+			"Searches the web for up-to-date information beyond your knowledge cutoff. Auto mode tries local SearXNG, Codex, Brave, then Tavily. Prefer primary sources (official docs, papers, announcements) and corroborate key claims with multiple sources. Always include links for cited sources in your response.",
+		promptSnippet: "web_search(query) — fetch current information from the web, using local SearXNG first in auto mode",
 		promptGuidelines: [
 			"Use web_search when you are unsure about a fact instead of guessing.",
 			"When using web_search, prefer primary sources (official docs, specs, papers) over blog summaries or aggregators.",
