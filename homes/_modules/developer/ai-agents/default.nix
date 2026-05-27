@@ -73,7 +73,6 @@ in {
 
       ".pi/agent/extensions" = {
         force = true;
-        recursive = true;
         source = ./pi/extensions;
       };
 
