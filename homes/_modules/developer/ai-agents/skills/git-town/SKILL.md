@@ -51,10 +51,23 @@ Workflow:
 
 Before creating a PR, check the repository's `CONTRIBUTING.md` and `README.md` for project-specific PR title guidance. Follow those guidelines if they conflict with these defaults.
 
-When running non-interactively, ALWAYS provide `--title` and `--body`. The title must use Conventional Commits unless project-specific guidance says otherwise:
+When running non-interactively, ALWAYS provide `--title` and a body. Use `--body` only for short, single-line bodies. For multi-line PR descriptions, ALWAYS write the body to a temporary file and pass it with `--body-file` to preserve formatting. The title must use Conventional Commits unless project-specific guidance says otherwise:
 
 ```
-git town propose --title "feat(scope): description" --body "PR body here"
+git town propose --title "feat(scope): description" --body "Short PR body"
+```
+
+```
+tmp=$(mktemp)
+cat > "$tmp" <<'EOF'
+## Summary
+- describe the change
+
+## Verification
+- describe the verification performed
+EOF
+git town propose --title "feat(scope): description" --body-file "$tmp"
+rm "$tmp"
 ```
 
 PR title rules:
