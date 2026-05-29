@@ -131,7 +131,6 @@ in {
         agor
       ]
       ++ [
-        sqlit-tui
         otel-tui
         usql
         usqlp
