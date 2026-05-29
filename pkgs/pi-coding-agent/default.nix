@@ -8,7 +8,7 @@
 buildNpmPackage (finalAttrs: {
   pname = "pi-coding-agent";
   # renovate: datasource=github-tags depName=earendil-works/pi versioning=semver extractVersion=^v(?<version>.*)$
-  version = "0.75.5";
+  version = "0.77.0";
 
   src = fetchFromGitHub {
     owner = "earendil-works";
