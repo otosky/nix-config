@@ -14,10 +14,10 @@ buildNpmPackage (finalAttrs: {
     owner = "earendil-works";
     repo = "pi";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-RNQ4ospdohOA8hyegCMziJHHbmFGdk/QtkjzJmS/PZc=";
+    hash = "sha256-PJyhLWfqoPjHoYl4pKJVD3uMD5YjQB5YIk5mBZvGi8E=";
   };
 
-  npmDepsHash = "sha256-LjvdnDyCqr90YddiVT/SWNOMQ+3YD+DWhatVOaxcLw0=";
+  npmDepsHash = "sha256-YykDWP2BfsUXROyw5Q2ofzSLwOQJjQkL2hmZMVniH64=";
   npmDepsFetcherVersion = 2;
 
   npmWorkspace = "packages/coding-agent";
