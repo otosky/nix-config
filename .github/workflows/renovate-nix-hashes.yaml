@@ -67,8 +67,7 @@ jobs:
               continue
             fi
 
-            version=$(nix eval --raw ".#$attr.version")
-            nix run nixpkgs#nix-update -- "$attr" --flake --version "$version"
+            nix run nixpkgs#nix-update -- "$attr" --flake --version skip
             updated=true
           done
 
