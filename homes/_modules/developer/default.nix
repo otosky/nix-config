@@ -145,7 +145,6 @@ in {
         uv
         bun
         pnpm
-        stable.pdm
         duckdb
         stable.pgcli
         changie
