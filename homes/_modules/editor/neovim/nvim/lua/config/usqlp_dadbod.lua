@@ -125,7 +125,7 @@ function M.execute_query(opts)
   end
 
   local connections = M.list_connections(opts)
-  if not connections or vim.tbl_isempty(connections) then
+  if not connections or #connections == 0 then
     notify("No usqlp connections found", vim.log.levels.WARN)
     return
   end
