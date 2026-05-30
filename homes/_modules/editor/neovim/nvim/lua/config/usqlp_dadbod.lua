@@ -105,14 +105,16 @@ function M.query_under_cursor()
   return trimmed_lines(start_line, end_line)
 end
 
-function M.visual_query()
-  local start_line = vim.fn.line("'<")
-  local end_line = vim.fn.line("'>")
+function M.range_query(start_line, end_line)
   if start_line > end_line then
     start_line, end_line = end_line, start_line
   end
 
   return trimmed_lines(start_line, end_line)
+end
+
+function M.visual_query()
+  return M.range_query(vim.fn.line("'<"), vim.fn.line("'>"))
 end
 
 function M.execute_query(opts)
@@ -172,8 +174,12 @@ function M.setup_commands()
   vim.api.nvim_create_user_command("UsqlpDBUIRefresh", function()
     M.refresh_connections()
   end, {})
-  vim.api.nvim_create_user_command("UsqlpDB", function()
-    M.execute_query()
+  vim.api.nvim_create_user_command("UsqlpDB", function(command)
+    local opts = {}
+    if command.range > 0 then
+      opts.query = M.range_query(command.line1, command.line2)
+    end
+    M.execute_query(opts)
   end, { range = true })
 end
 

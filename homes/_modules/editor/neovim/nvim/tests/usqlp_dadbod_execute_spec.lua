@@ -34,3 +34,12 @@ assert_eq(executed, "DB! usqlp:dev < " .. query_path)
 assert_eq(vim.g.db, "usqlp:dev")
 assert_eq(vim.b.db, "usqlp:dev")
 assert_eq(table.concat(vim.fn.readfile(query_path), "\n"), "select 1;")
+
+vim.api.nvim_buf_set_lines(0, 0, -1, false, {
+  "select ignored;",
+  "",
+  "select ranged",
+  "from widgets;",
+})
+
+assert_eq(usqlp_dadbod.range_query(3, 4), "select ranged\nfrom widgets;")
