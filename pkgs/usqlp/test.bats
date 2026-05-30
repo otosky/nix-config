@@ -124,6 +124,47 @@ file_mode() {
   grep -q '^op inject ' "$call_log"
 }
 
+@test "uses the NixOS 1Password wrapper when available" {
+  wrapped_op="$fakebin/wrapped-op"
+  printf '#!%s\n' "$bash_path" > "$wrapped_op"
+  cat >> "$wrapped_op" <<'SH'
+set -euo pipefail
+echo "wrapped-op $*" >> "$CALL_LOG"
+in_file=""
+out_file=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    inject)
+      shift
+      ;;
+    --in-file)
+      in_file="$2"
+      shift 2
+      ;;
+    --out-file)
+      out_file="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+cp "$in_file" "$out_file"
+SH
+  chmod +x "$wrapped_op"
+  unset OP_BIN
+  export USQLP_OP_WRAPPER_BIN="$wrapped_op"
+
+  run "$USQLP_BIN" --list
+
+  [ "$status" -eq 0 ]
+  grep -q '^wrapped-op inject ' "$call_log"
+  if grep -q '^op inject ' "$call_log"; then
+    false
+  fi
+}
+
 @test "--help includes agent-friendly non-interactive usage" {
   run "$USQLP_BIN" --help
 

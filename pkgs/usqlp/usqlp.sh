@@ -2,7 +2,18 @@
 set -euo pipefail
 
 USQL_BIN="${USQL_BIN:-usql}"
-OP_BIN="${OP_BIN:-op}"
+
+resolve_op_bin() {
+  local wrapper_bin="${USQLP_OP_WRAPPER_BIN:-/run/wrappers/bin/op}"
+
+  if [[ -x "$wrapper_bin" ]]; then
+    printf '%s\n' "$wrapper_bin"
+  else
+    printf '%s\n' op
+  fi
+}
+
+OP_BIN="${OP_BIN:-$(resolve_op_bin)}"
 FZF_BIN="${FZF_BIN:-fzf}"
 YQ_BIN="${YQ_BIN:-yq}"
 
