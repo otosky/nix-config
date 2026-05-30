@@ -10,7 +10,8 @@ function M.connection_url(connection)
   return "usqlp:" .. encode_url_component(connection)
 end
 
-local function is_usqlp_url(url)
+local function is_usqlp_db(db)
+  local url = type(db) == "table" and db.url or db
   return type(url) == "string" and vim.startswith(url, "usqlp:")
 end
 
@@ -24,23 +25,23 @@ local function existing_non_usqlp_dbs()
 
   if vim.islist(dbs) then
     for _, db in ipairs(dbs) do
-      if type(db) == "table" then
-        if not is_usqlp_url(db.url) then
-          table.insert(preserved, db)
-        end
-      elseif not is_usqlp_url(db) then
+      if not is_usqlp_db(db) then
         table.insert(preserved, db)
       end
     end
   else
     for name, url in pairs(dbs) do
-      if not is_usqlp_url(url) then
+      if not is_usqlp_db(url) then
         table.insert(preserved, { name = name, url = url })
       end
     end
   end
 
   return preserved
+end
+
+local function trimmed_lines(start_line, end_line)
+  return vim.trim(table.concat(vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false), "\n"))
 end
 
 function M.parse_connections(lines)
@@ -97,14 +98,11 @@ function M.query_under_cursor()
   local start_line = vim.fn.search("^\\s*$", "bnW") + 1
   local end_line = vim.fn.search("^\\s*$", "nW") - 1
 
-  if start_line == 0 then
-    start_line = 1
-  end
   if end_line < 0 then
     end_line = vim.api.nvim_buf_line_count(0)
   end
 
-  return vim.trim(table.concat(vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false), "\n"))
+  return trimmed_lines(start_line, end_line)
 end
 
 function M.visual_query()
@@ -114,7 +112,7 @@ function M.visual_query()
     start_line, end_line = end_line, start_line
   end
 
-  return vim.trim(table.concat(vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false), "\n"))
+  return trimmed_lines(start_line, end_line)
 end
 
 function M.execute_query(opts)
@@ -141,9 +139,10 @@ function M.execute_query(opts)
     local query_path = opts.query_path or (vim.fn.tempname() .. ".sql")
     vim.fn.writefile(vim.split(query, "\n", { plain = true }), query_path)
 
+    local cmd = opts.cmd or vim.cmd
     vim.g.db = url
-    vim.b.db = url;
-    (opts.cmd or vim.cmd)("DB! " .. url .. " < " .. vim.fn.fnameescape(query_path))
+    vim.b.db = url
+    cmd("DB! " .. url .. " < " .. vim.fn.fnameescape(query_path))
   end)
 end
 
