@@ -1,6 +1,4 @@
 ssh_dir := "/mnt/persist/etc/ssh"
-usql_compose := "dev/usql-postgres/compose.yaml"
-usql_env := 'USQL_CONFIG_TEMPLATE="$PWD/dev/usql-postgres/config.yaml.tpl" OP_BIN="$PWD/dev/usql-postgres/op-inject-copy"'
 
 # list all recipes
 default:
@@ -43,18 +41,3 @@ rebuild host:
 # update a single flake input in flake.lock
 update-input input:
     nix flake update {{input}}
-
-# start a disposable local Postgres for usqlp/neovim testing
-usql-postgres-up:
-    docker compose -f {{ usql_compose }} up -d
-    for i in $(seq 1 30); do docker compose -f {{ usql_compose }} exec -T postgres pg_isready -U usql -d usql_test && exit 0; sleep 1; done; exit 1
-
-# test the disposable local Postgres through usqlp
-usql-postgres-test:
-    just usql-postgres-up
-    {{ usql_env }} usqlp --refresh
-    {{ usql_env }} usqlp local_postgres -c 'select count(*) as widget_count from widgets;'
-
-# stop and remove the disposable local Postgres
-usql-postgres-down:
-    docker compose -f {{ usql_compose }} down -v
