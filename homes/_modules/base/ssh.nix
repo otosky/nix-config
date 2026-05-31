@@ -32,7 +32,14 @@ in {
           IdentityAgent = "~/.1password/agent.sock";
         };
       };
-      internal = lib.hm.dag.entryAfter ["brocade"] {
+      forgejo = lib.hm.dag.entryAfter ["brocade"] {
+        host = "forgejo.toskbot.xyz";
+        user = "git";
+        extraOptions = {
+          IdentityAgent = "~/.gnupg-sockets/S.gpg-agent.ssh";
+        };
+      };
+      internal = lib.hm.dag.entryAfter ["forgejo"] {
         host = "*.toskbot.xyz";
         extraOptions = {
           IdentityAgent = "~/.1password/agent.sock";
