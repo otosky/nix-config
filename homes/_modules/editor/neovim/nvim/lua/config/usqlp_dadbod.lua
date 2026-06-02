@@ -1,5 +1,8 @@
 local M = {}
 
+local query_state
+local status_timer
+
 local function encode_url_component(value)
   return tostring(value):gsub("([^%w%-%._~])", function(char)
     return string.format("%%%02X", string.byte(char))
@@ -42,6 +45,174 @@ end
 
 local function trimmed_lines(start_line, end_line)
   return vim.trim(table.concat(vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false), "\n"))
+end
+
+local function now_milliseconds()
+  return (vim.uv or vim.loop).hrtime() / 1000000
+end
+
+local function elapsed_seconds(start_time, now)
+  return math.floor(((now - start_time) / 1000) * 10 + 0.5) / 10
+end
+
+local function query_output_from_match(match)
+  if type(match) ~= "string" then
+    return nil
+  end
+
+  return match:gsub("/DBExecutePre$", ""):gsub("/DBExecutePost$", "")
+end
+
+local function current_db()
+  return vim.b.db or vim.w.db or vim.g.db or "unknown connection"
+end
+
+local function redraw_statusline()
+  pcall(vim.cmd, "redrawstatus")
+end
+
+local function set_status(value)
+  vim.g.usqlp_dadbod_status = value or ""
+  redraw_statusline()
+end
+
+local function stop_status_timer()
+  if not status_timer then
+    return
+  end
+
+  status_timer:stop()
+  status_timer:close()
+  status_timer = nil
+end
+
+local function start_status_timer(timer_factory)
+  stop_status_timer()
+  local factory = timer_factory or (vim.uv or vim.loop).new_timer
+  status_timer = factory()
+  status_timer:start(1000, 1000, function()
+    vim.schedule(redraw_statusline)
+  end)
+end
+
+function M.reset_query_observability()
+  query_state = nil
+  stop_status_timer()
+  set_status("")
+end
+
+function M.record_query_start(opts)
+  opts = opts or {}
+  local notify = opts.notify or vim.notify
+  local started_at = (opts.now or now_milliseconds)()
+  query_state = {
+    connection = tostring(opts.connection or current_db()),
+    output = query_output_from_match(opts.match),
+    started_at = started_at,
+  }
+  set_status("DB running: " .. query_state.connection)
+  start_status_timer(opts.timer_factory)
+
+  notify("DB query started: " .. query_state.connection, vim.log.levels.INFO)
+  return query_state
+end
+
+function M.record_query_finish(opts)
+  opts = opts or {}
+  local notify = opts.notify or vim.notify
+  local finished_at = (opts.now or now_milliseconds)()
+  local state = query_state
+  query_state = nil
+  stop_status_timer()
+  set_status("")
+
+  if not state then
+    return nil
+  end
+
+  local elapsed = elapsed_seconds(state.started_at, finished_at)
+  notify(string.format("DB query finished in %.1fs: %s", elapsed, state.connection), vim.log.levels.INFO)
+  return state
+end
+
+function M.query_status(opts)
+  opts = opts or {}
+  if not query_state then
+    return nil
+  end
+
+  local now = (opts.now or now_milliseconds)()
+  return {
+    running = true,
+    connection = query_state.connection,
+    output = query_state.output,
+    started_at = query_state.started_at,
+    elapsed_seconds = elapsed_seconds(query_state.started_at, now),
+  }
+end
+
+function M.query_status_message(opts)
+  local status = M.query_status(opts)
+  if not status then
+    return "No DB query running"
+  end
+
+  return string.format("DB query running for %.1fs: %s", status.elapsed_seconds, status.connection)
+end
+
+function M.statusline(opts)
+  local status = M.query_status(opts)
+  if not status then
+    return ""
+  end
+
+  return string.format("DB %.1fs %s", status.elapsed_seconds, status.connection)
+end
+
+function M.cancel_query(opts)
+  opts = opts or {}
+  local notify = opts.notify or vim.notify
+  if not query_state then
+    notify("No DB query running", vim.log.levels.INFO)
+    return false
+  end
+
+  local cancel = opts.cancel
+  if cancel == nil and vim.fn.exists("*db#cancel") == 1 then
+    cancel = function()
+      vim.fn["db#cancel"]()
+    end
+  end
+
+  if not cancel then
+    notify("DB query cancellation is not available", vim.log.levels.ERROR)
+    return false
+  end
+
+  cancel()
+  query_state = nil
+  stop_status_timer()
+  set_status("")
+  notify("DB query cancelled", vim.log.levels.WARN)
+  return true
+end
+
+function M.setup_query_observability()
+  local group = vim.api.nvim_create_augroup("usqlp_dadbod_query_observability", { clear = true })
+  vim.api.nvim_create_autocmd("User", {
+    group = group,
+    pattern = "*DBExecutePre",
+    callback = function(event)
+      M.record_query_start({ match = event.match })
+    end,
+  })
+  vim.api.nvim_create_autocmd("User", {
+    group = group,
+    pattern = "*DBExecutePost",
+    callback = function(event)
+      M.record_query_finish({ match = event.match })
+    end,
+  })
 end
 
 function M.parse_connections(lines)
@@ -168,6 +339,8 @@ function M.toggle_dbui(opts)
 end
 
 function M.setup_commands()
+  M.setup_query_observability()
+
   vim.api.nvim_create_user_command("UsqlpDBUI", function()
     M.open_dbui()
   end, {})
@@ -181,6 +354,12 @@ function M.setup_commands()
     end
     M.execute_query(opts)
   end, { range = true })
+  vim.api.nvim_create_user_command("UsqlpDBStatus", function()
+    vim.notify(M.query_status_message(), vim.log.levels.INFO)
+  end, {})
+  vim.api.nvim_create_user_command("UsqlpDBCancel", function()
+    M.cancel_query()
+  end, {})
 end
 
 return M
