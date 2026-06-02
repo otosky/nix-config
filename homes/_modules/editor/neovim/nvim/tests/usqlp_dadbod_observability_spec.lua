@@ -18,7 +18,7 @@ local function notify(message, level)
 end
 
 usqlp_dadbod.reset_query_observability()
-vim.b.db = "usqlp:dev"
+vim.b.db = { db_url = "usqlp:dev" }
 
 local fake_timer = {
   start_delay = nil,
@@ -60,13 +60,13 @@ local status = usqlp_dadbod.query_status({
   end,
 })
 assert_truthy(status)
-assert_eq(status.running, true)
+assert_eq(status.running, nil)
 assert_eq(status.connection, "usqlp:dev")
 assert_eq(status.output, "/tmp/query.dbout")
 assert_eq(status.elapsed_seconds, 2.5)
 assert_eq(usqlp_dadbod.query_status_message({ now = function() return 3500 end }), "DB query running for 2.5s: usqlp:dev")
 assert_eq(usqlp_dadbod.statusline({ now = function() return 3500 end }), "DB 2.5s usqlp:dev")
-assert_eq(vim.g.usqlp_dadbod_status, "DB running: usqlp:dev")
+assert_eq(vim.g.usqlp_dadbod_status, nil)
 assert_eq(fake_timer.start_delay, 1000)
 assert_eq(fake_timer.repeat_delay, 1000)
 
@@ -84,9 +84,58 @@ assert_eq(notifications[2].level, vim.log.levels.INFO)
 assert_eq(usqlp_dadbod.query_status(), nil)
 assert_eq(usqlp_dadbod.query_status_message(), "No DB query running")
 assert_eq(usqlp_dadbod.statusline(), "")
-assert_eq(vim.g.usqlp_dadbod_status, "")
+assert_eq(vim.g.usqlp_dadbod_status, nil)
 assert_eq(fake_timer.stopped, true)
 assert_eq(fake_timer.closed, true)
+
+usqlp_dadbod.reset_query_observability()
+vim.b.db = "usqlp:dev"
+usqlp_dadbod.record_query_start({
+  match = "/tmp/a.dbout/DBExecutePre",
+  notify = notify,
+  now = function()
+    return 1000
+  end,
+})
+vim.b.db = "usqlp:prod"
+usqlp_dadbod.record_query_start({
+  match = "/tmp/b.dbout/DBExecutePre",
+  notify = notify,
+  now = function()
+    return 1500
+  end,
+})
+
+local notification_count = #notifications
+local stale_finish = usqlp_dadbod.record_query_finish({
+  match = "/tmp/a.dbout/DBExecutePost",
+  notify = notify,
+  now = function()
+    return 2000
+  end,
+})
+
+assert_eq(stale_finish, nil)
+assert_eq(#notifications, notification_count)
+
+local overlapping_status = usqlp_dadbod.query_status({
+  now = function()
+    return 2500
+  end,
+})
+assert_truthy(overlapping_status)
+assert_eq(overlapping_status.connection, "usqlp:prod")
+assert_eq(overlapping_status.output, "/tmp/b.dbout")
+
+local matching_finish = usqlp_dadbod.record_query_finish({
+  match = "/tmp/b.dbout/DBExecutePost",
+  notify = notify,
+  now = function()
+    return 3000
+  end,
+})
+assert_truthy(matching_finish)
+assert_eq(usqlp_dadbod.query_status(), nil)
 
 usqlp_dadbod.record_query_start({
   notify = notify,
@@ -106,6 +155,36 @@ assert_eq(cancelled, true)
 assert_eq(usqlp_dadbod.query_status(), nil)
 assert_eq(notifications[#notifications].message, "DB query cancelled")
 assert_eq(notifications[#notifications].level, vim.log.levels.WARN)
+
+usqlp_dadbod.record_query_start({
+  match = "/tmp/cancel.dbout/DBExecutePre",
+  notify = notify,
+  now = function()
+    return 7000
+  end,
+})
+local cancelled_buf
+local default_cancel_result = usqlp_dadbod.cancel_query({
+  notify = notify,
+  exists = function(name)
+    if name == "*db#cancel" then
+      return 1
+    end
+    return 0
+  end,
+  bufnr = function(name)
+    if name == "/tmp/cancel.dbout" then
+      return 42
+    end
+    return -1
+  end,
+  db_cancel = function(buf)
+    cancelled_buf = buf
+  end,
+})
+assert_eq(default_cancel_result, true)
+assert_eq(cancelled_buf, 42)
+assert_eq(usqlp_dadbod.query_status(), nil)
 
 local missing_cancel_result = usqlp_dadbod.cancel_query({
   cancel = false,

@@ -63,17 +63,22 @@ local function query_output_from_match(match)
   return match:gsub("/DBExecutePre$", ""):gsub("/DBExecutePost$", "")
 end
 
+local function db_url(value)
+  if type(value) == "string" then
+    return value
+  end
+  if type(value) == "table" and type(value.db_url) == "string" then
+    return value.db_url
+  end
+  return nil
+end
+
 local function current_db()
-  return vim.b.db or vim.w.db or vim.g.db or "unknown connection"
+  return db_url(vim.b.db) or db_url(vim.w.db) or db_url(vim.g.db) or "unknown connection"
 end
 
 local function redraw_statusline()
   pcall(vim.cmd, "redrawstatus")
-end
-
-local function set_status(value)
-  vim.g.usqlp_dadbod_status = value or ""
-  redraw_statusline()
 end
 
 local function stop_status_timer()
@@ -98,7 +103,7 @@ end
 function M.reset_query_observability()
   query_state = nil
   stop_status_timer()
-  set_status("")
+  redraw_statusline()
 end
 
 function M.record_query_start(opts)
@@ -110,7 +115,7 @@ function M.record_query_start(opts)
     output = query_output_from_match(opts.match),
     started_at = started_at,
   }
-  set_status("DB running: " .. query_state.connection)
+  redraw_statusline()
   start_status_timer(opts.timer_factory)
 
   notify("DB query started: " .. query_state.connection, vim.log.levels.INFO)
@@ -121,14 +126,16 @@ function M.record_query_finish(opts)
   opts = opts or {}
   local notify = opts.notify or vim.notify
   local finished_at = (opts.now or now_milliseconds)()
+  local finished_output = query_output_from_match(opts.match)
   local state = query_state
-  query_state = nil
-  stop_status_timer()
-  set_status("")
 
-  if not state then
+  if not state or state.output ~= finished_output then
     return nil
   end
+
+  query_state = nil
+  stop_status_timer()
+  redraw_statusline()
 
   local elapsed = elapsed_seconds(state.started_at, finished_at)
   notify(string.format("DB query finished in %.1fs: %s", elapsed, state.connection), vim.log.levels.INFO)
@@ -143,7 +150,6 @@ function M.query_status(opts)
 
   local now = (opts.now or now_milliseconds)()
   return {
-    running = true,
     connection = query_state.connection,
     output = query_state.output,
     started_at = query_state.started_at,
@@ -178,9 +184,13 @@ function M.cancel_query(opts)
   end
 
   local cancel = opts.cancel
-  if cancel == nil and vim.fn.exists("*db#cancel") == 1 then
+  local exists = opts.exists or vim.fn.exists
+  if cancel == nil and exists("*db#cancel") == 1 then
+    local output = query_state.output
+    local bufnr = opts.bufnr or vim.fn.bufnr
+    local db_cancel = opts.db_cancel or vim.fn["db#cancel"]
     cancel = function()
-      vim.fn["db#cancel"]()
+      db_cancel(bufnr(output))
     end
   end
 
@@ -192,7 +202,7 @@ function M.cancel_query(opts)
   cancel()
   query_state = nil
   stop_status_timer()
-  set_status("")
+  redraw_statusline()
   notify("DB query cancelled", vim.log.levels.WARN)
   return true
 end
