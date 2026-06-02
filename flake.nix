@@ -27,7 +27,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    codex-cli-nix.url = "github:sadjow/codex-cli-nix";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
+    };
 
     nixgl.url = "github:nix-community/nixGL";
   };

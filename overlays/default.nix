@@ -1,7 +1,5 @@
 # This file defines overlays
 {inputs, ...}: {
-  codex = inputs.codex-cli-nix.overlays.default;
-
   # For every flake input, aliases 'pkgs.inputs.${flake}' to
   # 'inputs.${flake}.packages.${pkgs.stdenv.hostPlatform.system}' or
   # 'inputs.${flake}.legacyPackages.${pkgs.stdenv.hostPlatform.system}'
@@ -23,10 +21,12 @@
   additions = final: _prev:
     (import ../pkgs {pkgs = final;})
     // {
-      claude-code = final.callPackage ../pkgs/claude-code {};
+      claude-code = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.claude-code;
+      codex = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.codex;
+      gemini-cli = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.gemini-cli;
       mise = final.callPackage ../pkgs/mise {};
-      opencode = final.callPackage ../pkgs/opencode {};
-      pi-coding-agent = final.callPackage ../pkgs/pi-coding-agent {};
+      opencode = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.opencode;
+      pi-coding-agent = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.pi;
     };
 
   # access stable packages as pkgs.stable
