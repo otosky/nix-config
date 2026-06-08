@@ -23,7 +23,6 @@
     // {
       claude-code = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.claude-code;
       codex = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.codex;
-      gemini-cli = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.gemini-cli;
       mise = final.callPackage ../pkgs/mise {};
       opencode = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.opencode;
       pi-coding-agent = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.pi;

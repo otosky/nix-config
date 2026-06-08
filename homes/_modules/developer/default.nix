@@ -126,49 +126,44 @@ in {
       fi
     '';
 
-    packages = with pkgs;
-      lib.optionals pkgs.stdenv.isLinux [
-        agor
-      ]
-      ++ [
-        otel-tui
-        usql
-        usqlp
-        pspg
-        coursier
-        delta
-        age
-        gnumake
-        go
-        jq
-        ast-grep
-        uv
-        bun
-        pnpm
-        duckdb
-        stable.pgcli
-        changie
-        _1password-cli
+    packages = with pkgs; [
+      otel-tui
+      usql
+      usqlp
+      pspg
+      coursier
+      delta
+      age
+      gnumake
+      go
+      jq
+      ast-grep
+      uv
+      bun
+      pnpm
+      duckdb
+      stable.pgcli
+      changie
+      _1password-cli
 
-        claude-code
-        codex
-        gemini-cli
-        opencode
-        pi-coding-agent
-        cymbal
+      claude-code
+      codex
+      opencode
+      pi-coding-agent
+      cymbal
 
-        cocogitto
-        git-town
-        git-spice
+      cocogitto
+      git-town
+      git-spice
 
-        erlang_28
-        beamMinimal28Packages.elixir
+      erlang_28
+      beamMinimal28Packages.elixir
 
-        awscli2
-        google-cloud-sdk
-        azure-cli
-        opentofu
-      ];
+      awscli2
+      google-cloud-sdk
+      azure-cli
+      opentofu
+    ];
   };
 
   programs = {
