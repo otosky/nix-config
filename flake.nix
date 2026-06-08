@@ -33,6 +33,11 @@
       inputs.systems.follows = "systems";
     };
 
+    herdr = {
+      url = "github:ogulcancelik/herdr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixgl.url = "github:nix-community/nixGL";
   };
 

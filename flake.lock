@@ -166,6 +166,26 @@
         "type": "github"
       }
     },
+    "herdr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780927716,
+        "narHash": "sha256-mQ5O31bSBC8uBjqgY49vJD/lu9bapOSCFS0Ze7gYtcg=",
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "rev": "23713874118390d33b8b26cfdc0cdcd7b05720a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -374,6 +394,7 @@
         "disko": "disko",
         "flake-utils": "flake-utils",
         "hardware": "hardware",
+        "herdr": "herdr",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "llm-agents": "llm-agents",

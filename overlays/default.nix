@@ -23,6 +23,7 @@
     // {
       claude-code = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.claude-code;
       codex = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.codex;
+      herdr = inputs.herdr.packages.${final.stdenv.hostPlatform.system}.herdr;
       mise = final.callPackage ../pkgs/mise {};
       opencode = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.opencode;
       pi-coding-agent = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.pi;
