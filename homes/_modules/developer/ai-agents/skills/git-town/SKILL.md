@@ -51,10 +51,25 @@ Workflow:
 
 Before creating a PR, check the repository's `CONTRIBUTING.md` and `README.md` for project-specific PR title guidance. Follow those guidelines if they conflict with these defaults.
 
+ALWAYS force browser opening when creating PRs. Git Town can disable browser launching in non-interactive/agent terminals, so every `git town propose` invocation must pass `--browser`:
+
+- Linux: `--browser xdg-open`
+- macOS: `--browser open`
+
+Determine the browser opener immediately before proposing:
+
+```
+case "$(uname -s)" in
+  Darwin) browser=open ;;
+  Linux) browser=xdg-open ;;
+  *) browser=${BROWSER:-xdg-open} ;;
+esac
+```
+
 When running non-interactively, ALWAYS provide `--title` and a body. Use `--body` only for short, single-line bodies. For multi-line PR descriptions, ALWAYS write the body to a temporary file and pass it with `--body-file` to preserve formatting. The title must use Conventional Commits unless project-specific guidance says otherwise:
 
 ```
-git town propose --title "feat(scope): description" --body "Short PR body"
+git town propose --browser "$browser" --title "feat(scope): description" --body "Short PR body"
 ```
 
 ```
@@ -66,7 +81,7 @@ cat > "$tmp" <<'EOF'
 ## Verification
 - describe the verification performed
 EOF
-git town propose --title "feat(scope): description" --body-file "$tmp"
+git town propose --browser "$browser" --title "feat(scope): description" --body-file "$tmp"
 rm "$tmp"
 ```
 
@@ -81,13 +96,14 @@ PR title rules:
 
 Common flags:
 
-| Flag              | Description                              |
-| ----------------- | ---------------------------------------- |
-| `-t, --title`     | PR title (required non-interactively)    |
-| `-b, --body`      | PR body (required non-interactively)     |
-| `-f, --body-file` | Read body from file (use "-" for stdin)  |
-| `-s, --stack`     | Propose entire stack                     |
-| `--dry-run`       | Print what would happen without doing it |
+| Flag              | Description                                                        |
+| ----------------- | ------------------------------------------------------------------ |
+| `-t, --title`     | PR title (required non-interactively)                              |
+| `-b, --body`      | PR body (required non-interactively)                               |
+| `-f, --body-file` | Read body from file (use "-" for stdin)                            |
+| `--browser`       | Browser opener; always use `xdg-open` on Linux or `open` on macOS  |
+| `-s, --stack`     | Propose entire stack                                               |
+| `--dry-run`       | Print what would happen without doing it                           |
 
 ---
 
