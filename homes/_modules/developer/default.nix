@@ -151,6 +151,7 @@ in {
       opencode
       pi-coding-agent
       cymbal
+      herdr
 
       cocogitto
       git-town
